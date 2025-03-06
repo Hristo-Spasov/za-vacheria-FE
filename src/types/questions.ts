@@ -10,15 +10,3 @@ export type Question = {
   multiSelect: boolean;
   options: Option[];
 };
-
-export type QuestionResponse = {
-  data: Question[];
-  meta: {
-    pagination: {
-      page: number;
-      pageSize: number;
-      pageCount: number;
-      total: number;
-    };
-  };
-};

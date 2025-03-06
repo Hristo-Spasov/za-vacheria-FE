@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import ReactQueryProvider from "./utils/Providers/ReactQueryProvider";
+import ReactQueryProvider from "../providers/ReactQueryProvider";
 
 export const metadata: Metadata = {
   title: "Za Vecheria",

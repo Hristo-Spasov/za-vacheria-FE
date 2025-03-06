@@ -35,9 +35,8 @@
 
 import { useState, useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
-import { getQuestions } from "../api/strapi/questions";
-import { useQuery } from "@tanstack/react-query";
-import { Option, QuestionResponse } from "../api/strapi/types/questions";
+import { Option } from "../../types/questions";
+import { useQuestions } from "@/hooks/useQuestions";
 // const questions = [
 //   {
 //     id: 1,
@@ -89,15 +88,7 @@ const Questions = () => {
     trigger,
     formState: { isValid },
   } = useForm<formData>({ mode: "onChange" });
-
-  const {
-    data: questionsResponse,
-    error,
-    isLoading,
-  } = useQuery<QuestionResponse>({
-    queryKey: ["questions"],
-    queryFn: async () => await getQuestions(),
-  });
+  const { data: questionsResponse, isLoading, error } = useQuestions();
 
   const questions = useMemo(() => {
     return questionsResponse?.data || [];
