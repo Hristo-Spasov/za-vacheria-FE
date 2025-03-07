@@ -37,6 +37,7 @@ import { useState, useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { Option } from "../../types/questions";
 import { useQuestions } from "@/hooks/useQuestions";
+import { AnimatePresence, motion } from "framer-motion";
 // const questions = [
 //   {
 //     id: 1,
@@ -81,6 +82,7 @@ type formData = {
 };
 const Questions = () => {
   const [step, setStep] = useState(0);
+  const [direction, setDirection] = useState(0);
   const {
     register,
     handleSubmit,
@@ -117,9 +119,11 @@ const Questions = () => {
   const { documentId, question, options, multiSelect } = questions[step];
 
   const nextStep = () => {
+    setDirection(1);
     setStep((step) => step + 1);
   };
   const prevStep = () => {
+    setDirection(-1);
     setStep((step) => step - 1);
   };
   const submitForm = (data: formData) => {
@@ -178,110 +182,149 @@ const Questions = () => {
     );
   }
 
+  // Animation variants
+
+  const variants = {
+    enter: (direction: number) => ({
+      x: direction > 0 ? 500 : -500,
+      opacity: 0,
+    }),
+    center: {
+      x: 0,
+      opacity: 1,
+    },
+    exit: (direction: number) => ({
+      x: direction < 0 ? 500 : -500,
+      opacity: 0,
+    }),
+  };
+
   return (
     <div className="bg-gradient-to-b from-amber-50 to-orange-100 min-h-screen ">
       <form
         onSubmit={handleSubmit(submitForm)}
         className="flex flex-col items-center justify-center min-h-screen py-2 px-4 text-center"
       >
-        <div className="bg-white bg-opacity-75 backdrop-blur-sm rounded-xl p-8 shadow-md max-w-max">
-          <h1 className="text-5xl font-bold text-orange-800 mb-4">
-            {question}
-          </h1>
-          {multiSelect && (
-            <p className="text-orange-800 font-semibold">Choose many</p>
-          )}
-          <div className="space-y-3 mt-6 w-full max-w-xl mx-auto px-4">
-            {options.map((answer: Option) => (
-              <div
-                key={answer.id}
-                className={`relative overflow-hidden rounded-xl transition-all duration-300 ${
-                  isOptionSelected(answer, documentId, multiSelect)
-                    ? "bg-gradient-to-r from-orange-500 to-amber-400 shadow-md shadow-orange-200"
-                    : "bg-white hover:bg-orange-50"
-                }`}
-              >
-                <input
-                  type={multiSelect ? "checkbox" : "radio"}
-                  id={`question-${documentId}-option-${answer.id}`}
-                  value={answer.option}
-                  checked={isOptionSelected(answer, documentId, multiSelect)}
-                  {...register(`${documentId}`, { required: true })}
-                  className="absolute opacity-0"
-                />
-                <label
-                  htmlFor={`question-${documentId}-option-${answer.id}`}
-                  className={`flex items-center justify-between p-4 cursor-pointer w-full ${
-                    isOptionSelected(answer, documentId, multiSelect)
-                      ? "text-white"
-                      : "text-orange-800"
-                  }`}
-                >
-                  <span className="text-lg font-medium">{answer.option}</span>
-
-                  {/* The checkbox */}
+        <div className="relative w-full max-w-2xl overflow-hidden">
+          <AnimatePresence initial={false} custom={direction} mode="wait">
+            <motion.div
+              key={step}
+              custom={direction}
+              variants={variants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              transition={{
+                x: { duration: 0.15, ease: [0.16, 1, 0.3, 1] },
+                opacity: { duration: 0.1 },
+              }}
+              className="bg-white bg-opacity-75 backdrop-blur-sm rounded-xl p-8 shadow-md max-w-max"
+            >
+              <h1 className="text-5xl font-bold text-orange-800 mb-4">
+                {question}
+              </h1>
+              {multiSelect && (
+                <p className="text-orange-800 font-semibold">Choose many</p>
+              )}
+              <div className="space-y-3 mt-6 w-full max-w-xl mx-auto px-4">
+                {options.map((answer: Option) => (
                   <div
-                    className={`w-7 h-7 rounded-full flex items-center justify-center ${
+                    key={answer.id}
+                    className={`relative overflow-hidden rounded-xl transition-all duration-300 ${
                       isOptionSelected(answer, documentId, multiSelect)
-                        ? "bg-white text-orange-500"
-                        : "bg-orange-100 text-orange-400"
+                        ? "bg-gradient-to-r from-orange-500 to-amber-400 shadow-md shadow-orange-200"
+                        : "bg-white hover:bg-orange-50"
                     }`}
                   >
-                    {isOptionSelected(answer, documentId, multiSelect) ? (
-                      <svg
-                        className="w-5 h-5"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M5 13l4 4L19 7"
-                        ></path>
-                      </svg>
-                    ) : multiSelect ? (
-                      <span className="block w-4 h-4 rounded border-2 border-orange-400"></span>
-                    ) : (
-                      <span className="block w-4 h-4 rounded-full border-2 border-orange-400"></span>
-                    )}
-                  </div>
-                </label>
-              </div>
-            ))}
-          </div>
+                    <input
+                      type={multiSelect ? "checkbox" : "radio"}
+                      id={`question-${documentId}-option-${answer.id}`}
+                      value={answer.option}
+                      checked={isOptionSelected(
+                        answer,
+                        documentId,
+                        multiSelect
+                      )}
+                      {...register(`${documentId}`, { required: true })}
+                      className="absolute opacity-0"
+                    />
+                    <label
+                      htmlFor={`question-${documentId}-option-${answer.id}`}
+                      className={`flex items-center justify-between p-4 cursor-pointer w-full ${
+                        isOptionSelected(answer, documentId, multiSelect)
+                          ? "text-white"
+                          : "text-orange-800"
+                      }`}
+                    >
+                      <span className="text-lg font-medium">
+                        {answer.option}
+                      </span>
 
-          <div className="mt-5 flex content-center gap-1 justify-around">
-            {step > 0 && (
-              <button
-                type="button"
-                onClick={prevStep}
-                className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-8 rounded-full text-xl transition-all duration-300 transform hover:scale-105 shadow-lg"
-              >
-                Back
-              </button>
-            )}
-            {step < questions.length - 1 ? (
-              <button
-                disabled={!isValid}
-                type="button"
-                onClick={nextStep}
-                className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-8 rounded-full text-xl transition-all duration-300 transform hover:scale-105 shadow-lg disabled:bg-gray-400 disabled:cursor-not-allowed"
-              >
-                Next
-              </button>
-            ) : (
-              <button
-                disabled={!isValid}
-                type="submit"
-                className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-8 rounded-full text-xl transition-all duration-300 transform hover:scale-105 shadow-lg disabled:bg-gray-400 disabled:cursor-not-allowed"
-              >
-                Submit
-              </button>
-            )}
-          </div>
+                      {/* The checkbox */}
+                      <div
+                        className={`w-7 h-7 rounded-full flex items-center justify-center ${
+                          isOptionSelected(answer, documentId, multiSelect)
+                            ? "bg-white text-orange-500"
+                            : "bg-orange-100 text-orange-400"
+                        }`}
+                      >
+                        {isOptionSelected(answer, documentId, multiSelect) ? (
+                          <svg
+                            className="w-5 h-5"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth="2"
+                              d="M5 13l4 4L19 7"
+                            ></path>
+                          </svg>
+                        ) : multiSelect ? (
+                          <span className="block w-4 h-4 rounded border-2 border-orange-400"></span>
+                        ) : (
+                          <span className="block w-4 h-4 rounded-full border-2 border-orange-400"></span>
+                        )}
+                      </div>
+                    </label>
+                  </div>
+                ))}
+              </div>
+
+              <div className="mt-5 flex content-center gap-1 justify-around">
+                {step > 0 && (
+                  <button
+                    type="button"
+                    onClick={prevStep}
+                    className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-8 rounded-full text-xl transition-all duration-300 transform hover:scale-105 shadow-lg"
+                  >
+                    Back
+                  </button>
+                )}
+                {step < questions.length - 1 ? (
+                  <button
+                    disabled={!isValid}
+                    type="button"
+                    onClick={nextStep}
+                    className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-8 rounded-full text-xl transition-all duration-300 transform hover:scale-105 shadow-lg disabled:bg-gray-400 disabled:cursor-not-allowed"
+                  >
+                    Next
+                  </button>
+                ) : (
+                  <button
+                    disabled={!isValid}
+                    type="submit"
+                    className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-8 rounded-full text-xl transition-all duration-300 transform hover:scale-105 shadow-lg disabled:bg-gray-400 disabled:cursor-not-allowed"
+                  >
+                    Submit
+                  </button>
+                )}
+              </div>
+            </motion.div>
+          </AnimatePresence>
         </div>
         <pre>{JSON.stringify(watch(), null, 2)}</pre>
       </form>
