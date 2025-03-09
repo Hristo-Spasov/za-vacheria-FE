@@ -38,6 +38,10 @@ import { useForm } from "react-hook-form";
 import { Option } from "../../types/questions";
 import { useQuestions } from "@/hooks/useQuestions";
 import { AnimatePresence, motion } from "framer-motion";
+import questionsVariants, {
+  AnimationDirection,
+} from "@/components/ui/framer-animations/questions";
+import { useRouter } from "next/navigation";
 // const questions = [
 //   {
 //     id: 1,
@@ -82,7 +86,7 @@ type formData = {
 };
 const Questions = () => {
   const [step, setStep] = useState(0);
-  const [direction, setDirection] = useState(0);
+  const [direction, setDirection] = useState<AnimationDirection>(0);
   const {
     register,
     handleSubmit,
@@ -91,6 +95,7 @@ const Questions = () => {
     formState: { isValid },
   } = useForm<formData>({ mode: "onChange" });
   const { data: questionsResponse, isLoading, error } = useQuestions();
+  const router = useRouter();
 
   const questions = useMemo(() => {
     return questionsResponse?.data || [];
@@ -128,6 +133,8 @@ const Questions = () => {
   };
   const submitForm = (data: formData) => {
     console.log(data);
+
+    router.push("/recipeResult");
   };
 
   // Conditionals helper function
@@ -182,23 +189,6 @@ const Questions = () => {
     );
   }
 
-  // Animation variants
-
-  const variants = {
-    enter: (direction: number) => ({
-      x: direction > 0 ? 500 : -500,
-      opacity: 0,
-    }),
-    center: {
-      x: 0,
-      opacity: 1,
-    },
-    exit: (direction: number) => ({
-      x: direction < 0 ? 500 : -500,
-      opacity: 0,
-    }),
-  };
-
   return (
     <div className="bg-gradient-to-b from-amber-50 to-orange-100 min-h-screen ">
       <form
@@ -210,7 +200,7 @@ const Questions = () => {
             <motion.div
               key={step}
               custom={direction}
-              variants={variants}
+              variants={questionsVariants}
               initial="enter"
               animate="center"
               exit="exit"
