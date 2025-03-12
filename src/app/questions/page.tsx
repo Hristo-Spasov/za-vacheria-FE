@@ -42,6 +42,8 @@ import questionsVariants, {
   AnimationDirection,
 } from "@/components/ui/framer-animations/questions";
 import { useRouter } from "next/navigation";
+import { getCookie, setCookie } from "cookies-next";
+
 // const questions = [
 //   {
 //     id: 1,
@@ -95,6 +97,9 @@ const Questions = () => {
     formState: { isValid },
   } = useForm<formData>({ mode: "onChange" });
   const { data: questionsResponse, isLoading, error } = useQuestions();
+  // const { mutate: filterRecipes } = useRecipes();
+  // const queryClient = useQueryClient();
+
   const router = useRouter();
 
   const questions = useMemo(() => {
@@ -131,10 +136,19 @@ const Questions = () => {
     setDirection(-1);
     setStep((step) => step - 1);
   };
-  const submitForm = (data: formData) => {
+  const submitForm = async (data: formData) => {
     console.log(data);
+    try {
+      setCookie("userAnswers", JSON.stringify(data), {
+        maxAge: 60 * 30, // 30 mins
+        path: "/",
+      });
 
-    router.push("/recipeResult");
+      console.log(getCookie("userAnswers"));
+      router.push("/recipeResult");
+    } catch (error) {
+      console.error("Error submitting form:", error);
+    }
   };
 
   // Conditionals helper function

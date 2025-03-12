@@ -16,10 +16,12 @@ export type QuestionResponse = {
 export const questionService = {
   getQuestions: async (): Promise<QuestionResponse> => {
     try {
-      const response = await strapiClient.get("/questions?populate=*");
+      const response = await strapiClient.get(
+        "/questions?populate[options][populate]=categories"
+      );
       //! Response logging TO BE REMOVED
       console.log(response.data);
-      return response.data;
+      return response.data || [];
     } catch (error) {
       console.error("Error fetching questions:", error);
       return {

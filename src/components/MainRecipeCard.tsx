@@ -1,6 +1,18 @@
 import Image from "next/image";
+import { Recipe } from "@/types/recipes";
+import { getImageUrl } from "./ui/utils/helpers";
 
-const MainRecipeCard = () => {
+interface MainRecipeCardProps {
+  recipe: Recipe;
+}
+
+const MainRecipeCard = ({ recipe }: MainRecipeCardProps) => {
+  const { url, width, height } = getImageUrl({ recipe });
+
+  const displayCategories = recipe.categories?.slice(0, 3) || [];
+  const remainingCount =
+    (recipe.categories?.length || 0) - displayCategories.length;
+
   return (
     <div className="bg-white bg-opacity-75 backdrop-blur-sm rounded-xl p-8 shadow-md w-full mb-8 border-l-4 border-orange-500 relative overflow-hidden">
       <h2 className="text-3xl font-bold text-orange-800 mb-2 font-serif border-b-2 border-orange-300 pb-2 inline-block">
@@ -9,11 +21,11 @@ const MainRecipeCard = () => {
       <div className="flex flex-col md:flex-row gap-6">
         <div className="relative w-full md:w-1/2">
           <Image
-            src="/recipe-4.png"
-            alt="Recipe"
+            src={url}
+            alt={recipe.image[0].alternativeText || recipe.title}
             className="rounded-lg w-full object-cover h-64 shadow-md"
-            width={500}
-            height={300}
+            width={width}
+            height={height}
           />
           <div className="absolute top-3 right-3 bg-orange-100 text-orange-800 px-3 py-1 rounded-full text-sm font-bold shadow-sm border border-orange-200">
             Perfect Match!
@@ -23,26 +35,44 @@ const MainRecipeCard = () => {
         <div className="flex-1">
           <h3 className="text-2xl font-bold text-orange-700 flex items-center">
             <span className="relative">
-              Recipe Name
+              {recipe.title}
               <span className="absolute -bottom-1 left-0 right-0 h-1 bg-orange-300 rounded-full"></span>
             </span>
           </h3>
 
           <div className="flex items-center gap-2 mt-2 text-orange-600">
             <div className="bg-orange-50 rounded-full px-3 py-1 flex items-center">
-              <span className="mr-1">⏱️</span> 30 min
+              <span className="mr-1">⏱️</span>{" "}
+              {recipe.totalTime
+                ? `${recipe.totalTime}m`
+                : `${recipe.prepTime + recipe.cookingTime}m`}
             </div>
             <div className="bg-orange-50 rounded-full px-3 py-1 flex items-center">
-              <span className="mr-1">🔥</span> Easy
+              <span className="mr-1">🔥</span> {recipe.difficultyLevel}
             </div>
-            <div className="bg-orange-50 rounded-full px-3 py-1 flex items-center">
-              <span className="mr-1">🥗</span> Healthy
-            </div>
+
+            {displayCategories.length > 0 && (
+              <div className="flex flex-wrap gap-2 mt-3">
+                {displayCategories.map((category) => (
+                  <span
+                    key={category.id}
+                    className="bg-orange-50 text-orange-700 px-3 py-1 rounded-full text-xs font-medium"
+                  >
+                    <span className="mr-1 text-xs">🍴</span>
+                    {category.name}
+                  </span>
+                ))}
+                {remainingCount > 0 && (
+                  <span className="bg-orange-50 text-orange-700 px-3 py-1 rounded-full text-xs font-medium">
+                    +{remainingCount} more
+                  </span>
+                )}
+              </div>
+            )}
           </div>
 
-          <p className="mt-4 text-gray-700 bg-orange-50 bg-opacity-50 p-3 rounded-lg border-l-2 border-orange-200">
-            Brief description of the recipe highlighting why it matches their
-            preferences...
+          <p className="mt-4 text-gray-700 bg-orange-50 bg-opacity-50 p-3 rounded-lg border-l-2 border-orange-200 whitespace-pre-line">
+            {recipe.instructions.slice(0, 150)}...
           </p>
 
           <button className="mt-4 bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-6 rounded-full transition duration-300 transform hover:-translate-y-1 flex items-center gap-2">
@@ -65,5 +95,4 @@ const MainRecipeCard = () => {
     </div>
   );
 };
-
 export default MainRecipeCard;
