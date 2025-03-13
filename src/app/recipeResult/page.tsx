@@ -16,6 +16,7 @@ const Page = async () => {
   const userAnswers = JSON.parse(userAnswersCookie.value);
   const recipesResponse = await getRecipesFromUserAnswers(userAnswers);
   const recipes = recipesResponse.data || [];
+  const altRecipes = recipes.slice(1);
   console.log("User answers from cookie:", userAnswers);
   console.log("Raw recipe response:", recipesResponse);
   console.log("Recipe being passed to MainRecipeCard:", recipes[0]);
@@ -39,8 +40,8 @@ const Page = async () => {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {/* Alternative Recipe Cards (3) */}
-              {[1, 2, 3].map((i) => (
-                <AlternativeRecipeCard key={i} idx={i} />
+              {altRecipes.map((recipe, i) => (
+                <AlternativeRecipeCard key={i} recipe={recipe} idx={i} />
               ))}
             </div>
 
