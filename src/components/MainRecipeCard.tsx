@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { Recipe } from "@/types/recipes";
-import { getImageUrl } from "./ui/utils/helpers";
+import { getImageUrl, formatNameForUrl } from "./ui/utils/helpers";
+import Link from "next/link";
 
 interface MainRecipeCardProps {
   recipe: Recipe;
@@ -76,7 +77,12 @@ const MainRecipeCard = ({ recipe }: MainRecipeCardProps) => {
               {recipe.instructions.slice(0, 150)}...
             </p>
 
-            <button className="mt-5 bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-6 rounded-lg transition duration-300 transform hover:-translate-y-1 flex items-center gap-2 shadow-md">
+            <Link
+              href={`/recipe/${recipe.documentId}/${formatNameForUrl(
+                recipe.title
+              )}`}
+              className="inline-flex items-center gap-2 mt-5 bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-6 rounded-lg transition duration-300 transform hover:-translate-y-1  shadow-md"
+            >
               View Full Recipe
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -90,7 +96,7 @@ const MainRecipeCard = ({ recipe }: MainRecipeCardProps) => {
                   clipRule="evenodd"
                 />
               </svg>
-            </button>
+            </Link>
           </div>
         </div>
       </div>

@@ -1,7 +1,7 @@
 import { questionService } from "@/api/questionServices";
 import strapiClient from "@/lib/clients/strapi";
 import { Question } from "@/types/questions";
-import { RecipeResponse } from "@/types/recipes";
+import { Recipe, RecipeResponse } from "@/types/recipes";
 
 export const buildFilterQuery = (
   userAnswers: Record<string, string | string[]>,
@@ -95,4 +95,17 @@ export const getRecipesFromUserAnswers = async (
   const queryParams = buildFilterQuery(userAnswers, questions);
 
   return await fetchFilteredRecipes(queryParams);
+};
+
+export const getRecipeById = async (id: string): Promise<Recipe | null> => {
+  try {
+    const response = await strapiClient.get(
+      `/recipes/${id}?populate=image&populate=categories&populate=ingredients`
+    );
+
+    return response.data.data;
+  } catch (error) {
+    console.error("Error fetching recipe by id:", error);
+    return null;
+  }
 };

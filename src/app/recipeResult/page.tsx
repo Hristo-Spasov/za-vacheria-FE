@@ -47,9 +47,12 @@ const Page = async () => {
 
             {/* See More Button */}
             <div className="text-center mt-8 relative flex flex-col gap-4 sm:flex-row ">
-              <button className="bg-white hover:bg-orange-50 text-orange-800 font-medium py-2 px-8 border border-orange-300 rounded-full shadow-sm relative z-10 hover:shadow transition-all flex items-center gap-2 mx-auto">
+              <Link
+                href="/questions"
+                className="bg-white hover:bg-orange-50 text-orange-800 font-medium py-2 px-8 border border-orange-300 rounded-full shadow-sm relative z-10 hover:shadow transition-all flex items-center gap-2 mx-auto"
+              >
                 <span>Retake the quiz?</span>
-              </button>
+              </Link>
               <button className="bg-white hover:bg-orange-50 text-orange-800 font-medium py-2 px-8 border border-orange-300 rounded-full shadow-sm relative z-10 hover:shadow transition-all flex items-center gap-2 mx-auto">
                 <span>Discover More Recipes</span>
               </button>
