@@ -4,6 +4,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { getRecipesFromUserAnswers } from "@/lib/server/utils/recipeUtils";
 import Link from "next/link";
+import ActionButton from "@/components/ui/buttons/ActionButton";
 
 const Page = async () => {
   const cookieStore = await cookies();
@@ -46,16 +47,9 @@ const Page = async () => {
             </div>
 
             {/* See More Button */}
-            <div className="text-center mt-8 relative flex flex-col gap-4 sm:flex-row ">
-              <Link
-                href="/questions"
-                className="bg-white hover:bg-orange-50 text-orange-800 font-medium py-2 px-8 border border-orange-300 rounded-full shadow-sm relative z-10 hover:shadow transition-all flex items-center gap-2 mx-auto"
-              >
-                <span>Retake the quiz?</span>
-              </Link>
-              <button className="bg-white hover:bg-orange-50 text-orange-800 font-medium py-2 px-8 border border-orange-300 rounded-full shadow-sm relative z-10 hover:shadow transition-all flex items-center gap-2 mx-auto">
-                <span>Discover More Recipes</span>
-              </button>
+            <div className="mt-8 sm:mt-12 flex flex-col sm:flex-row justify-center gap-3 sm:gap-4">
+              <ActionButton route="/questions" text="Retake the quiz?" />
+              <ActionButton route="/" text="Discover More Recipes" />
             </div>
           </div>
         </div>

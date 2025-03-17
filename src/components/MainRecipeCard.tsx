@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { Recipe } from "@/types/recipes";
 import { getImageUrl, formatNameForUrl } from "./ui/utils/helpers";
-import Link from "next/link";
+import CardButton from "./ui/buttons/CardButton";
 
 interface MainRecipeCardProps {
   recipe: Recipe;
@@ -36,8 +36,6 @@ const MainRecipeCard = ({ recipe }: MainRecipeCardProps) => {
 
           {/* Content section */}
           <div className="relative p-6 md:p-8 bg-white/95 backdrop-blur-sm">
-            {/* Perfect match badge */}
-
             <h2 className="mt-2 text-3xl font-bold text-orange-700 border-b-2 border-orange-300 pb-2 inline-block">
               {recipe.title}
             </h2>
@@ -77,26 +75,12 @@ const MainRecipeCard = ({ recipe }: MainRecipeCardProps) => {
               {recipe.instructions.slice(0, 150)}...
             </p>
 
-            <Link
-              href={`/recipe/${recipe.documentId}/${formatNameForUrl(
+            <CardButton
+              route={`/recipe/${recipe.documentId}/${formatNameForUrl(
                 recipe.title
               )}`}
-              className="inline-flex items-center gap-2 mt-5 bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-6 rounded-lg transition duration-300 transform hover:-translate-y-1  shadow-md"
-            >
-              View Full Recipe
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z"
-                  clipRule="evenodd"
-                />
-              </svg>
-            </Link>
+              text="View Full Recipe"
+            />
           </div>
         </div>
       </div>
