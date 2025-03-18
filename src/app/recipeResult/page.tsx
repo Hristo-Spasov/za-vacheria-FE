@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import { getRecipesFromUserAnswers } from "@/lib/server/utils/recipeUtils";
 import Link from "next/link";
 import ActionButton from "@/components/ui/buttons/ActionButton";
+import { shuffleRecipes } from "@/components/ui/utils/helpers";
 
 const Page = async () => {
   const cookieStore = await cookies();
@@ -16,7 +17,7 @@ const Page = async () => {
 
   const userAnswers = JSON.parse(userAnswersCookie.value);
   const recipesResponse = await getRecipesFromUserAnswers(userAnswers);
-  const recipes = recipesResponse.data || [];
+  const recipes = shuffleRecipes(recipesResponse.data) || [];
   const altRecipes = recipes.slice(1);
   console.log("User answers from cookie:", userAnswers);
   console.log("Raw recipe response:", recipesResponse);
