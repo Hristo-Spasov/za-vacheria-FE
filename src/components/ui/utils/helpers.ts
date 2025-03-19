@@ -58,3 +58,12 @@ export const shuffleRecipes = (recipes: Recipe[]) => {
 
   return shuffled;
 };
+
+export const getRecipeSubset = (recipes: Recipe[], subsetSize: number) => {
+  if (recipes.length <= subsetSize) {
+    return [...recipes];
+  }
+  const maxStart = recipes.length - subsetSize;
+  const start = Math.floor(Math.random() * maxStart);
+  return recipes.slice(start, start + subsetSize);
+};

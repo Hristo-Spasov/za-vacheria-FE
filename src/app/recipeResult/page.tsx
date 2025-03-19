@@ -5,9 +5,15 @@ import { redirect } from "next/navigation";
 import { getRecipesFromUserAnswers } from "@/lib/server/utils/recipeUtils";
 import Link from "next/link";
 import ActionButton from "@/components/ui/buttons/ActionButton";
-import { shuffleRecipes } from "@/components/ui/utils/helpers";
+import { getRecipeSubset, shuffleRecipes } from "@/components/ui/utils/helpers";
+import { Recipe } from "@/types/recipes";
+import ShuffleButton from "@/components/ui/buttons/ShuffleButton";
 
-const Page = async () => {
+const Page = async ({
+  searchParams,
+}: {
+  searchParams: { shuffle?: string; seed?: string };
+}) => {
   const cookieStore = await cookies();
   const userAnswersCookie = cookieStore.get("userAnswers");
 
@@ -16,9 +22,22 @@ const Page = async () => {
   }
 
   const userAnswers = JSON.parse(userAnswersCookie.value);
+
   const recipesResponse = await getRecipesFromUserAnswers(userAnswers);
-  const recipes = shuffleRecipes(recipesResponse.data) || [];
-  const altRecipes = recipes.slice(1);
+  const allRecipes = recipesResponse.data || [];
+
+  let recipes: Recipe[] = [];
+
+  if (searchParams.shuffle === "true") {
+    recipes = shuffleRecipes(allRecipes);
+  } else {
+    recipes = getRecipeSubset(allRecipes, 4);
+  }
+
+  // const recipes = shuffleRecipes(recipesResponse.data) || [];
+
+  const altRecipes = recipes.length > 1 ? recipes.slice(1) : [];
+
   console.log("User answers from cookie:", userAnswers);
   console.log("Raw recipe response:", recipesResponse);
   console.log("Recipe being passed to MainRecipeCard:", recipes[0]);
@@ -35,16 +54,21 @@ const Page = async () => {
             <MainRecipeCard recipe={recipes[0]} />
 
             {/* Alternative Recipes Section */}
-            <h3 className="text-2xl font-bold text-orange-800 mb-4 flex items-center">
-              <span className="mr-2">✨</span>
-              Other Recipes You Might Like
-            </h3>
+            <div className="mb-6">
+              <div className="flex justify-between items-center mb-4">
+                <h3 className="text-2xl font-bold text-orange-800">
+                  <span className="mr-2">✨</span>
+                  Other Recipes You Might Like
+                </h3>
+                <ShuffleButton />
+              </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {/* Alternative Recipe Cards (3) */}
-              {altRecipes.map((recipe, i) => (
-                <AlternativeRecipeCard key={i} recipe={recipe} idx={i} />
-              ))}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {/* Alternative Recipe Cards (3) */}
+                {altRecipes.map((recipe, i) => (
+                  <AlternativeRecipeCard key={i} recipe={recipe} idx={i} />
+                ))}
+              </div>
             </div>
 
             {/* See More Button */}
