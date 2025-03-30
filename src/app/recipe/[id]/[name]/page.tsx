@@ -162,7 +162,7 @@ export default async function RecipePage({
                         d="M13 10V3L4 14h7v7l9-11h-7z"
                       />
                     </svg>
-                    <span>Difficulty: {recipe.difficultyLevel}</span>
+                    <span>Difficulty: {recipe.difficultyLevel.name}</span>
                   </div>
                 </div>
               </div>
@@ -237,7 +237,7 @@ export default async function RecipePage({
                       d="M13 10V3L4 14h7v7l9-11h-7z"
                     />
                   </svg>
-                  <span>Difficulty: {recipe.difficultyLevel}</span>
+                  <span>Difficulty: {recipe.difficultyLevel.name}</span>
                 </div>
               </div>
             </div>
@@ -254,7 +254,7 @@ export default async function RecipePage({
                     <li key={index} className="flex items-start">
                       <span className="text-orange-500 mr-2">•</span>
                       <span>
-                        {ingredient.quantity} {ingredient.unit}{" "}
+                        {ingredient.quantity} {ingredient.unit?.name}
                         {ingredient.name}
                       </span>
                     </li>
@@ -287,7 +287,7 @@ export default async function RecipePage({
                     <li key={index} className="flex items-start">
                       <span className="text-orange-500 mr-2">•</span>
                       <span>
-                        {ingredient.quantity} {ingredient.unit}{" "}
+                        {ingredient.quantity} {ingredient.unit?.name}{" "}
                         {ingredient.name}
                       </span>
                     </li>

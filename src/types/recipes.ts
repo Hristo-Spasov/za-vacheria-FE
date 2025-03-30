@@ -22,7 +22,7 @@ export type Recipe = {
   prepTime: number;
   cookingTime: number;
   totalTime: number;
-  difficultyLevel: string;
+  difficultyLevel: DifficultyLevel;
   ratings?: number;
   ingredients: Ingredient[];
   image: RecipeImage[];
@@ -32,7 +32,19 @@ interface Ingredient {
   id: number;
   name: string;
   quantity: number;
-  unit: string;
+  unit: Unit;
+  preparation?: string;
+  raw_text?: string;
+}
+interface Unit {
+  id: number;
+  name: string;
+  identifier: string;
+}
+interface DifficultyLevel {
+  id: number;
+  name: string;
+  identifier: string;
 }
 interface ImageFormat {
   ext: string;

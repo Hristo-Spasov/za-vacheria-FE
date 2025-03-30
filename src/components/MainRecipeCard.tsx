@@ -48,7 +48,7 @@ const MainRecipeCard = ({ recipe }: MainRecipeCardProps) => {
                   : `${recipe.prepTime + recipe.cookingTime}m`}
               </div>
               <div className="bg-orange-100 rounded-full px-3 py-1 flex items-center text-orange-700">
-                <span className="mr-1">🔥</span> {recipe.difficultyLevel}
+                <span className="mr-1">🔥</span> {recipe.difficultyLevel.name}
               </div>
             </div>
 

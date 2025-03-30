@@ -100,7 +100,7 @@ export const getRecipesFromUserAnswers = async (
 export const getRecipeById = async (id: string): Promise<Recipe | null> => {
   try {
     const response = await strapiClient.get(
-      `/recipes/${id}?populate=image&populate=categories&populate=ingredients`
+      `/recipes/${id}?populate[0]=image&populate[1]=categories&populate[2]=difficultyLevel&populate[3]=ingredients&populate[4]=ingredients.unit`
     );
 
     return response.data.data;
