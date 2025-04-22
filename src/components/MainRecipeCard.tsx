@@ -30,7 +30,7 @@ const MainRecipeCard = ({ recipe }: MainRecipeCardProps) => {
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent "></div>
             <div className="absolute top-4 left-4 bg-orange-500 text-white px-4 py-1 rounded-full text-sm font-bold shadow-md transform rotate-2 group-hover:[animation:var(--animate-bell-ring)] ">
-              Perfect Match!
+              Перфектно Съвпадение!
             </div>
           </div>
 
@@ -65,7 +65,7 @@ const MainRecipeCard = ({ recipe }: MainRecipeCardProps) => {
                 ))}
                 {remainingCount > 0 && (
                   <span className="bg-orange-50 text-orange-700 px-3 py-1 rounded-full text-xs font-medium">
-                    +{remainingCount} more
+                    +{remainingCount} още
                   </span>
                 )}
               </div>
@@ -79,7 +79,7 @@ const MainRecipeCard = ({ recipe }: MainRecipeCardProps) => {
               route={`/recipe/${recipe.documentId}/${formatNameForUrl(
                 recipe.title
               )}`}
-              text="View Full Recipe"
+              text="Виж пълната рецепта"
             />
           </div>
         </div>

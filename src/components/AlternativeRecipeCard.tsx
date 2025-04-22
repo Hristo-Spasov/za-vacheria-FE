@@ -36,7 +36,7 @@ const AlternativeRecipeCard = ({ recipe, idx }: AlternativeRecipeCardProps) => {
             {recipe.difficultyLevel.name}
           </span>
           <span className="bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-medium flex items-center">
-            ⏱️ {totalTime}m
+            ⏱️ {totalTime}м
           </span>
         </div>
 
@@ -50,7 +50,7 @@ const AlternativeRecipeCard = ({ recipe, idx }: AlternativeRecipeCardProps) => {
             route={`/recipe/${recipe.documentId}/${formatNameForUrl(
               recipe.title
             )}`}
-            text="View Recipe"
+            text="Виж рецептата"
             variant="alternative"
           />
         </div>

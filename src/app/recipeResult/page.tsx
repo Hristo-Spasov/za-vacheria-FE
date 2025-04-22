@@ -58,7 +58,7 @@ const Page = async ({
               <div className="flex justify-between items-center mb-4">
                 <h3 className="text-2xl font-bold text-orange-800">
                   <span className="mr-2">✨</span>
-                  Other Recipes You Might Like
+                  Други Рецепти,Които Може Да Ви Харесат
                 </h3>
                 <ShuffleButton />
               </div>
@@ -73,19 +73,24 @@ const Page = async ({
 
             {/* See More Button */}
             <div className="mt-8 sm:mt-12 flex flex-col sm:flex-row justify-center gap-3 sm:gap-4">
-              <ActionButton route="/questions" text="Retake the quiz?" />
-              <ActionButton route="/" text="Discover More Recipes" />
+              <ActionButton
+                route="/questions"
+                text="Отговорете на въпросника отново?"
+              />
+              <ActionButton route="/" text="Открийте Други Рецепти" />
             </div>
           </div>
         </div>
       ) : (
         <div className="text-center p-8">
-          <h2>No recipes found matching your criteria</h2>
+          <h2>
+            Няма намерени рецепти,които да отговарят на вашите предпочитания
+          </h2>
           <Link
             href="/questions"
             className="mt-4 bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-6 rounded-full inline-block"
           >
-            Try Again
+            Опитайте отново
           </Link>
         </div>
       )}

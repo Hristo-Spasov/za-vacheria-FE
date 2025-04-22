@@ -38,6 +38,9 @@ export const buildFilterQuery = (
             `filters[${option.filterField}][$lt]`,
             String(max)
           );
+        } else if (option.filterField === "difficultyLevel") {
+          const fieldPath = `filters[${option.filterField}][identifier][$${operator}]`;
+          queryParams.append(fieldPath, option.filterValue || "");
         } else {
           const fieldPath = `filters[${option.filterField}][$${operator}]`;
           queryParams.append(fieldPath, option.filterValue || "");

@@ -1,10 +1,11 @@
 import { Recipe } from "@/types/recipes";
+import slugify from "slugify";
 
 interface getImageUrlProps {
   recipe: Recipe;
 }
 
-const baseUrl = "http://localhost:1337";
+// const baseUrl = "http://localhost:1337";
 
 export const getImageUrl = ({ recipe }: getImageUrlProps) => {
   if (!recipe.image || recipe.image.length === 0) {
@@ -23,7 +24,7 @@ export const getImageUrl = ({ recipe }: getImageUrlProps) => {
     for (const format of formatOrder) {
       if (image.formats[format]) {
         return {
-          url: `${baseUrl}${image.formats[format].url}`,
+          url: `${image.formats[format].url}`,
           width: image.formats[format].width,
           height: image.formats[format].height,
         };
@@ -33,17 +34,23 @@ export const getImageUrl = ({ recipe }: getImageUrlProps) => {
 
   // Fallback to original
   return {
-    url: `${baseUrl}${image.url}`,
+    url: `${image.url}`,
     width: image.width,
     height: image.height,
   };
 };
 
-export const formatNameForUrl = (title: string) => {
-  return title
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/(^-|-$)/g, "");
+export const formatNameForUrl = (title: string): string => {
+  if (!title) return "";
+
+  const slug = slugify(title, {
+    lower: true,
+    strict: true,
+    remove: /[*+~.()'"!:@]/g,
+    locale: "bg",
+  });
+
+  return slug;
 };
 
 export const shuffleRecipes = (recipes: Recipe[]) => {
