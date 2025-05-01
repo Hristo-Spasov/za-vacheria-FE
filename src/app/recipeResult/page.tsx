@@ -25,7 +25,7 @@ const Page = async ({
   const sessionId = session || uuidv4();
   const userAnswers = JSON.parse(userAnswersCookie.value);
 
-  if (!searchParams.session) {
+  if (!session) {
     redirect(`/recipeResult?session=${sessionId}`);
   }
   const recipesResponse = await getRecipesFromUserAnswers(

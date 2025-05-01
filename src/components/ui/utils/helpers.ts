@@ -8,7 +8,7 @@ interface getImageUrlProps {
 export const getImageUrl = ({ recipe }: getImageUrlProps) => {
   if (!recipe.image || recipe.image.length === 0) {
     return {
-      url: "/default-recipe-image.jpg",
+      url: "/default_fallback_pic.png",
       width: 500,
       height: 300,
     };

@@ -25,7 +25,11 @@ const MainRecipeCard = ({ recipe, session, showMore }: MainRecipeCardProps) => {
           <div className="relative h-64 md:h-full overflow-hidden group">
             <Image
               src={url}
-              alt={recipe.image[0].alternativeText || recipe.title}
+              alt={
+                Array.isArray(recipe.image) && recipe.image[0]?.alternativeText
+                  ? recipe.image[0].alternativeText
+                  : recipe.title
+              }
               className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
               width={width}
               height={height}

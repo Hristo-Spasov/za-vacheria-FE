@@ -30,7 +30,11 @@ const AlternativeRecipeCard = ({
           className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
           width={width}
           height={height}
-          alt={recipe.image[idx]?.alternativeText || recipe.title}
+          alt={
+            Array.isArray(recipe.image) && recipe.image[idx]?.alternativeText
+              ? recipe.image[idx].alternativeText
+              : recipe.title
+          }
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/10 group-hover:from-black/90"></div>
       </div>

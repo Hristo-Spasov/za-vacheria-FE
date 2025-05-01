@@ -21,8 +21,8 @@ export const buildFilterQuery = (
     const options = Array.isArray(selectedAnswer)
       ? question.options.filter((opt) => selectedAnswer.includes(opt.option))
       : question.options.filter((opt) => opt.option === selectedAnswer);
-    console.log("Question", question.options);
-    console.log("Selected Option", options);
+    // console.log("Question", question.options);
+    // console.log("Selected Option", options);
 
     options.forEach((option) => {
       if (option.filterType === "none") return;
@@ -76,7 +76,7 @@ export const fetchFilteredRecipes = async (
 ): Promise<RecipeResponse> => {
   try {
     const response = await strapiClient.get(`/recipes?${queryParams}`);
-    console.log("Response data:", response.data);
+    // console.log("Response data:", response.data);
     return response.data;
   } catch (error) {
     console.error("Error fetching filtered recipes:", error);
@@ -94,7 +94,7 @@ export const getRecipesFromUserAnswers = async (
   // Check cache first
   const cachedRecipes = getCachedRecipes(session);
   if (cachedRecipes) {
-    console.log("Using cached recipes for session:", session);
+    // console.log("Using cached recipes for session:", session);
     return cachedRecipes;
   }
 
@@ -120,7 +120,7 @@ export const getRecipesFromUserAnswers = async (
   randomPageQueryParams.set("pagination[page]", randomPage.toString());
   randomPageQueryParams.set("pagination[pageSize]", "18");
 
-  console.log("Random page:", randomPage);
+  // console.log("Random page:", randomPage);
 
   // Fetch recipes from the random page
   const results = await fetchFilteredRecipes(randomPageQueryParams.toString());

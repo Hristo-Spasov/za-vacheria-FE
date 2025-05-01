@@ -103,7 +103,7 @@ const Questions = () => {
     setStep((step) => step - 1);
   };
   const submitForm = async (data: formData) => {
-    console.log(data);
+    // console.log(data);
     try {
       setCookie("userAnswers", JSON.stringify(data), {
         maxAge: 60 * 15, // 15 mins

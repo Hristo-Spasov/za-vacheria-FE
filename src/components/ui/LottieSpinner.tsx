@@ -1,5 +1,5 @@
 "use client";
-import animationData from "../../../public/LottieSpinner.json";
+import animationData from "@/assets/LottieSpinner.json";
 import { useLottie } from "lottie-react";
 
 const LottieSpinner = () => {
