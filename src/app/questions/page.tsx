@@ -42,46 +42,11 @@ import questionsVariants, {
   AnimationDirection,
 } from "@/components/ui/framer-animations/questions";
 import { useRouter } from "next/navigation";
-import { getCookie, setCookie } from "cookies-next";
-
-// const questions = [
-//   {
-//     id: 1,
-//     question: "What type of meal are you looking for?",
-//     options: ["Breakfast", "Lunch", "Dinner", "Snack", "Dessert"],
-//     multiSelect: false,
-//   },
-//   {
-//     id: 2,
-//     question: "How much time do you have to cook?",
-//     options: ["Fast (<15 min)", "Medium (15-30 min)", "Long (30+ min)"],
-//     multiSelect: false,
-//   },
-//   {
-//     id: 3,
-//     question: "Do you have any dietary preferences?",
-//     options: [
-//       "Vegetarian",
-//       "Vegan",
-//       "Gluten-Free",
-//       "Low-Carb/Keto",
-//       "No Preferences",
-//     ],
-//     multiSelect: false,
-//   },
-//   {
-//     id: 4,
-//     question: "Do you want a healthy option?",
-//     options: ["Yes", "No Preference"],
-//     multiSelect: false,
-//   },
-//   {
-//     id: 5,
-//     question: "Do you want something easy to make?",
-//     options: ["Yes, easy recipes only", "No preference"],
-//     multiSelect: false,
-//   },
-// ];
+import { setCookie } from "cookies-next";
+import Loading from "../loading";
+import QuestionsErrorMessage from "@/components/questionsUI/QuestionsErrorMessage";
+import QuestionsNotFound from "@/components/questionsUI/QuestionsNotFound";
+import FormButton from "@/components/ui/buttons/FormButton";
 
 type formData = {
   [key: string]: string | string[];
@@ -96,9 +61,13 @@ const Questions = () => {
     trigger,
     formState: { isValid },
   } = useForm<formData>({ mode: "onChange" });
-  const { data: questionsResponse, isLoading, error } = useQuestions();
-  // const { mutate: filterRecipes } = useRecipes();
-  // const queryClient = useQueryClient();
+  const {
+    data: questionsResponse,
+    isLoading,
+    isError,
+    error: questionsError,
+    isFetching,
+  } = useQuestions();
 
   const router = useRouter();
 
@@ -112,18 +81,15 @@ const Questions = () => {
     }
   }, [step, trigger, questions]);
 
+  if (isLoading || isFetching) {
+    return <Loading />;
+  }
+  if (isError) {
+    return <QuestionsErrorMessage error={questionsError as Error} />;
+  }
   // Check if we have questions before trying to render
   if (!questions || questions.length === 0) {
-    return (
-      <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-amber-50 to-orange-100">
-        <div className="text-center p-8 bg-white rounded-xl shadow-md">
-          <h2 className="text-2xl font-bold text-orange-800 mb-4">
-            No questions available
-          </h2>
-          <p>Please try again later or contact support.</p>
-        </div>
-      </div>
-    );
+    return <QuestionsNotFound />;
   }
 
   const { documentId, question, options, multiSelect } = questions[step];
@@ -140,11 +106,11 @@ const Questions = () => {
     console.log(data);
     try {
       setCookie("userAnswers", JSON.stringify(data), {
-        maxAge: 60 * 30, // 30 mins
+        maxAge: 60 * 15, // 15 mins
         path: "/",
       });
 
-      console.log(getCookie("userAnswers"));
+      // console.log(getCookie("userAnswers"));
       router.push("/recipeResult");
     } catch (error) {
       console.error("Error submitting form:", error);
@@ -167,44 +133,9 @@ const Questions = () => {
     }
   };
 
-  // Show loading state
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-amber-50 to-orange-100">
-        <div className="text-center p-8 bg-white rounded-xl shadow-md">
-          <h2 className="text-2xl font-bold text-orange-800 mb-4">
-            Loading questions...
-          </h2>
-          <div className="w-12 h-12 border-4 border-orange-500 border-t-transparent rounded-full animate-spin mx-auto"></div>
-        </div>
-      </div>
-    );
-  }
-
-  // Show error state
-  if (error) {
-    return (
-      <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-amber-50 to-orange-100">
-        <div className="text-center p-8 bg-white rounded-xl shadow-md max-w-md">
-          <h2 className="text-2xl font-bold text-red-600 mb-4">
-            Failed to load questions
-          </h2>
-          <p className="mb-4">
-            There was an error fetching questions: {(error as Error).message}
-          </p>
-          <button
-            onClick={() => window.location.reload()}
-            className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded-full"
-          >
-            Try Again
-          </button>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="bg-gradient-to-b from-amber-50 to-orange-100 min-h-screen ">
+      <div className="absolute inset-0 bg-[url('/subtle-food-pattern.png')] opacity-10"></div>
       <form
         onSubmit={handleSubmit(submitForm)}
         className="flex flex-col items-center justify-center min-h-screen py-2 px-4 text-center"
@@ -228,7 +159,9 @@ const Questions = () => {
                 {question}
               </h1>
               {multiSelect && (
-                <p className="text-orange-800 font-semibold">Choose many</p>
+                <p className="text-orange-800 font-semibold">
+                  Може да изберете повече от един отговор
+                </p>
               )}
               <div className="space-y-3 mt-6 w-full max-w-xl mx-auto px-4">
                 {options.map((answer: Option) => (
@@ -300,37 +233,34 @@ const Questions = () => {
 
               <div className="mt-5 flex content-center gap-1 justify-around">
                 {step > 0 && (
-                  <button
+                  <FormButton
+                    disabled={!isValid}
                     type="button"
                     onClick={prevStep}
-                    className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-8 rounded-full text-xl transition-all duration-300 transform hover:scale-105 shadow-lg"
                   >
-                    Back
-                  </button>
+                    Назад
+                  </FormButton>
                 )}
                 {step < questions.length - 1 ? (
-                  <button
+                  <FormButton
                     disabled={!isValid}
                     type="button"
                     onClick={nextStep}
-                    className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-8 rounded-full text-xl transition-all duration-300 transform hover:scale-105 shadow-lg disabled:bg-gray-400 disabled:cursor-not-allowed"
                   >
-                    Next
-                  </button>
+                    Следващ
+                  </FormButton>
                 ) : (
-                  <button
-                    disabled={!isValid}
-                    type="submit"
-                    className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-8 rounded-full text-xl transition-all duration-300 transform hover:scale-105 shadow-lg disabled:bg-gray-400 disabled:cursor-not-allowed"
-                  >
-                    Submit
-                  </button>
+                  <FormButton disabled={!isValid} type="submit">
+                    Изпрати
+                  </FormButton>
                 )}
               </div>
             </motion.div>
           </AnimatePresence>
         </div>
-        <pre>{JSON.stringify(watch(), null, 2)}</pre>
+
+        {/* PREVIEW FOR DEBUGGING PURPOSES */}
+        {/* <pre>{JSON.stringify(watch(), null, 2)}</pre> */}
       </form>
     </div>
   );

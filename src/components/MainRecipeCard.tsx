@@ -5,9 +5,11 @@ import CardButton from "./ui/buttons/CardButton";
 
 interface MainRecipeCardProps {
   recipe: Recipe;
+  session: string;
+  showMore?: string;
 }
 
-const MainRecipeCard = ({ recipe }: MainRecipeCardProps) => {
+const MainRecipeCard = ({ recipe, session, showMore }: MainRecipeCardProps) => {
   const { url, width, height } = getImageUrl({ recipe });
 
   const displayCategories = recipe.categories?.slice(0, 3) || [];
@@ -78,7 +80,7 @@ const MainRecipeCard = ({ recipe }: MainRecipeCardProps) => {
             <CardButton
               route={`/recipe/${recipe.documentId}/${formatNameForUrl(
                 recipe.title
-              )}`}
+              )}?session=${session}${showMore ? "&showMore=true" : ""}`}
               text="Виж пълната рецепта"
             />
           </div>

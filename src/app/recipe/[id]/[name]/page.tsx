@@ -7,10 +7,13 @@ import ActionButton from "@/components/ui/buttons/ActionButton";
 
 export default async function RecipePage({
   params,
+  searchParams,
 }: {
   params: { id: string };
+  searchParams: { session: string; showMore?: string };
 }) {
   const { id } = await params;
+  const { session, showMore } = await searchParams;
 
   try {
     const recipe = await getRecipeById(id);
@@ -29,7 +32,11 @@ export default async function RecipePage({
         <div className="max-w-5xl mx-auto p-3 sm:p-4 py-6 sm:py-10 relative z-10">
           {/* Back button */}
           <Link
-            href="/recipeResult"
+            href={
+              showMore === "true"
+                ? `/recipeResult?session=${session}&showMore=true`
+                : `/recipeResult?session=${session}`
+            }
             className="inline-flex items-center text-orange-800 mb-4 sm:mb-6 hover:text-orange-600"
           >
             <svg
@@ -320,9 +327,17 @@ export default async function RecipePage({
                   Начин на приготвяне
                 </h2>
                 <div className="prose prose-orange max-w-none">
-                  <p className="mb-4 whitespace-pre-wrap">
-                    {recipe.instructions}
-                  </p>
+                  {recipe.instructions
+                    .split(/\d+\.\s+/)
+                    .filter((step) => step.trim())
+                    .map((step, index) => (
+                      <div key={index} className="flex mb-4">
+                        <span className="font-bold text-orange-600 mr-3">
+                          {index + 1}.
+                        </span>
+                        <p>{step.trim()}</p>
+                      </div>
+                    ))}
                 </div>
               </div>
             </div>

@@ -6,9 +6,16 @@ import CardButton from "./ui/buttons/CardButton";
 interface AlternativeRecipeCardProps {
   recipe: Recipe;
   idx: number;
+  session: string;
+  showMore?: string;
 }
 
-const AlternativeRecipeCard = ({ recipe, idx }: AlternativeRecipeCardProps) => {
+const AlternativeRecipeCard = ({
+  recipe,
+  idx,
+  session,
+  showMore,
+}: AlternativeRecipeCardProps) => {
   const { url, width, height } = getImageUrl({ recipe });
 
   const totalTime = recipe.totalTime
@@ -49,7 +56,7 @@ const AlternativeRecipeCard = ({ recipe, idx }: AlternativeRecipeCardProps) => {
           <CardButton
             route={`/recipe/${recipe.documentId}/${formatNameForUrl(
               recipe.title
-            )}`}
+            )}?session=${session}${showMore ? "&showMore=true" : ""}`}
             text="Виж рецептата"
             variant="alternative"
           />

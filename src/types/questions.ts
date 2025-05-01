@@ -21,3 +21,5 @@ export type Question = {
   multiSelect: boolean;
   options: Option[];
 };
+
+export type UserAnswers = Record<string, string | string[]>;

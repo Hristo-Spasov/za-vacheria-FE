@@ -5,8 +5,6 @@ interface getImageUrlProps {
   recipe: Recipe;
 }
 
-// const baseUrl = "http://localhost:1337";
-
 export const getImageUrl = ({ recipe }: getImageUrlProps) => {
   if (!recipe.image || recipe.image.length === 0) {
     return {
@@ -70,7 +68,6 @@ export const getRecipeSubset = (recipes: Recipe[], subsetSize: number) => {
   if (recipes.length <= subsetSize) {
     return [...recipes];
   }
-  const maxStart = recipes.length - subsetSize;
-  const start = Math.floor(Math.random() * maxStart);
+  const start = 0;
   return recipes.slice(start, start + subsetSize);
 };

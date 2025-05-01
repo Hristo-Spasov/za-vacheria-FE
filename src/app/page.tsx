@@ -18,7 +18,7 @@ export default function Home() {
             Чудите се какво да сготвите днес?
           </h1>
           <p className="text-2xl text-orange-700 max-w-2xl mb-10">
-            Ние&apos;ще ви помогнем да намерите най-добрата рецепта за вас!
+            Ние ще ви помогнем да намерите най-добрата рецепта за вас!
           </p>
           <Link href="/questions">
             <button className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-8 rounded-full text-xl transition-all duration-300 transform hover:scale-105 shadow-lg">

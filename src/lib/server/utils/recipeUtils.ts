@@ -2,6 +2,7 @@ import { questionService } from "@/api/questionServices";
 import strapiClient from "@/lib/clients/strapi";
 import { Question } from "@/types/questions";
 import { Recipe, RecipeResponse } from "@/types/recipes";
+import { getCachedRecipes, cacheRecipes } from "./cachedUtils";
 
 export const buildFilterQuery = (
   userAnswers: Record<string, string | string[]>,
@@ -75,6 +76,7 @@ export const fetchFilteredRecipes = async (
 ): Promise<RecipeResponse> => {
   try {
     const response = await strapiClient.get(`/recipes?${queryParams}`);
+    console.log("Response data:", response.data);
     return response.data;
   } catch (error) {
     console.error("Error fetching filtered recipes:", error);
@@ -86,8 +88,16 @@ export const fetchFilteredRecipes = async (
 };
 
 export const getRecipesFromUserAnswers = async (
-  userAnswers: Record<string, string | string[]>
+  userAnswers: Record<string, string | string[]>,
+  session: string
 ): Promise<RecipeResponse> => {
+  // Check cache first
+  const cachedRecipes = getCachedRecipes(session);
+  if (cachedRecipes) {
+    console.log("Using cached recipes for session:", session);
+    return cachedRecipes;
+  }
+
   const questionsResponse = await questionService.getQuestions();
   const questions = questionsResponse.data || [];
 
@@ -97,7 +107,28 @@ export const getRecipesFromUserAnswers = async (
 
   const queryParams = buildFilterQuery(userAnswers, questions);
 
-  return await fetchFilteredRecipes(queryParams);
+  // Getting a random page so data feels fresh everytime
+  const initialResponse = await fetchFilteredRecipes(queryParams);
+  const totalPages = initialResponse.meta?.pagination?.pageCount || 1;
+
+  let randomPage = 1;
+  if (totalPages > 1) {
+    randomPage = Math.floor(Math.random() * totalPages) + 1;
+  }
+
+  const randomPageQueryParams = new URLSearchParams(queryParams);
+  randomPageQueryParams.set("pagination[page]", randomPage.toString());
+  randomPageQueryParams.set("pagination[pageSize]", "18");
+
+  console.log("Random page:", randomPage);
+
+  // Fetch recipes from the random page
+  const results = await fetchFilteredRecipes(randomPageQueryParams.toString());
+
+  // Cache the results
+  cacheRecipes(session, results);
+
+  return results;
 };
 
 export const getRecipeById = async (id: string): Promise<Recipe | null> => {

@@ -2,11 +2,11 @@
 
 import { useRouter } from "next/navigation";
 
-const ShuffleButton = () => {
+const ShowMoreButton = ({ session }: { session: string }) => {
   const router = useRouter();
 
   const handleShuffle = () => {
-    router.push(`/recipeResult?shuffle=true`);
+    router.push(`/recipeResult?session=${session}&showMore=true`);
   };
   return (
     <button
@@ -32,4 +32,4 @@ const ShuffleButton = () => {
   );
 };
 
-export default ShuffleButton;
+export default ShowMoreButton;
