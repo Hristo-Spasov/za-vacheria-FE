@@ -12,7 +12,7 @@ import NoRecipesFound from "@/components/NoRecipesFound";
 const Page = async ({
   searchParams,
 }: {
-  searchParams: { showMore: string; session?: string };
+  searchParams: Promise<{ showMore: string; session?: string }>;
 }) => {
   const cookieStore = await cookies();
   const userAnswersCookie = cookieStore.get("userAnswers");

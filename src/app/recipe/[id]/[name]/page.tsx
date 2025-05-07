@@ -9,8 +9,8 @@ export default async function RecipePage({
   params,
   searchParams,
 }: {
-  params: { id: string };
-  searchParams: { session: string; showMore?: string };
+  params: Promise<{ id: string }>;
+  searchParams: Promise<{ session: string; showMore?: string }>;
 }) {
   const { id } = await params;
   const { session, showMore } = await searchParams;
