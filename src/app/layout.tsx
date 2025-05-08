@@ -3,7 +3,8 @@ import "./globals.css";
 import ReactQueryProvider from "../providers/ReactQueryProvider";
 import { Suspense } from "react";
 import Loading from "./loading";
-import { headers } from "next/headers";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Za Vecheria",
@@ -15,16 +16,12 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-   const nonce =  (await headers()).get('x-nonce') || ''
   return (
     <html lang="en">
       <body>
         <ReactQueryProvider>
           <Suspense fallback={<Loading />}>{children}</Suspense>
         </ReactQueryProvider>
-        <script
-          nonce={nonce}
-        />
       </body>
     </html>
   );
