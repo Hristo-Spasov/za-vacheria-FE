@@ -59,7 +59,7 @@ const Questions = () => {
     handleSubmit,
     watch,
     trigger,
-    formState: { isValid },
+    formState: { isValid, isSubmitting, isSubmitSuccessful },
   } = useForm<formData>({ mode: "onChange" });
   const {
     data: questionsResponse,
@@ -81,9 +81,10 @@ const Questions = () => {
     }
   }, [step, trigger, questions]);
 
-  if (isLoading || isFetching) {
+  if (isLoading || isFetching || isSubmitting || isSubmitSuccessful) {
     return <Loading />;
   }
+
   if (isError) {
     return <QuestionsErrorMessage error={questionsError as Error} />;
   }
@@ -135,7 +136,7 @@ const Questions = () => {
 
   return (
     <div className="bg-gradient-to-b from-amber-50 to-orange-100 min-h-screen ">
-      <div className="absolute inset-0 bg-[url('/subtle-food-pattern.png')] opacity-10"></div>
+      <div className="absolute inset-0 bg-[url('/subtle-food-pattern.webp')] opacity-10"></div>
       <form
         onSubmit={handleSubmit(submitForm)}
         className="flex flex-col items-center justify-center min-h-screen py-2 px-4 text-center"

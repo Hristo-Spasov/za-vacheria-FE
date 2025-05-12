@@ -16,7 +16,7 @@ export default function ErrorPage({
   return (
     <div className="bg-gradient-to-b from-amber-50 to-orange-100 min-h-screen flex flex-col items-center justify-center relative">
       {/* food pattern overlay */}
-      <div className="absolute inset-0 bg-[url('/subtle-food-pattern.png')] opacity-10 pointer-events-none"></div>
+      <div className="absolute inset-0 bg-[url('/subtle-food-pattern.webp')] opacity-10 pointer-events-none"></div>
       <div className="relative z-10 max-w-lg w-full p-6 sm:p-10 bg-white/80 backdrop-blur rounded-xl shadow-lg flex flex-col items-center">
         <h1 className="text-3xl font-bold text-orange-800 mb-4 text-center">
           {title}

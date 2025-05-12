@@ -11,8 +11,7 @@ export const metadata: Metadata = {
   description: `Пак не знаеш какво да сготвиш? Спокойно.
 Отговори на няколко въпроса и “За Вечеря” ще ти подхвърли точната рецепта.
 Бързо. Вкусно. Без излишни драми пред хладилника.`,
-  other : {"apple-mobile-web-app-title" : "Za Vecheria"},
-
+  other: { "apple-mobile-web-app-title": "Za Vecheria" },
 };
 
 export default async function RootLayout({
@@ -22,7 +21,8 @@ export default async function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>
+      <body className="bg-gradient-to-b from-amber-50 to-orange-100">
+        <div className="absolute inset-0 bg-[url('/subtle-food-pattern.webp')] opacity-10"></div>
         <ReactQueryProvider>
           <Suspense fallback={<Loading />}>{children}</Suspense>
         </ReactQueryProvider>
