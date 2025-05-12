@@ -11,6 +11,7 @@ export default function Home() {
             alt="Cooking Icon"
             fill
             className="aspect-square object-cover shadow-lg"
+            priority={true}
           />
         </div>
         <div className="bg-white bg-opacity-75 backdrop-blur-sm rounded-xl p-8 shadow-md max-w-xl">
