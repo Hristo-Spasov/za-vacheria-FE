@@ -1,7 +1,7 @@
-import Image from "next/image";
 import { Recipe } from "@/types/recipes";
 import { getImageUrl, formatNameForUrl } from "./ui/utils/helpers";
 import CardButton from "./ui/buttons/CardButton";
+import ImageWithLoader from "./ImageWithLoader";
 
 interface MainRecipeCardProps {
   recipe: Recipe;
@@ -16,6 +16,10 @@ const MainRecipeCard = ({ recipe, session, showMore }: MainRecipeCardProps) => {
   const remainingCount =
     (recipe.categories?.length || 0) - displayCategories.length;
 
+  const imageAlt = Array.isArray(recipe.image) && recipe.image[0]?.alternativeText
+                  ? recipe.image[0].alternativeText
+                  : recipe.title
+
   return (
     <div className="relative overflow-hidden rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 mb-8">
       {/* Background gradient wrapper */}
@@ -23,17 +27,7 @@ const MainRecipeCard = ({ recipe, session, showMore }: MainRecipeCardProps) => {
         <div className="md:grid md:grid-cols-2 overflow-hidden">
           {/* Image section */}
           <div className="relative h-64 md:h-full overflow-hidden group">
-            <Image
-              src={url}
-              alt={
-                Array.isArray(recipe.image) && recipe.image[0]?.alternativeText
-                  ? recipe.image[0].alternativeText
-                  : recipe.title
-              }
-              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-              width={width}
-              height={height}
-            />
+            <ImageWithLoader url={url} alt={imageAlt} width={width} height={height} />
             <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent "></div>
             <div className="absolute top-4 left-4 bg-orange-500 text-white px-4 py-1 rounded-full text-sm font-bold shadow-md transform rotate-2 group-hover:[animation:var(--animate-bell-ring)] ">
               Перфектно Съвпадение!
