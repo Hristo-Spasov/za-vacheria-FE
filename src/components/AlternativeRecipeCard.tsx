@@ -1,7 +1,7 @@
 import { Recipe } from "@/types/recipes";
-import Image from "next/image";
 import { formatNameForUrl, getImageUrl } from "./ui/utils/helpers";
 import CardButton from "./ui/buttons/CardButton";
+import ImageWithLoader from "./ImageWithLoader";
 
 interface AlternativeRecipeCardProps {
   recipe: Recipe;
@@ -21,20 +21,21 @@ const AlternativeRecipeCard = ({
   const totalTime = recipe.totalTime
     ? recipe.totalTime
     : recipe.prepTime + recipe.cookingTime;
+
+  const imageAlt =
+    Array.isArray(recipe.image) && recipe.image[idx]?.alternativeText
+      ? recipe.image[idx].alternativeText
+      : recipe.title;
   return (
     <div className="group relative h-[320px] rounded-xl overflow-hidden transition-all duration-300 shadow-md hover:shadow-xl">
       {/* Background image with overlay */}
       <div className="absolute inset-0 z-0">
-        <Image
-          src={url}
-          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+        <ImageWithLoader
+          url={url}
           width={width}
           height={height}
-          alt={
-            Array.isArray(recipe.image) && recipe.image[idx]?.alternativeText
-              ? recipe.image[idx].alternativeText
-              : recipe.title
-          }
+          alt={imageAlt}
+          roundedClass="rounded-xl"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/10 group-hover:from-black/90"></div>
       </div>
