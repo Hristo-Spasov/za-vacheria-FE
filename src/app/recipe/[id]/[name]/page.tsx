@@ -27,7 +27,7 @@ export default async function RecipePage({
     return (
       <div className="bg-gradient-to-b from-amber-50 to-orange-100 min-h-screen relative">
         {/* food pattern overlay */}
-        <div className="absolute inset-0 bg-[url('/subtle-food-pattern.png')] opacity-10"></div>
+        <div className="absolute inset-0 bg-[url('/subtle-food-pattern.webp')] opacity-10"></div>
 
         <div className="max-w-5xl mx-auto p-3 sm:p-4 py-6 sm:py-10 relative z-10">
           {/* Back button */}

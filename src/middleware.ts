@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 export function middleware(request: NextRequest) {
   const nonce = Buffer.from(crypto.randomUUID()).toString("base64");
   const isDev = process.env.NODE_ENV !== "production";
-  console.log(process.env.NODE_ENV, isDev);
+  // console.log(process.env.NODE_ENV, isDev);
   const cspHeader = `
     default-src 'self';
     script-src 'self' ${

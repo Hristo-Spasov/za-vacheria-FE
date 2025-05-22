@@ -38,3 +38,139 @@ ul {
   list-style-type: none;
   padding: 0;
 }
+
+.loader {
+  width: 120px !important;
+  height: 120px !important;
+  border-radius: 50%;
+  border: 12px solid #a0522d;
+  box-sizing: border-box;
+  --c: no-repeat radial-gradient(farthest-side, #d64123 94%, #0000);
+  --b: no-repeat radial-gradient(farthest-side, #000 94%, #0000);
+  background: var(--c) 16px 22px, var(--b) 9px 22px, var(--c) 52px 34px,
+    var(--b) 43px 22px, var(--c) 16px 69px, var(--b) 16px 51px,
+    var(--c) 54px 0px, var(--b) 75px 46px, var(--c) 70px 64px,
+    var(--b) 46px 72px, #f6d353;
+  background-size: 22px 22px, 9px 9px;
+  animation: l4 3s infinite, pizza-rotate 8s linear infinite,
+    pizza-bounce 2s ease-in-out infinite;
+  box-shadow: 0 10px 25px rgba(154, 52, 18, 0.3);
+}
+
+@keyframes l4 {
+  0% {
+    -webkit-mask: conic-gradient(#0000 0, #000 0);
+  }
+  16.67% {
+    -webkit-mask: conic-gradient(#0000 60deg, #000 0);
+  }
+  33.33% {
+    -webkit-mask: conic-gradient(#0000 120deg, #000 0);
+  }
+  50% {
+    -webkit-mask: conic-gradient(#0000 180deg, #000 0);
+  }
+  66.67% {
+    -webkit-mask: conic-gradient(#0000 240deg, #000 0);
+  }
+  83.33% {
+    -webkit-mask: conic-gradient(#0000 300deg, #000 0);
+  }
+  100% {
+    -webkit-mask: conic-gradient(#0000 360deg, #000 0);
+  }
+}
+
+@keyframes pizza-rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pizza-bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* animation 47 dots, */
+
+.loader2 {
+  width: fit-content;
+  font-size: 40px;
+  font-family: system-ui, sans-serif;
+  font-weight: bold;
+  position: relative;
+  display: inline-block;
+  background: linear-gradient(
+    90deg,
+    #9a3412,
+    #ea580c,
+    #f97316,
+    #fb923c,
+    #fdba74,
+    #9a3412
+  );
+  background-size: 400% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: gradient-wave 6s linear infinite;
+}
+
+.loader2:before {
+  content: "Търсим най-подходящата рецепта за вас...";
+}
+
+@keyframes gradient-wave {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 400% 50%;
+  }
+}
+
+/* Skeleton loader for the images */
+
+.skeleton-loader {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #7978786c;
+  z-index: 10;
+}
+
+.skeleton-shimmer {
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 150%;
+  height: 400%;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.3) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: rotate(45deg);
+  animation: skeleton-shimmer 2s ease-in-out infinite;
+  z-index: 11;
+}
+
+@keyframes skeleton-shimmer {
+  0% {
+    transform: rotate(45deg) translateX(-100%);
+  }
+  100% {
+    transform: rotate(45deg) translateX(300%);
+  }
+}
