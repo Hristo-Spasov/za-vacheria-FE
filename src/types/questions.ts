@@ -19,6 +19,7 @@ export type Question = {
   id: number;
   question: string;
   multiSelect: boolean;
+  tier: number;
   options: Option[];
 };
 
