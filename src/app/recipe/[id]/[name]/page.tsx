@@ -346,7 +346,11 @@ export default async function RecipePage({
           {/* Action buttons */}
           <div className="mt-8 sm:mt-12 flex flex-col sm:flex-row justify-center gap-3 sm:gap-4">
             <ActionButton
-              route="/recipeResult"
+              route={
+                showMore === "true"
+                  ? `/recipeResult?session=${session}&showMore=true`
+                  : `/recipeResult?session=${session}`
+              }
               text="Обратно към резултатите"
             />
             <ActionButton route="/questions" text="Повторете въпросника" />
