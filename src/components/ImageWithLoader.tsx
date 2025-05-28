@@ -21,9 +21,10 @@ const ImageWithLoader = ({
 }: ImageProps) => {
   const [imageLoaded, setImageLoaded] = useState<boolean>(false);
 
-  const handleImageLoad = () => {
-    setTimeout(() => setImageLoaded(true), 6000);
-  };
+  //! Test function to check if loader is working
+  // const handleImageLoad = () => {
+  //   setTimeout(() => setImageLoaded(true), 6000);
+  // };
 
   return (
     <div className={`relative w-full h-full ${roundedClass}`}>
@@ -40,8 +41,8 @@ const ImageWithLoader = ({
         } ${className || ""} ${roundedClass}`}
         width={width}
         height={height}
-        onLoad={handleImageLoad}
-        // onLoad={() => setImageLoaded(true)}
+        // onLoad={handleImageLoad}
+        onLoad={() => setImageLoaded(true)}
       />
     </div>
   );
