@@ -4,6 +4,7 @@ import Image from "next/image";
 export default function Home() {
   return (
     <main className="bg-gradient-to-b from-amber-50 to-orange-100 min-h-screen relative overflow-hidden">
+      <div className="absolute inset-0 bg-[url('/subtle-food-pattern.webp')] opacity-10"></div>
       <div className="max-w-4xl mx-auto flex flex-col items-center justify-center min-h-screen py-2 px-4 text-center ">
         <div className="absolute top-0 right-0 w-[50%] h-full">
           <Image

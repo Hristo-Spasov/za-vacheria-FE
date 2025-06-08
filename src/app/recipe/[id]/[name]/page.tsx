@@ -291,9 +291,17 @@ export default async function RecipePage({
                   Начин на приготвяне
                 </h2>
                 <div className="prose prose-orange max-w-none text-sm">
-                  <p className="mb-4 whitespace-pre-wrap">
-                    {recipe.instructions}
-                  </p>
+                  {recipe.instructions
+                    .split(/\d+\.\s+/)
+                    .filter((step) => step.trim())
+                    .map((step, index) => (
+                      <div key={index} className="flex mb-4">
+                        <span className="font-bold text-orange-600 mr-3">
+                          {index + 1}.
+                        </span>
+                        <p>{step.trim()}</p>
+                      </div>
+                    ))}
                 </div>
               </div>
             </div>

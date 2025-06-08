@@ -27,6 +27,9 @@ export type Recipe = {
   ingredients: Ingredient[];
   image: RecipeImage[];
   categories: Category[];
+  createdAt?: string;
+  updatedAt?: string;
+  publishedAt?: string;
 };
 interface Ingredient {
   id: number;
