@@ -4,6 +4,51 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import ActionButton from "@/components/ui/buttons/ActionButton";
+import { Metadata } from "next";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>
+}): Promise<Metadata> {
+  const { id } = await params;
+  const recipe = await getRecipeById(id);
+
+    if (!recipe) {
+    return {
+      title: 'Рецепта не е намерена',
+      description: 'Поисканата рецепта не е намерена.',
+    };
+  }
+
+
+  const {url:imageUrl} = getImageUrl({ recipe });
+
+return {
+    title: `${recipe.title} - За Вечеря`,
+    description: recipe.instructions.slice(0, 200) || `Открийте как да приготвите ${recipe.title}.`,
+    openGraph: {
+      title: `${recipe.title} - За Вечеря`,
+      description: recipe.instructions.slice(0, 200) || `Открийте как да приготвите ${recipe.title}.`,
+      images: [
+        {
+          url: imageUrl,
+          width: 1200,
+          height: 630,
+          alt: recipe.title,
+        }
+      ],
+      type: 'article',
+      siteName: 'За Вечеря',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${recipe.title} - За Вачерия`,
+      description: recipe.instructions.slice(0, 200) || `Открийте как да приготвите ${recipe.title}.`,
+      images: [imageUrl],
+    },
+  };
+}
 
 export default async function RecipePage({
   params,
@@ -37,14 +82,12 @@ export default async function RecipePage({
                 ? `/recipeResult?session=${session}&showMore=true`
                 : `/recipeResult?session=${session}`
             }
-            className="inline-flex items-center text-orange-800 mb-4 sm:mb-6 hover:text-orange-600"
-          >
+            className="inline-flex items-center text-orange-800 mb-4 sm:mb-6 hover:text-orange-600">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-5 w-5 mr-2"
               viewBox="0 0 20 20"
-              fill="currentColor"
-            >
+              fill="currentColor">
               <path
                 fillRule="evenodd"
                 d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z"
@@ -65,8 +108,7 @@ export default async function RecipePage({
                 {recipe.categories.map((category) => (
                   <span
                     key={category.id}
-                    className="bg-orange-100 text-orange-800 px-2 py-0.5 rounded-full text-xs"
-                  >
+                    className="bg-orange-100 text-orange-800 px-2 py-0.5 rounded-full text-xs">
                     {category.name}
                   </span>
                 ))}
@@ -95,8 +137,7 @@ export default async function RecipePage({
                   {recipe.categories.map((category) => (
                     <span
                       key={category.id}
-                      className="bg-orange-100 text-orange-800 px-3 py-1 rounded-full text-sm"
-                    >
+                      className="bg-orange-100 text-orange-800 px-3 py-1 rounded-full text-sm">
                       {category.name}
                     </span>
                   ))}
@@ -110,8 +151,7 @@ export default async function RecipePage({
                         className="h-5 w-5 mr-1 text-orange-500"
                         fill="none"
                         viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
+                        stroke="currentColor">
                         <path
                           strokeLinecap="round"
                           strokeLinejoin="round"
@@ -129,8 +169,7 @@ export default async function RecipePage({
                         className="h-5 w-5 mr-1 text-orange-500"
                         fill="none"
                         viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
+                        stroke="currentColor">
                         <path
                           strokeLinecap="round"
                           strokeLinejoin="round"
@@ -149,8 +188,7 @@ export default async function RecipePage({
                         className="h-5 w-5 mr-1 text-orange-500"
                         fill="none"
                         viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
+                        stroke="currentColor">
                         <path
                           strokeLinecap="round"
                           strokeLinejoin="round"
@@ -167,8 +205,7 @@ export default async function RecipePage({
                       className="h-5 w-5 mr-1 text-orange-500"
                       fill="none"
                       viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
+                      stroke="currentColor">
                       <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
@@ -192,8 +229,7 @@ export default async function RecipePage({
                       className="h-4 w-4 mr-1 text-orange-500"
                       fill="none"
                       viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
+                      stroke="currentColor">
                       <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
@@ -211,8 +247,7 @@ export default async function RecipePage({
                       className="h-4 w-4 mr-1 text-orange-500"
                       fill="none"
                       viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
+                      stroke="currentColor">
                       <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
@@ -230,8 +265,7 @@ export default async function RecipePage({
                       className="h-4 w-4 mr-1 text-orange-500"
                       fill="none"
                       viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
+                      stroke="currentColor">
                       <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
@@ -248,8 +282,7 @@ export default async function RecipePage({
                     className="h-4 w-4 mr-1 text-orange-500"
                     fill="none"
                     viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
+                    stroke="currentColor">
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"
