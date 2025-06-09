@@ -9,7 +9,7 @@ const STRAPI_PAGE_SIZE = 25; // Strapi's default page size
 const SITEMAP_SESSION_ID = "sitemap_recipes"; // Special session ID for sitemap cache
 
 async function fetchAllRecipes(): Promise<Recipe[]> {
-  const cachedData = getCachedRecipes(SITEMAP_SESSION_ID);
+  const cachedData = await getCachedRecipes(SITEMAP_SESSION_ID);
   if (cachedData) {
     console.log("Using cached recipes for sitemap");
     return cachedData.data;

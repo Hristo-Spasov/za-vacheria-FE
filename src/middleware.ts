@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 export function middleware(request: NextRequest) {
   const nonce = Buffer.from(crypto.randomUUID()).toString("base64");
   const isDev = process.env.NODE_ENV !== "production";
+  const strapi = process.env.NEXT_PUBLIC_STRAPI_URL
   // console.log(process.env.NODE_ENV, isDev);
   const cspHeader = `
     default-src 'self';
@@ -10,7 +11,7 @@ export function middleware(request: NextRequest) {
       isDev ? "'unsafe-inline'" : `'nonce-${nonce}'`
     } 'unsafe-eval' https://res.cloudinary.com;
     connect-src 'self' ${
-      isDev ? "http://localhost:1337" : "http://localhost:1337"
+      isDev ? strapi : strapi
     };
     style-src 'self' 'unsafe-inline';
     script-src-elem 'self' ${isDev ? "'unsafe-inline'" : `'nonce-${nonce}'`};

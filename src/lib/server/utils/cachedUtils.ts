@@ -1,26 +1,25 @@
 import { RecipeResponse } from "@/types/recipes";
+import redis from "@/lib/clients/redis";
 
-const recipeCache: Record<string, { data: RecipeResponse; timestamp: number }> =
-  {};
+
 const CACHE_EXPIRY = 15 * 60 * 1000; // 15 minutes
 
-export const cacheRecipes = (sessionId: string, data: RecipeResponse): void => {
-  recipeCache[sessionId] = {
-    data,
-    timestamp: Date.now(),
-  };
+export const cacheRecipes = async (sessionId: string, data: RecipeResponse): Promise<void> => {
+  try {
+    await redis.set(sessionId, JSON.stringify(data), "EX", CACHE_EXPIRY);
+  } catch (error) {
+    console.error("Error caching recipes:", error);
+  }
 };
 
-export const getCachedRecipes = (sessionId: string): RecipeResponse | null => {
-  const cached = recipeCache[sessionId];
+export const getCachedRecipes = async (sessionId: string): Promise<RecipeResponse | null> => {
+  try {
+    const cached = await redis.get(sessionId);
+    if (!cached) return null;
 
-  if (!cached) return null;
-
-  // Check if cache is expired
-  if (Date.now() - cached.timestamp > CACHE_EXPIRY) {
-    delete recipeCache[sessionId];
+    return JSON.parse(cached) as RecipeResponse;
+  } catch (error) {
+    console.error("Redis error:", error);
     return null;
   }
-
-  return cached.data;
 };

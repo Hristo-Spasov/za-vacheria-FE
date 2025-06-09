@@ -92,7 +92,7 @@ export const getRecipesFromUserAnswers = async (
   session: string
 ): Promise<RecipeResponse> => {
   // Check cache first
-  const cachedRecipes = getCachedRecipes(session);
+  const cachedRecipes = await getCachedRecipes(session);
   if (cachedRecipes) {
     // console.log("Using cached recipes for session:", session);
     return cachedRecipes;
