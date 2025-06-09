@@ -11,7 +11,6 @@ export const metadata: Metadata = {
   description: `Пак не знаеш какво да сготвиш? Спокойно.
 Отговори на няколко въпроса и “За Вечеря” ще ти подхвърли точната рецепта.
 Бързо. Вкусно. Без излишни драми пред хладилника.`,
-  viewport: "width=device-width, initial-scale=1",
   applicationName: "Za Vecheria",
   metadataBase: new URL('https://zavecheria.com'),
   other: { "apple-mobile-web-app-title": "Za Vecheria" },

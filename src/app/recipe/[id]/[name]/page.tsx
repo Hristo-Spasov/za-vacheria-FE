@@ -5,6 +5,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import ActionButton from "@/components/ui/buttons/ActionButton";
 import { Metadata } from "next";
+import DifficultyDisclaimer from "@/components/DifficultyDisclaimer";
 
 export async function generateMetadata({
   params,
@@ -218,10 +219,18 @@ export default async function RecipePage({
                         d="M13 10V3L4 14h7v7l9-11h-7z"
                       />
                     </svg>
-                    <span>Трудност: {recipe.difficultyLevel.name}</span>
+                    <span className="relative group/difficulty">
+                      Трудност: {recipe.difficultyLevel.name}
+                      <DifficultyDisclaimer />
+                    </span>
                   </div>
                 </div>
               </div>
+              <span className="text-gray-500 font-thin italic text-sm">
+                <span className="text-red-500">*</span> Изображенията са
+                генерирани с помоща на изкуствен интелект и може да не отговарят
+                точно на действителната рецепта.
+              </span>
             </div>
 
             {/* Cooking details for mobile */}
@@ -295,7 +304,14 @@ export default async function RecipePage({
                       d="M13 10V3L4 14h7v7l9-11h-7z"
                     />
                   </svg>
-                  <span>Трудност: {recipe.difficultyLevel.name}</span>
+                  <span className="relative group/difficulty">
+                    Трудност: {recipe.difficultyLevel.name}
+                    <span className="md:hidden text-sm opacity-70">
+                      {" "}
+                      &#9432;{" "}
+                    </span>
+                    <DifficultyDisclaimer />
+                  </span>
                 </div>
               </div>
             </div>

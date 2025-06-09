@@ -2,6 +2,7 @@ import { Recipe } from "@/types/recipes";
 import { getImageUrl, formatNameForUrl } from "./ui/utils/helpers";
 import CardButton from "./ui/buttons/CardButton";
 import ImageWithLoader from "./ImageWithLoader";
+import DifficultyDisclaimer from "./DifficultyDisclaimer";
 // import Image from "next/image";
 
 interface MainRecipeCardProps {
@@ -43,7 +44,7 @@ const MainRecipeCard = ({ recipe, session, showMore }: MainRecipeCardProps) => {
 
           {/* Content section */}
           <div className="relative p-6 md:p-8 bg-white/95 backdrop-blur-sm">
-            <h2 className="mt-2 text-3xl font-bold text-orange-700 border-b-2 border-orange-300 pb-2 inline-block">
+            <h2 className="mt-2 md:text-3xl text-2xl font-bold text-orange-700 border-b-2 border-orange-300 pb-2 inline-block">
               {recipe.title}
             </h2>
 
@@ -54,8 +55,10 @@ const MainRecipeCard = ({ recipe, session, showMore }: MainRecipeCardProps) => {
                   ? `${recipe.totalTime}m`
                   : `${recipe.prepTime + recipe.cookingTime}m`}
               </div>
-              <div className="bg-orange-100 rounded-full px-3 py-1 flex items-center text-orange-700">
+              <div className="bg-orange-100 rounded-full px-3 py-1 flex items-center text-orange-700 relative group/difficulty">
                 <span className="mr-1">🔥</span> {recipe.difficultyLevel.name}
+                <span className="md:hidden text-md opacity-70"> &#9432; </span>
+                <DifficultyDisclaimer />
               </div>
             </div>
 
@@ -64,8 +67,7 @@ const MainRecipeCard = ({ recipe, session, showMore }: MainRecipeCardProps) => {
                 {displayCategories.map((category) => (
                   <span
                     key={category.id}
-                    className="bg-orange-50 text-orange-700 px-3 py-1 rounded-full text-xs font-medium"
-                  >
+                    className="bg-orange-50 text-orange-700 px-3 py-1 rounded-full text-xs font-medium">
                     <span className="mr-1 text-xs">🍴</span>
                     {category.name}
                   </span>

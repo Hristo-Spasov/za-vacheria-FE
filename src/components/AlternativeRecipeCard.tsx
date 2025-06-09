@@ -2,6 +2,7 @@ import { Recipe } from "@/types/recipes";
 import { formatNameForUrl, getImageUrl } from "./ui/utils/helpers";
 import CardButton from "./ui/buttons/CardButton";
 import ImageWithLoader from "./ImageWithLoader";
+import DifficultyDisclaimer from "./DifficultyDisclaimer";
 
 interface AlternativeRecipeCardProps {
   recipe: Recipe;
@@ -44,8 +45,11 @@ const AlternativeRecipeCard = ({
       <div className="relative z-10 h-full flex flex-col justify-between p-5 text-white">
         {/* Top metadata */}
         <div className="flex justify-between items-start">
-          <span className="bg-orange-500/90 px-3 py-1 rounded-full text-xs font-medium">
+          <span className="bg-orange-500/90 px-3 py-1 rounded-full text-xs font-medium group/difficulty relative">
             {recipe.difficultyLevel.name}
+                <span className="md:hidden text-sm opacity-70"> &#9432; </span>
+
+            <DifficultyDisclaimer/>
           </span>
           <span className="bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-medium flex items-center">
             ⏱️ {totalTime}м
