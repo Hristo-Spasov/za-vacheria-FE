@@ -9,42 +9,47 @@ import { Metadata } from "next";
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ id: string }>
+  params: Promise<{ id: string }>;
 }): Promise<Metadata> {
   const { id } = await params;
   const recipe = await getRecipeById(id);
 
-    if (!recipe) {
+  if (!recipe) {
     return {
-      title: 'Рецепта не е намерена',
-      description: 'Поисканата рецепта не е намерена.',
+      title: "Рецепта не е намерена",
+      description: "Поисканата рецепта не е намерена.",
     };
   }
 
+  const { url: imageUrl } = getImageUrl({ recipe });
 
-  const {url:imageUrl} = getImageUrl({ recipe });
-
-return {
+  return {
     title: `${recipe.title} - За Вечеря`,
-    description: recipe.instructions.slice(0, 200) || `Открийте как да приготвите ${recipe.title}.`,
+    description:
+      recipe.instructions.slice(0, 200) ||
+      `Открийте как да приготвите ${recipe.title}.`,
     openGraph: {
       title: `${recipe.title} - За Вечеря`,
-      description: recipe.instructions.slice(0, 200) || `Открийте как да приготвите ${recipe.title}.`,
+      description:
+        recipe.instructions.slice(0, 200) ||
+        `Открийте как да приготвите ${recipe.title}.`,
       images: [
         {
           url: imageUrl,
           width: 1200,
           height: 630,
           alt: recipe.title,
-        }
+        },
       ],
-      type: 'article',
-      siteName: 'За Вечеря',
+      type: "article",
+      siteName: "За Вечеря",
     },
     twitter: {
-      card: 'summary_large_image',
+      card: "summary_large_image",
       title: `${recipe.title} - За Вачерия`,
-      description: recipe.instructions.slice(0, 200) || `Открийте как да приготвите ${recipe.title}.`,
+      description:
+        recipe.instructions.slice(0, 200) ||
+        `Открийте как да приготвите ${recipe.title}.`,
       images: [imageUrl],
     },
   };
