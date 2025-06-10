@@ -27,12 +27,12 @@ export async function generateMetadata({
   return {
     title: `${recipe.title} - За Вечеря`,
     description:
-      recipe.instructions.slice(0, 200) ||
+      recipe.instructions.slice(0, 160) ||
       `Открийте как да приготвите ${recipe.title}.`,
     openGraph: {
       title: `${recipe.title} - За Вечеря`,
       description:
-        recipe.instructions.slice(0, 200) ||
+        recipe.instructions.slice(0, 160) ||
         `Открийте как да приготвите ${recipe.title}.`,
       images: [
         {
@@ -49,7 +49,7 @@ export async function generateMetadata({
       card: "summary_large_image",
       title: `${recipe.title} - За Вачерия`,
       description:
-        recipe.instructions.slice(0, 200) ||
+        recipe.instructions.slice(0, 160) ||
         `Открийте как да приготвите ${recipe.title}.`,
       images: [imageUrl],
     },

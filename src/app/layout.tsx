@@ -22,7 +22,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="bg">
       <body className="bg-gradient-to-b from-amber-50 to-orange-100">
         <div className="absolute inset-0 bg-[url('/subtle-food-pattern.webp')] opacity-10"></div>
         <ReactQueryProvider>
