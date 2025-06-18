@@ -235,7 +235,6 @@ const Questions = () => {
               <div className="mt-5 flex content-center gap-1 justify-around">
                 {step > 0 && (
                   <FormButton
-                    disabled={!isValid}
                     type="button"
                     onClick={prevStep}
                   >

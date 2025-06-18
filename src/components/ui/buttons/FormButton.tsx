@@ -9,7 +9,7 @@ interface FormButtonProps {
 }
 
 const FormButton: React.FC<FormButtonProps> = ({
-  disabled = true,
+  disabled = false,
   type = "button",
   children,
   className = "",
