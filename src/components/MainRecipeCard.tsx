@@ -13,6 +13,7 @@ interface MainRecipeCardProps {
 
 const MainRecipeCard = ({ recipe, session, showMore }: MainRecipeCardProps) => {
   const { url, width, height } = getImageUrl({ recipe });
+  const isMainCard:boolean = true;
 
   const displayCategories = recipe.categories?.slice(0, 3) || [];
   const remainingCount =
@@ -37,7 +38,7 @@ const MainRecipeCard = ({ recipe, session, showMore }: MainRecipeCardProps) => {
               height={height}
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent "></div>
-            <div className="absolute top-4 left-4 bg-orange-500 text-white px-4 py-1 rounded-full text-sm font-bold shadow-md transform rotate-2 group-hover:[animation:var(--animate-bell-ring)] ">
+            <div className="absolute top-4 left-4 bg-orange-500 text-white px-4 py-1 rounded-full text-sm font-bold shadow-md md:transform md:rotate-2 md:group-hover:[animation:var(--animate-bell-ring)] ">
               Перфектно Съвпадение!
             </div>
           </div>
@@ -57,8 +58,8 @@ const MainRecipeCard = ({ recipe, session, showMore }: MainRecipeCardProps) => {
               </div>
               <div className="bg-orange-100 rounded-full px-3 py-1 flex items-center text-orange-700 relative group/difficulty">
                 <span className="mr-1">🔥</span> {recipe.difficultyLevel.name}
-                <span className="md:hidden text-md opacity-70"> &#9432; </span>
-                <DifficultyDisclaimer />
+                <span className="md:hidden text-lg text-center mx-2 opacity-70"> &#9432; </span>
+                <DifficultyDisclaimer isMainCard={isMainCard} />
               </div>
             </div>
 

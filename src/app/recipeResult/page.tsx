@@ -68,8 +68,8 @@ const Page = async ({
 
             {/* Alternative Recipes Section */}
             <div className="mb-6">
-              <div className="flex justify-between items-center mb-4">
-                <h3 className="text-2xl font-bold text-orange-800">
+              <div className="flex justify-between items-center mb-4 flex-col gap-4 md:gap-0 md:flex-row">
+                <h3 className="md:text-2xl text-xl font-bold text-center text-orange-800">
                   <span className="mr-2">✨</span>
                   Други Рецепти,Които Може Да Ви Харесат
                 </h3>
