@@ -12,9 +12,9 @@ export function middleware(request: NextRequest) {
     } 'unsafe-eval' https://res.cloudinary.com;
     connect-src 'self' ${
       isDev ? strapi : strapi
-    };
+    }  https://umami.zavecheria.com/api/send;
     style-src 'self' 'unsafe-inline';
-    script-src-elem 'self' ${isDev ? "'unsafe-inline'" : `'nonce-${nonce}'`};
+    script-src-elem 'self' ${isDev ? "'unsafe-inline'" : `'nonce-${nonce}'`} https://umami.zavecheria.com;
     img-src 'self' data: https://res.cloudinary.com;
     font-src 'self';
     object-src 'none';

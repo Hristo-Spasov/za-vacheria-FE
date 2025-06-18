@@ -3,6 +3,7 @@ import "./globals.css";
 import ReactQueryProvider from "../providers/ReactQueryProvider";
 import { Suspense } from "react";
 import Loading from "./loading";
+import Script from "next/script";
 
 export const dynamic = "force-dynamic";
 
@@ -23,6 +24,9 @@ export default async function RootLayout({
 }>) {
   return (
     <html lang="bg">
+      <head>
+        <Script strategy="afterInteractive" src="https://umami.zavecheria.com/script.js" data-website-id={process.env.NEXT_PUBLIC_UMAMI_ID} />
+      </head>
       <body className="bg-gradient-to-b from-amber-50 to-orange-100">
         <div className="absolute inset-0 bg-[url('/subtle-food-pattern.webp')] opacity-10"></div>
         <ReactQueryProvider>
