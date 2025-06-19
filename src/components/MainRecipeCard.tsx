@@ -13,7 +13,7 @@ interface MainRecipeCardProps {
 
 const MainRecipeCard = ({ recipe, session, showMore }: MainRecipeCardProps) => {
   const { url, width, height } = getImageUrl({ recipe });
-  const isMainCard:boolean = true;
+  const isMainCard: boolean = true;
 
   const displayCategories = recipe.categories?.slice(0, 3) || [];
   const remainingCount =
@@ -49,7 +49,7 @@ const MainRecipeCard = ({ recipe, session, showMore }: MainRecipeCardProps) => {
               {recipe.title}
             </h2>
 
-            <div className="flex flex-wrap gap-2 mt-4">
+            <div className="flex gap-2 mt-4">
               <div className="bg-orange-100 rounded-full px-3 py-1 flex items-center text-orange-700">
                 <span className="mr-1">⏱️</span>{" "}
                 {recipe.totalTime
@@ -58,7 +58,10 @@ const MainRecipeCard = ({ recipe, session, showMore }: MainRecipeCardProps) => {
               </div>
               <div className="bg-orange-100 rounded-full px-3 py-1 flex items-center text-orange-700 relative group/difficulty">
                 <span className="mr-1">🔥</span> {recipe.difficultyLevel.name}
-                <span className="md:hidden text-lg text-center mx-2 opacity-70"> &#9432; </span>
+                <span className="md:hidden text-lg text-center mx-2 opacity-70">
+                  {" "}
+                  &#9432;{" "}
+                </span>
                 <DifficultyDisclaimer isMainCard={isMainCard} />
               </div>
             </div>
@@ -68,7 +71,8 @@ const MainRecipeCard = ({ recipe, session, showMore }: MainRecipeCardProps) => {
                 {displayCategories.map((category) => (
                   <span
                     key={category.id}
-                    className="bg-orange-50 text-orange-700 px-3 py-1 rounded-full text-xs font-medium">
+                    className="bg-orange-50 text-orange-700 px-3 py-1 rounded-full text-xs font-medium"
+                  >
                     <span className="mr-1 text-xs">🍴</span>
                     {category.name}
                   </span>
