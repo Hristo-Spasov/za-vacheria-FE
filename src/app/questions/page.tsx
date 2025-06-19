@@ -141,7 +141,7 @@ const Questions = () => {
         onSubmit={handleSubmit(submitForm)}
         className="flex flex-col items-center justify-center min-h-screen py-2 px-4 text-center"
       >
-        <div className="relative w-full max-w-2xl overflow-hidden">
+        <div className="relative w-full max-w-2xl overflow-hidden ">
           <AnimatePresence initial={false} custom={direction} mode="wait">
             <motion.div
               key={step}
@@ -154,9 +154,9 @@ const Questions = () => {
                 x: { duration: 0.15, ease: [0.16, 1, 0.3, 1] },
                 opacity: { duration: 0.1 },
               }}
-              className="bg-white bg-opacity-75 backdrop-blur-sm rounded-xl p-8 shadow-md max-w-max"
+              className="bg-white bg-opacity-75 backdrop-blur-sm rounded-xl p-4 sm:p-8 shadow-md max-w-max my-0 mx-auto"
             >
-              <h1 className="text-5xl font-bold text-orange-800 mb-4">
+              <h1 className="sm:text-5xl text-3xl font-bold text-orange-800 mb-4">
                 {question}
               </h1>
               {multiSelect && (
@@ -188,19 +188,19 @@ const Questions = () => {
                     />
                     <label
                       htmlFor={`question-${documentId}-option-${answer.id}`}
-                      className={`flex items-center justify-between p-4 cursor-pointer w-full ${
+                      className={`flex items-center justify-between p-3 cursor-pointer w-full min-w-0 ${
                         isOptionSelected(answer, documentId, multiSelect)
                           ? "text-white"
                           : "text-orange-800"
                       }`}
                     >
-                      <span className="text-lg font-medium">
+                      <div className="text-lg font-medium text-left flex-1 min-w-0">
                         {answer.option}
-                      </span>
+                      </div>
 
                       {/* The checkbox */}
                       <div
-                        className={`w-7 h-7 rounded-full flex items-center justify-center ${
+                        className={`w-6 h-6  sm:w-7 sm:h-7 rounded-full flex flex-shrink-0 items-center justify-center ${
                           isOptionSelected(answer, documentId, multiSelect)
                             ? "bg-white text-orange-500"
                             : "bg-orange-100 text-orange-400"
@@ -232,7 +232,7 @@ const Questions = () => {
                 ))}
               </div>
 
-              <div className="mt-5 flex content-center gap-1 justify-around">
+              <div className="mt-5 flex flex-col-reverse sm:flex-row content-center gap-4 p-4 justify-around">
                 {step > 0 && (
                   <FormButton
                     type="button"
