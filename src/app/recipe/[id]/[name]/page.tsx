@@ -5,7 +5,12 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import ActionButton from "@/components/ui/buttons/ActionButton";
 import { Metadata } from "next";
-import DifficultyDisclaimer from "@/components/DifficultyDisclaimer";
+import ImageDisclaimer from "@/components/recipePageUI/ImageDisclaimer";
+import RecipeDesktopLayout from "@/components/recipePageUI/DesktopView/RecipeDesktopLayout";
+import RecipeMobileLayout from "@/components/recipePageUI/MobileView/RecipeMobileLayout";
+import RecipeMobileHeader from "@/components/recipePageUI/MobileView/RecipeMobileHeader";
+import RecipeDesktopHeader from "@/components/recipePageUI/DesktopView/RecipeDesktopHeader";
+import RecipeCookingDetailsMobile from "@/components/recipePageUI/MobileView/RecipeCookingDetailsMobile";
 
 export async function generateMetadata({
   params,
@@ -106,21 +111,7 @@ export default async function RecipePage({
           {/* Recipe Card */}
           <div className="p-4 sm:p-6 md:p-8 bg-white backdrop-blur-sm rounded-xl shadow-lg">
             {/* Recipe header for mobile */}
-            <div className="md:hidden mb-4">
-              <h1 className="text-2xl font-bold text-orange-800 mb-2">
-                {recipe.title}
-              </h1>
-              <div className="flex flex-wrap gap-1 mb-3">
-                {recipe.categories.map((category) => (
-                  <span
-                    key={category.id}
-                    className="bg-orange-100 text-orange-800 px-2 py-0.5 rounded-full text-xs">
-                    {category.name}
-                  </span>
-                ))}
-              </div>
-            </div>
-
+            <RecipeMobileHeader recipe={recipe} />
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
               {/* Recipe image */}
               <div className="rounded-lg overflow-hidden shadow-lg max-h-[250px] sm:max-h-[300px] md:max-h-none">
@@ -133,276 +124,16 @@ export default async function RecipePage({
                   priority
                 />
               </div>
-
               {/* Recipe header for desktop */}
-              <div className="hidden md:block mb-8">
-                <h1 className="text-3xl font-bold text-orange-800 mb-2">
-                  {recipe.title}
-                </h1>
-                <div className="flex flex-wrap gap-2 mb-4">
-                  {recipe.categories.map((category) => (
-                    <span
-                      key={category.id}
-                      className="bg-orange-100 text-orange-800 px-3 py-1 rounded-full text-sm">
-                      {category.name}
-                    </span>
-                  ))}
-                </div>
-
-                <div className="flex flex-wrap gap-6 text-sm text-gray-600 mb-4">
-                  {recipe.prepTime > 0 && (
-                    <div className="flex items-center">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-5 w-5 mr-1 text-orange-500"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor">
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                        />
-                      </svg>
-                      <span>Подготвяне: {recipe.prepTime} мин</span>
-                    </div>
-                  )}
-                  {recipe.cookingTime > 0 && (
-                    <div className="flex items-center">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-5 w-5 mr-1 text-orange-500"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor">
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                        />
-                      </svg>
-                      <span>Готвене: {recipe.cookingTime} мин</span>
-                    </div>
-                  )}
-
-                  {recipe.totalTime > 0 && (
-                    <div className="flex items-center">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-5 w-5 mr-1 text-orange-500"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor">
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                        />
-                      </svg>
-                      <span>Общо: {recipe.totalTime} мин</span>
-                    </div>
-                  )}
-                  <div className="flex items-center">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-5 w-5 mr-1 text-orange-500"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor">
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M13 10V3L4 14h7v7l9-11h-7z"
-                      />
-                    </svg>
-                    <span className="relative group/difficulty">
-                      Трудност: {recipe.difficultyLevel.name}
-                      <DifficultyDisclaimer />
-                    </span>
-                  </div>
-                </div>
-              </div>
-              <span className="text-gray-500 font-thin italic text-sm">
-                <span className="text-red-500">*</span> Изображенията са
-                генерирани с помоща на изкуствен интелект и може да не отговарят
-                точно на действителната рецепта.
-              </span>
+              <RecipeDesktopHeader recipe={recipe} />
+              <ImageDisclaimer />
             </div>
-
             {/* Cooking details for mobile */}
-            <div className="md:hidden mt-2 mb-6">
-              <div className="grid grid-cols-2 gap-2 text-xs text-gray-600">
-                {recipe.prepTime > 0 && (
-                  <div className="flex items-center bg-orange-100 p-2 rounded-lg">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-4 w-4 mr-1 text-orange-500"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor">
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                      />
-                    </svg>
-                    <span>Подготвяне: {recipe.prepTime} мин</span>
-                  </div>
-                )}
-                {recipe.cookingTime > 0 && (
-                  <div className="flex items-center bg-orange-100 p-2 rounded-lg">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-4 w-4 mr-1 text-orange-500"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor">
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                      />
-                    </svg>
-                    <span>Готвене: {recipe.cookingTime} мин</span>
-                  </div>
-                )}
-                {recipe.totalTime > 0 && (
-                  <div className="flex items-center bg-orange-100 p-2 rounded-lg">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-4 w-4 mr-1 text-orange-500"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor">
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                      />
-                    </svg>
-                    <span>Общо: {recipe.totalTime} мин</span>
-                  </div>
-                )}
-                <div className="flex items-center bg-orange-100 p-2 rounded-lg">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-4 w-4 mr-1 text-orange-500"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor">
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M13 10V3L4 14h7v7l9-11h-7z"
-                    />
-                  </svg>
-                  <span className="relative group/difficulty">
-                    Трудност: {recipe.difficultyLevel.name}
-                    <span className="md:hidden text-sm opacity-70">
-                      {" "}
-                      &#9432;{" "}
-                    </span>
-                    <DifficultyDisclaimer />
-                  </span>
-                </div>
-              </div>
-            </div>
-
+            <RecipeCookingDetailsMobile recipe={recipe} />
             {/* Mobile layout */}
-            <div className="md:hidden mt-6">
-              {/* Ingredients for mobile */}
-              <div className="bg-orange-100 p-4 rounded-lg mb-6">
-                <h2 className="text-lg font-bold text-orange-800 mb-3">
-                  Продукти
-                </h2>
-                <ul className="space-y-2">
-                  {recipe.ingredients.map((ingredient, index) => (
-                    <li key={index} className="flex items-start">
-                      <span className="text-orange-500 mr-2">•</span>
-                      <span>
-                        {ingredient.quantity &&
-                        ingredient.unit?.name &&
-                        ingredient.name
-                          ? `${ingredient.quantity} ${ingredient.unit?.name} ${ingredient.name}`
-                          : ingredient.raw_text}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              {/* Instructions for mobile */}
-              <div>
-                <h2 className="text-lg font-bold text-orange-800 mb-3">
-                  Начин на приготвяне
-                </h2>
-                <div className="prose prose-orange max-w-none text-sm">
-                  {recipe.instructions
-                    .split(/\d+\.\s+/)
-                    .filter((step) => step.trim())
-                    .map((step, index) => (
-                      <div key={index} className="flex mb-4">
-                        <span className="font-bold text-orange-600 mr-3">
-                          {index + 1}.
-                        </span>
-                        <p>{step.trim()}</p>
-                      </div>
-                    ))}
-                </div>
-              </div>
-            </div>
-
+            <RecipeMobileLayout recipe={recipe} />
             {/* Desktop layout */}
-            <div className="hidden md:grid md:grid-cols-3 gap-8 mt-8">
-              {/* Ingredients */}
-              <div>
-                <h2 className="text-xl font-bold text-orange-800 mb-4">
-                  Продукти
-                </h2>
-                <ul className="space-y-2">
-                  {recipe.ingredients.map((ingredient, index) => (
-                    <li key={index} className="flex items-start">
-                      <span className="text-orange-500 mr-2">•</span>
-                      <span>
-                        {ingredient.quantity &&
-                        ingredient.unit?.name &&
-                        ingredient.name
-                          ? `${ingredient.quantity} ${ingredient.unit?.name} ${ingredient.name}`
-                          : ingredient.raw_text}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              {/* Instructions */}
-              <div className="md:col-span-2">
-                <h2 className="text-xl font-bold text-orange-800 mb-4">
-                  Начин на приготвяне
-                </h2>
-                <div className="prose prose-orange max-w-none">
-                  {recipe.instructions
-                    .split(/\d+\.\s+/)
-                    .filter((step) => step.trim())
-                    .map((step, index) => (
-                      <div key={index} className="flex mb-4">
-                        <span className="font-bold text-orange-600 mr-3">
-                          {index + 1}.
-                        </span>
-                        <p>{step.trim()}</p>
-                      </div>
-                    ))}
-                </div>
-              </div>
-            </div>
+            <RecipeDesktopLayout recipe={recipe} />
           </div>
 
           {/* Action buttons */}

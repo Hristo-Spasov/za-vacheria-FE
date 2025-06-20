@@ -2,7 +2,7 @@ import { Recipe } from "@/types/recipes";
 import { getImageUrl, formatNameForUrl } from "./ui/utils/helpers";
 import CardButton from "./ui/buttons/CardButton";
 import ImageWithLoader from "./ImageWithLoader";
-import DifficultyDisclaimer from "./DifficultyDisclaimer";
+import DifficultyDisclaimer from "./recipePageUI/DifficultyDisclaimer";
 // import Image from "next/image";
 
 interface MainRecipeCardProps {

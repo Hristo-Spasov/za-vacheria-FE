@@ -2,7 +2,7 @@ import { Recipe } from "@/types/recipes";
 import { formatNameForUrl, getImageUrl } from "./ui/utils/helpers";
 import CardButton from "./ui/buttons/CardButton";
 import ImageWithLoader from "./ImageWithLoader";
-import DifficultyDisclaimer from "./DifficultyDisclaimer";
+import DifficultyDisclaimer from "./recipePageUI/DifficultyDisclaimer";
 
 interface AlternativeRecipeCardProps {
   recipe: Recipe;
