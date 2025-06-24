@@ -11,6 +11,7 @@ import RecipeMobileLayout from "@/components/recipePageUI/MobileView/RecipeMobil
 import RecipeMobileHeader from "@/components/recipePageUI/MobileView/RecipeMobileHeader";
 import RecipeDesktopHeader from "@/components/recipePageUI/DesktopView/RecipeDesktopHeader";
 import RecipeCookingDetailsMobile from "@/components/recipePageUI/MobileView/RecipeCookingDetailsMobile";
+import ReportButton from "@/components/ui/buttons/ReportButton";
 
 export async function generateMetadata({
   params,
@@ -93,12 +94,14 @@ export default async function RecipePage({
                 ? `/recipeResult?session=${session}&showMore=true`
                 : `/recipeResult?session=${session}`
             }
-            className="inline-flex items-center text-orange-800 mb-4 sm:mb-6 hover:text-orange-600">
+            className="inline-flex items-center text-orange-800 mb-4 sm:mb-6 hover:text-orange-600"
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-5 w-5 mr-2"
               viewBox="0 0 20 20"
-              fill="currentColor">
+              fill="currentColor"
+            >
               <path
                 fillRule="evenodd"
                 d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z"
@@ -134,6 +137,8 @@ export default async function RecipePage({
             <RecipeMobileLayout recipe={recipe} />
             {/* Desktop layout */}
             <RecipeDesktopLayout recipe={recipe} />
+
+            <ReportButton recipeId={id} />
           </div>
 
           {/* Action buttons */}
