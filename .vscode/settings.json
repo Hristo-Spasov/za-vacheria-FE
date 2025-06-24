@@ -1,6 +1,10 @@
 {
   "cSpell.words": [
     "Carb",
+    "lpush",
+    "lrange",
+    "lrem",
+    "ltrim",
     "вашите",
     "въпроси",
     "въпросите",
