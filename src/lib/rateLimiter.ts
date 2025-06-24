@@ -3,7 +3,7 @@ import redis from "@/lib/clients/redis";
 const rateLimiter = async (
   scope: string,
   ip: string,
-  limit: number = 2,
+  limit: number = 3,
   time: number = 60
 ) => {
   const key = `rate-limit:${scope}:${ip}`;

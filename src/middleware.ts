@@ -13,7 +13,7 @@ export function middleware(request: NextRequest) {
       isDev ? "'unsafe-inline'" : `'nonce-${nonce}'`
     } 'unsafe-eval' https://res.cloudinary.com;
     connect-src 'self' ${
-      isDev ? strapi : strapi
+      isDev ? "http://localhost:1337" : strapi
     }  https://umami.zavecheria.com/api/send;
     style-src 'self' 'unsafe-inline';
     script-src-elem 'self' ${
