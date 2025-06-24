@@ -1,4 +1,3 @@
-// 1. Check if such recipe exists
 import strapiClient from "./clients/strapi";
 import { getRecipeById } from "./server/utils/recipeUtils";
 const createReport = async (recipeId: string, userIp: string) => {
