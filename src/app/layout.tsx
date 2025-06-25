@@ -5,6 +5,7 @@ import { Suspense } from "react";
 import Loading from "./loading";
 import Script from "next/script";
 import { headers } from "next/headers";
+import { HomeModal } from "@/components/HomeModal";
 
 export const dynamic = "force-dynamic";
 
@@ -35,6 +36,7 @@ export default async function RootLayout({
         />
       </head>
       <body className="bg-gradient-to-b from-amber-50 to-orange-100">
+        <HomeModal />
         <div className="absolute inset-0 bg-[url('/subtle-food-pattern.webp')] opacity-10"></div>
         <ReactQueryProvider>
           <Suspense fallback={<Loading />}>{children}</Suspense>

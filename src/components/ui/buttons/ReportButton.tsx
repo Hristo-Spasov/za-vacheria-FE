@@ -3,14 +3,11 @@
 import { useState } from "react";
 
 const ReportButton = ({ recipeId }: { recipeId: string }) => {
-  const isDev = process.env.NODE_ENV !== "production";
   const [disabled, setDisabled] = useState(false);
   const handleReport = async (recipeId: string) => {
     try {
       const res = await fetch(
-        `${
-          isDev ? "http://localhost:3000" : "https://zavecheria.com"
-        }/api/reports?recipeId=${recipeId}`,
+        `/api/reports?recipeId=${recipeId}`,
         {
           method: "POST",
         }

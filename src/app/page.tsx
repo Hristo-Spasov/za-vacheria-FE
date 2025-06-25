@@ -17,10 +17,13 @@ export default function Home() {
         </div>
         <div className="bg-white bg-opacity-75 backdrop-blur-sm rounded-xl p-8 shadow-md max-w-xl">
           <h1 className="text-5xl font-bold text-orange-800 mb-4">
-            Чудите се какво да сготвите днес?
+            Добре дошли в &quot;За Вечеря&quot;
           </h1>
           <p className="text-2xl text-orange-700 max-w-2xl mb-10">
-            Ние ще ви помогнем да намерите най-добрата рецепта за вас!
+            <strong>&quot;За Вечеря&quot;</strong> е нова платформа, която ви помага да
+                откриете рецепти според вашите вкусове и нужди. Отговорете на
+                няколко кратки въпроса и ще получите подбрани предложения
+                специално за вас.
           </p>
           <Link href="/questions">
             <button className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-8 rounded-full text-xl transition-all duration-300 transform hover:scale-105 shadow-lg">
