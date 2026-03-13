@@ -1,6 +1,6 @@
 const Loading = () => {
   return (
-    <div className="bg-gradient-to-b from-amber-50 to-orange-100 min-h-screen flex flex-col justify-center items-center relative">
+    <div className="bg-gradient-to-b from-amber-50 to-orange-100 min-h-[100dvh] flex flex-col justify-center items-center relative">
       <div className="absolute inset-0 bg-[url('/subtle-food-pattern.webp')] opacity-10"></div>
       <div className="relative z-10 flex flex-col items-center">
         <div className="loader"></div>

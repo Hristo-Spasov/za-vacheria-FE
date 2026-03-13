@@ -54,7 +54,7 @@ const Page = async ({
   return (
     <>
       {allRecipes.length > 0 ? (
-        <div className="bg-gradient-to-b from-amber-50 to-orange-100 min-h-screen relative">
+        <div className="bg-gradient-to-b from-amber-50 to-orange-100 min-h-[100dvh] relative">
           {/* food pattern overlay */}
           <div className="absolute inset-0 bg-[url('/subtle-food-pattern.webp')] opacity-10"></div>
 
