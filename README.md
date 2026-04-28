@@ -40,15 +40,15 @@ Whether you're looking for inspiration for tonight's dinner or want to explore n
 
 - `src/components/` — Reusable UI components (recipe cards, modals, buttons, etc.).
 
-- `src/api/` — Client-side API services.
+- `src/services/` — Data access services (Strapi API calls, business logic).
 
-- `src/app/api/` — Serverless API endpoints for questions and reports
+- `src/app/api/` — Next.js API route handlers (HTTP endpoints for client-side fetch calls).
+
+- `src/hooks/` — Custom React hooks.
+
+- `src/lib/` — Utilities, helpers, and client configurations.
 
 - `public/` — Static assets and images.
-
-- `src/hooks` — Custom hooks
-
-- `src/lib` — Utilities and helper functions  
 
 ## Future Plans
 

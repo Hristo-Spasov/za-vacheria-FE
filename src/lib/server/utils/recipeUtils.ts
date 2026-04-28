@@ -1,4 +1,4 @@
-import { questionService } from "@/api/questionServices";
+import { questionService } from "@/services/questionServices";
 import strapiClient from "@/lib/clients/strapi";
 import { Question } from "@/types/questions";
 import { Recipe, RecipeResponse } from "@/types/recipes";

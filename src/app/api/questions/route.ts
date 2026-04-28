@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { questionService } from "@/api/questionServices";
+import { questionService } from "@/services/questionServices";
 
 
 
