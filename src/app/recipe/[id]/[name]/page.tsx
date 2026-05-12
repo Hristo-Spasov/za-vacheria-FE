@@ -33,7 +33,7 @@ export async function generateMetadata({
   const { url: imageUrl } = getImageUrl({ recipe });
 
   return {
-    title: `${recipe.title} - За Вечеря`,
+    title: `${recipe.title} - Рецепта`,
     description:
       recipe.instructions.slice(0, 160) ||
       `Открийте как да приготвите ${recipe.title}.`,
@@ -41,7 +41,7 @@ export async function generateMetadata({
       canonical: `/recipe/${id}/${name}`,
     },
     openGraph: {
-      title: `${recipe.title} - За Вечеря`,
+      title: `${recipe.title} - Рецепта`,
       description:
         recipe.instructions.slice(0, 160) ||
         `Открийте как да приготвите ${recipe.title}.`,
