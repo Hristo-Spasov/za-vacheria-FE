@@ -6,13 +6,15 @@ import Loading from "./loading";
 import Script from "next/script";
 import { headers } from "next/headers";
 import { HomeModal } from "@/components/HomeModal";
+import Header from "@/components/layout/Header";
+import Footer from "@/components/layout/Footer";
 
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Не знаеш какво ти се хапва? Тук си на правилното място!",
   description: `Пак не знаеш какво да сготвиш? Спокойно.
-Отговори на няколко въпроса и “За Вечеря” ще ти подхвърли точната рецепта.
+Отговори на няколко въпроса и "За Вечеря" ще ти подхвърли точната рецепта.
 Бързо. Вкусно. Без излишни драми пред хладилника.`,
   applicationName: "Za Vecheria",
   metadataBase: new URL("https://zavecheria.com"),
@@ -37,9 +39,14 @@ export default async function RootLayout({
       </head>
       <body className="bg-gradient-to-b from-amber-50 to-orange-100">
         <HomeModal />
-        <div className="absolute inset-0 bg-[url('/subtle-food-pattern.webp')] opacity-10"></div>
         <ReactQueryProvider>
-          <Suspense fallback={<Loading />}>{children}</Suspense>
+          <div className="relative z-10 flex flex-col min-h-screen">
+            <Header />
+            <main className="flex-1">
+              <Suspense fallback={<Loading />}>{children}</Suspense>
+            </main>
+            <Footer />
+          </div>
         </ReactQueryProvider>
       </body>
     </html>
