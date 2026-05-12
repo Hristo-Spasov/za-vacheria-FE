@@ -12,6 +12,8 @@ import RecipeMobileHeader from "@/components/recipePageUI/MobileView/RecipeMobil
 import RecipeDesktopHeader from "@/components/recipePageUI/DesktopView/RecipeDesktopHeader";
 import RecipeCookingDetailsMobile from "@/components/recipePageUI/MobileView/RecipeCookingDetailsMobile";
 import ReportButton from "@/components/ui/buttons/ReportButton";
+import Script from "next/script";
+import { generateRecipeStructuredData } from "@/lib/structuredData";
 
 export async function generateMetadata({
   params,
@@ -80,9 +82,18 @@ export default async function RecipePage({
     }
 
     const { url, width, height } = getImageUrl({ recipe });
+    const structuredData = generateRecipeStructuredData(recipe);
 
     return (
-      <div className="bg-gradient-to-b from-amber-50 to-orange-100 min-h-[100dvh] relative">
+      <>
+        <Script
+          id="recipe-structured-data"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(structuredData),
+          }}
+        />
+        <div className="bg-gradient-to-b from-amber-50 to-orange-100 min-h-[100dvh] relative">
         {/* food pattern overlay */}
         <div className="absolute inset-0 bg-[url('/subtle-food-pattern.webp')] opacity-10"></div>
 
@@ -155,6 +166,7 @@ export default async function RecipePage({
           </div>
         </div>
       </div>
+      </>
     );
   } catch (error) {
     console.error("Error fetching recipe:", error);
