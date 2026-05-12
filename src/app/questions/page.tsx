@@ -43,6 +43,7 @@ import questionsVariants, {
 } from "@/components/ui/framer-animations/questions";
 import { useRouter } from "next/navigation";
 import { setCookie } from "cookies-next";
+import { v4 as uuidv4 } from "uuid";
 import Loading from "../loading";
 import QuestionsErrorMessage from "@/components/questionsUI/QuestionsErrorMessage";
 import QuestionsNotFound from "@/components/questionsUI/QuestionsNotFound";
@@ -110,9 +111,9 @@ const Questions = () => {
         maxAge: 60 * 15, // 15 mins
         path: "/",
       });
-
+      const sessionId = uuidv4();
       // console.log(getCookie("userAnswers"));
-      router.push("/recipeResult");
+      router.push(`/recipeResult?session=${sessionId}`);
     } catch (error) {
       console.error("Error submitting form:", error);
     }
