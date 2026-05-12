@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 const HowItWorks = () => {
   const steps = [
     {
@@ -46,7 +48,7 @@ const HowItWorks = () => {
               key={step.number}
               className="relative group"
             >
-              {/* Connector Line (hidden on mobile, shown on md+) */}
+              {/* Connector Line */}
               {index < steps.length - 1 && (
                 <div className="hidden md:block absolute top-16 left-[60%] w-[80%] h-0.5 bg-gradient-to-r from-orange-300 to-orange-200 z-0"></div>
               )}
@@ -81,12 +83,12 @@ const HowItWorks = () => {
         <div className="text-center mt-12">
           <p className="text-gray-500 text-sm">
             Готов да започнеш?{" "}
-            <a
+            <Link
               href="/questions"
               className="text-orange-600 hover:text-orange-700 font-semibold underline underline-offset-2"
             >
               Натисни тук
-            </a>
+            </Link>
           </p>
         </div>
       </div>

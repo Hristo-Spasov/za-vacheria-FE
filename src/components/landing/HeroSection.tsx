@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
 
 const HeroSection = () => {
   return (
@@ -14,26 +13,11 @@ const HeroSection = () => {
       <div className="relative z-10 max-w-4xl mx-auto px-4 py-16 text-center">
         {/* Main Content */}
         <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-8 md:p-12 shadow-xl">
-          {/* Icon */}
-          <div className="mb-6 flex justify-center">
-            <div className="relative">
-              <Image
-                src="/cooking-icon.png"
-                alt="Cooking"
-                width={80}
-                height={80}
-                className="rounded-2xl shadow-lg"
-              />
-              <div className="absolute -top-2 -right-2 w-6 h-6 bg-orange-500 rounded-full flex items-center justify-center">
-                <span className="text-white text-xs">✨</span>
-              </div>
-            </div>
-          </div>
 
           {/* Headline */}
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-orange-800 mb-4 leading-tight">
             Какво ще вечеряме{" "}
-            <span className="text-orange-500">днес?</span>
+            <span className="bg-gradient-to-r  from-amber-400 to-orange-500 bg-clip-text text-transparent">днес?</span>
           </h1>
 
           {/* Subheadline */}

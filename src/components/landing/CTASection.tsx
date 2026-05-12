@@ -13,9 +13,6 @@ const CTASection = () => {
       <div className="relative z-10 max-w-4xl mx-auto px-4 text-center">
         {/* Main Content */}
         <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-8 md:p-12 shadow-2xl">
-          {/* Emoji */}
-          <div className="text-6xl mb-6">🍽️</div>
-
           {/* Headline */}
           <h2 className="text-3xl md:text-4xl font-bold text-orange-800 mb-4">
             Готов ли си за вкусно приключение?

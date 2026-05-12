@@ -23,20 +23,16 @@ const Header = () => {
 
   return (
     <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm shadow-sm">
-      <div className="max-w-6xl mx-auto px-4">
+      <div className="max-w-6xl mx-auto px-4 py-2">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2">
             <Image
-              src="/cooking-icon.png"
+              src="/zavecheria_logo.png"
               alt="За Вечеря"
-              width={40}
-              height={40}
-              className="rounded-lg"
+              width={250}
+              height={150}
             />
-            <span className="text-xl font-bold text-orange-700">
-              За Вечеря
-            </span>
           </Link>
 
           {/* Desktop Navigation */}

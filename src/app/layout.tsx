@@ -39,7 +39,6 @@ export default async function RootLayout({
       </head>
       <body className="bg-gradient-to-b from-amber-50 to-orange-100">
         <HomeModal />
-        <div className="absolute inset-0 bg-[url('/subtle-food-pattern.webp')] opacity-10"></div>
         <ReactQueryProvider>
           <div className="relative z-10 flex flex-col min-h-screen">
             <Header />

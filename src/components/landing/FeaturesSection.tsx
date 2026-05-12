@@ -4,13 +4,13 @@ const FeaturesSection = () => {
       icon: "🎨",
       title: "Персонализирани рецепти",
       description:
-        "Получаваш рецепти, съобразени с твоите вкусове, диетични ограничения и какво имаш в хладилника.",
+        "Получаваш рецепти, съобразени с твоите вкусове, предпочитания и какво имаш в хладилника.",
     },
     {
       icon: "⚡",
       title: "Бързо и лесно",
       description:
-        "Само няколко въпроса и готово! Намери перфектната рецепта за минути, не часове.",
+        "Само няколко въпроса! Намери перфектната рецепта за минути, не часове.",
     },
     {
       icon: "🌍",
@@ -69,10 +69,10 @@ const FeaturesSection = () => {
 
         {/* Stats Section */}
         <div className="mt-16 bg-white rounded-2xl p-8 shadow-lg border border-orange-100">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-8 text-center justify-items-center">
             <div>
               <div className="text-3xl md:text-4xl font-bold text-orange-600 mb-2">
-                100+
+                1400+
               </div>
               <div className="text-gray-600 text-sm">Рецепти</div>
             </div>
@@ -87,12 +87,6 @@ const FeaturesSection = () => {
                 100%
               </div>
               <div className="text-gray-600 text-sm">Безплатно</div>
-            </div>
-            <div>
-              <div className="text-3xl md:text-4xl font-bold text-orange-600 mb-2">
-                24/7
-              </div>
-              <div className="text-gray-600 text-sm">Достъпно</div>
             </div>
           </div>
         </div>
