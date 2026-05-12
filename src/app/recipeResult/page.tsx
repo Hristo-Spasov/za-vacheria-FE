@@ -9,6 +9,13 @@ import { Recipe } from "@/types/recipes";
 import { v4 as uuidv4 } from "uuid";
 import ShowMoreButton from "@/components/ui/buttons/ShowMoreButton";
 import NoRecipesFound from "@/components/NoRecipesFound";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  alternates: {
+    canonical: "/recipeResult",
+  },
+};
 const Page = async ({
   searchParams,
 }: {

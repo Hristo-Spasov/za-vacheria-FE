@@ -2,6 +2,13 @@ import HeroSection from "@/components/landing/HeroSection";
 import HowItWorks from "@/components/landing/HowItWorks";
 import FeaturesSection from "@/components/landing/FeaturesSection";
 import CTASection from "@/components/landing/CTASection";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  alternates: {
+    canonical: "/",
+  },
+};
 
 export default function Home() {
   return (

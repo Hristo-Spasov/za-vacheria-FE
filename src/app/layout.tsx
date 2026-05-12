@@ -14,8 +14,7 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "Не знаеш какво ти се хапва? Тук си на правилното място!",
   description: `Пак не знаеш какво да сготвиш? Спокойно.
-Отговори на няколко въпроса и "За Вечеря" ще ти подхвърли точната рецепта.
-Бързо. Вкусно. Без излишни драми пред хладилника.`,
+Отговори на няколко въпроса и "За Вечеря" ще ти предложи точната рецепта.`,
   applicationName: "Za Vecheria",
   metadataBase: new URL("https://zavecheria.com"),
   other: { "apple-mobile-web-app-title": "Za Vecheria" },

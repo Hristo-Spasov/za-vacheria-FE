@@ -37,6 +37,9 @@ export async function generateMetadata({
     description:
       recipe.instructions.slice(0, 160) ||
       `Открийте как да приготвите ${recipe.title}.`,
+    alternates: {
+      canonical: `/recipe/${id}`,
+    },
     openGraph: {
       title: `${recipe.title} - За Вечеря`,
       description:
