@@ -7,7 +7,7 @@ import DifficultyDisclaimer from "./recipePageUI/DifficultyDisclaimer";
 interface AlternativeRecipeCardProps {
   recipe: Recipe;
   idx: number;
-  session: string;
+  session?: string;
   showMore?: string;
 }
 
@@ -47,9 +47,9 @@ const AlternativeRecipeCard = ({
         <div className="flex justify-between items-start">
           <span className="bg-orange-500/90 px-3 py-1 rounded-full text-xs font-medium group/difficulty relative">
             {recipe.difficultyLevel.name}
-                <span className="md:hidden text-sm opacity-70"> &#9432; </span>
+            <span className="md:hidden text-sm opacity-70"> &#9432; </span>
 
-            <DifficultyDisclaimer/>
+            <DifficultyDisclaimer />
           </span>
           <span className="bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-medium flex items-center">
             ⏱️ {totalTime}м
@@ -64,7 +64,7 @@ const AlternativeRecipeCard = ({
 
           <CardButton
             route={`/recipe/${recipe.documentId}/${formatNameForUrl(
-              recipe.title
+              recipe.title,
             )}?session=${session}${showMore ? "&showMore=true" : ""}`}
             text="Виж рецептата"
             variant="alternative"
