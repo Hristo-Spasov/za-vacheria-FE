@@ -10,6 +10,8 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import { Meta } from "@/types/recipes";
+import { usePathname, useSearchParams } from "next/navigation";
+import { useMemo } from "react";
 
 type PaginationComponentProps = {
   recipesPagination: Meta;
@@ -19,6 +21,45 @@ type PaginationComponentProps = {
 const PaginationComponent = (props: PaginationComponentProps) => {
   const { recipesPagination, onPageChange, currentPage } = props;
   const totalPages = recipesPagination.pagination.pageCount;
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const createPageUrl = (page: number) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("page", String(page));
+    return `${pathname}?${params.toString()}`;
+  };
+  const generatePagination = (currentPage: number, totalPages: number) => {
+    if (totalPages <= 10) {
+      return Array.from({ length: totalPages }, (_, i) => i + 1);
+    }
+
+    const pages: (number | "ellipsis")[] = [];
+
+    pages.push(1);
+
+    if (currentPage > 3) {
+      pages.push("ellipsis");
+    }
+
+    const start = Math.max(2, currentPage - 1);
+    const end = Math.min(totalPages - 1, currentPage + 1);
+
+    for (let i = start; i <= end; i++) {
+      pages.push(i);
+    }
+
+    if (currentPage < totalPages - 2) {
+      pages.push("ellipsis");
+    }
+    pages.push(totalPages);
+
+    return pages;
+  };
+
+  const pageNumbers = useMemo(
+    () => generatePagination(currentPage, totalPages),
+    [currentPage, totalPages],
+  );
 
   const previousPage = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
@@ -33,58 +74,68 @@ const PaginationComponent = (props: PaginationComponentProps) => {
     }
   };
 
-  const goToPage = (page: number, e?: React.MouseEvent<HTMLAnchorElement>) => {
-    if (e) e.preventDefault();
-    if (page >= 1 && page <= totalPages) {
+  const goToPage = (page: number) => (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (page >= 1 && page <= totalPages && page !== currentPage) {
       onPageChange(page);
     }
   };
 
+  if (totalPages <= 1) return null;
+
   return (
     <Pagination className="my-6">
       <PaginationContent>
-        {/* Prev Button */}
+        {/* Previous */}
         <PaginationItem>
-          <PaginationPrevious href="#" onClick={previousPage} />
+          <PaginationPrevious
+            href={createPageUrl(currentPage - 1)}
+            onClick={previousPage}
+            className={`rounded-lg transition-colors duration-200 ${
+              currentPage <= 1
+                ? "opacity-50 pointer-events-none"
+                : "hover:bg-orange-100 hover:text-orange-700"
+            }`}
+            aria-disabled={currentPage <= 1}
+            aria-label="Назад"
+          />
         </PaginationItem>
 
-        {/* First Page */}
-        {currentPage > 1 && (
-          <PaginationItem>
-            <PaginationLink href="#" onClick={previousPage}>
-              {currentPage - 1}
-            </PaginationLink>
-          </PaginationItem>
-        )}
-
-        <PaginationItem>
-          <PaginationLink href="#" isActive>
-            {currentPage}
-          </PaginationLink>
-        </PaginationItem>
-        {/* Next page number — only if there IS a next page */}
-        {currentPage < totalPages && (
-          <PaginationItem>
-            <PaginationLink href="#" onClick={(e) => goToPage(currentPage + 1, e)}>
-              {currentPage + 1}
-            </PaginationLink>
-          </PaginationItem>
-        )}
-
-        {currentPage + 1 < totalPages && (
-          <>
-            <PaginationItem>
+        {/* Dynamic page numbers */}
+        {pageNumbers.map((page, index) => (
+          <PaginationItem key={page === "ellipsis" ? `e-${index}` : page}>
+            {page === "ellipsis" ? (
               <PaginationEllipsis />
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink href="#" onClick={(e) => goToPage(totalPages, e)}>
-                {totalPages}
+            ) : (
+              <PaginationLink
+                href={createPageUrl(page)}
+                isActive={page === currentPage}
+                onClick={goToPage(page)}
+                className={`rounded-lg transition-all duration-200 ${
+                  page === currentPage
+                    ? "bg-orange-500 text-white hover:bg-orange-600 shadow-md border-orange-500"
+                    : "hover:bg-orange-100 hover:text-orange-700"
+                }`}
+              >
+                {page}
               </PaginationLink>
-            </PaginationItem>
-          </>
-        )}
+            )}
+          </PaginationItem>
+        ))}
+
+        {/* Next */}
         <PaginationItem>
-          <PaginationNext href="#" onClick={nextPage} />
+          <PaginationNext
+            href={createPageUrl(currentPage + 1)}
+            onClick={nextPage}
+            className={`rounded-lg transition-colors duration-200 ${
+              currentPage >= totalPages
+                ? "opacity-50 pointer-events-none"
+                : "hover:bg-orange-100 hover:text-orange-700"
+            }`}
+            aria-disabled={currentPage >= totalPages}
+            aria-label="Напред"
+          />
         </PaginationItem>
       </PaginationContent>
     </Pagination>
