@@ -1,10 +1,8 @@
 import Searchbar from "../Searchbar";
-import { mainPageServices } from "@/services/mainPageServices";
 import AlternativeRecipeCard from "../AlternativeRecipeCard";
+import { Recipe } from "@/types/recipes";
 
-const recipeInitialResponse = await mainPageServices.getRecipes();
-const firstRecipes = recipeInitialResponse.data || [];
-const FilterSection = () => {
+const FilterSection = ({ recipes }: { recipes: Recipe[] }) => {
   return (
     <section className="flex h-full w-full items-center justify-center p-4 md:p-8">
       {/* Food pattern overlay */}
@@ -29,7 +27,7 @@ const FilterSection = () => {
           {/* Card container*/}
           <div id="card-container" className=" p-4 overflow-auto">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {firstRecipes.map((recipe, i) => (
+              {recipes.map((recipe, i) => (
                 <AlternativeRecipeCard key={i} recipe={recipe} idx={i} />
               ))}
             </div>

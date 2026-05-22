@@ -2,10 +2,10 @@ import strapiClient from "@/lib/clients/strapi";
 import { RecipeResponse } from "@/types/recipes";
 
 export const mainPageServices = {
-  getRecipes: async (): Promise<RecipeResponse> => {
+  getRecipes: async (page = 1, pageSize = 30): Promise<RecipeResponse> => {
     try {
       const response = await strapiClient.get(
-        "/recipes?sort[0]=updatedAt&pagination[page]=0&pagination[pageSize]=30&populate=*",
+        `/recipes?sort[0]=updatedAt&pagination[page]=${page}&pagination[pageSize]=${pageSize}&populate=*`,
       );
       //! Response logging TO BE REMOVED
       // console.log(response.data);

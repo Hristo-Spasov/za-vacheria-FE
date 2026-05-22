@@ -1,6 +1,7 @@
-import FilterSection from "@/components/mainPageUI/FilterSection";
 import HeroSectionMain from "@/components/mainPageUI/HeroSectionMain";
 import { Metadata } from "next";
+import { mainPageServices } from "@/services/mainPageServices";
+import MainPageContent from "./MainPageContent";
 
 export const metadata: Metadata = {
   alternates: {
@@ -8,13 +9,18 @@ export const metadata: Metadata = {
   },
 };
 
-const page = () => {
+const mainPage = async () => {
+  const recipeInitialResponse = await mainPageServices.getRecipes();
+
   return (
     <>
       <HeroSectionMain />
-      <FilterSection />
+      <MainPageContent
+        initialRecipes={recipeInitialResponse.data}
+        initialMeta={recipeInitialResponse.meta}
+      />
     </>
   );
 };
 
-export default page;
+export default mainPage;
