@@ -87,7 +87,7 @@ const Page = async ({
                 {/* Alternative Recipe Cards (3) */}
                 {altRecipes.map((recipe, i) => (
                   <AlternativeRecipeCard
-                    key={i}
+                    key={recipe.documentId}
                     recipe={recipe}
                     idx={i}
                     session={sessionId}

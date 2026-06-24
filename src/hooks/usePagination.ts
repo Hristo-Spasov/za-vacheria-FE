@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { RecipeResponse } from "@/types/recipes";
 
 export const usePagination = (page: number, pageSize: number = 30) => {
@@ -8,8 +8,10 @@ export const usePagination = (page: number, pageSize: number = 30) => {
       const response = await fetch(
         `/api/recipes?page=${page}&pageSize=${pageSize}`,
       );
+
       if (!response.ok) throw new Error("Failed to fetch paginated data");
       return response.json();
     },
+    placeholderData: keepPreviousData<RecipeResponse>,
   });
 };

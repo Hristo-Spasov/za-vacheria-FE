@@ -28,7 +28,7 @@ const FilterSection = ({ recipes }: { recipes: Recipe[] }) => {
           <div id="card-container" className=" p-4 overflow-auto">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {recipes.map((recipe, i) => (
-                <AlternativeRecipeCard key={i} recipe={recipe} idx={i} />
+                <AlternativeRecipeCard key={recipe.documentId} recipe={recipe} idx={i} />
               ))}
             </div>
           </div>
