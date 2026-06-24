@@ -15,6 +15,7 @@ import FilterGroup from "./FilterGroup";
 import CategoryFilter from "./CategoryFilter";
 import DifficultyFilter from "./DifficultyFilter";
 import TimeFilter from "./TimeFilter";
+import { Category, DifficultyLevel } from "@/types/recipes";
 
 interface MobileFilterDrawerProps {
   selectedCategories: number[];
@@ -25,6 +26,8 @@ interface MobileFilterDrawerProps {
   onTimeChange: (max: number | null) => void;
   activeFilterCount: number;
   onClearAll: () => void;
+  categories: Category[];
+  difficultyLevels: DifficultyLevel[];
 }
 
 const MobileFilterDrawer = ({
@@ -36,11 +39,13 @@ const MobileFilterDrawer = ({
   onTimeChange,
   activeFilterCount,
   onClearAll,
+  categories,
+  difficultyLevels,
 }: MobileFilterDrawerProps) => {
   return (
     <Drawer>
       <DrawerTrigger asChild>
-        <Button variant="outline" size="sm" className="lg:hidden gap-2 z-[1]">
+        <Button variant="outline" size="sm" className="lg:hidden gap-2">
           <SlidersHorizontal className="h-4 w-4" />
           Филтри
           {activeFilterCount > 0 && (
@@ -59,12 +64,14 @@ const MobileFilterDrawer = ({
             <CategoryFilter
               selected={selectedCategories}
               onChange={onCategoriesChange}
+              categories={categories}
             />
           </FilterGroup>
           <FilterGroup title="Трудност">
             <DifficultyFilter
               selected={selectedDifficulties}
               onChange={onDifficultiesChange}
+              difficultyLevels={difficultyLevels}
             />
           </FilterGroup>
           <FilterGroup title="Време за приготвяне" showSeparator={false}>

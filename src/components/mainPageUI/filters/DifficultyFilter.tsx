@@ -1,20 +1,15 @@
 "use client";
 
 import { Checkbox } from "@/components/ui/checkbox";
-
-// Placeholder difficulty levels — will be fetched from DB later
-const PLACEHOLDER_DIFFICULTIES = [
-  { id: 1, name: "Лесно", identifier: "easy" },
-  { id: 2, name: "Средно", identifier: "medium" },
-  { id: 3, name: "Трудно", identifier: "hard" },
-];
+import { DifficultyLevel } from "@/types/recipes";
 
 interface DifficultyFilterProps {
   selected: number[];
   onChange: (selected: number[]) => void;
+  difficultyLevels: DifficultyLevel[];
 }
 
-const DifficultyFilter = ({ selected, onChange }: DifficultyFilterProps) => {
+const DifficultyFilter = ({ selected, onChange, difficultyLevels }: DifficultyFilterProps) => {
   const handleToggle = (difficultyId: number) => {
     if (selected.includes(difficultyId)) {
       onChange(selected.filter((id) => id !== difficultyId));
@@ -25,7 +20,7 @@ const DifficultyFilter = ({ selected, onChange }: DifficultyFilterProps) => {
 
   return (
     <div className="flex flex-col gap-2">
-      {PLACEHOLDER_DIFFICULTIES.map((difficulty) => (
+      {difficultyLevels.map((difficulty) => (
         <label
           key={difficulty.id}
           className="flex items-center gap-2 cursor-pointer group"

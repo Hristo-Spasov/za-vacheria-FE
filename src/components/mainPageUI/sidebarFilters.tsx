@@ -4,6 +4,7 @@ import FilterGroup from "./filters/FilterGroup";
 import CategoryFilter from "./filters/CategoryFilter";
 import DifficultyFilter from "./filters/DifficultyFilter";
 import TimeFilter from "./filters/TimeFilter";
+import { Category, DifficultyLevel } from "@/types/recipes";
 
 interface SidebarFiltersProps {
   selectedCategories: number[];
@@ -12,6 +13,8 @@ interface SidebarFiltersProps {
   onDifficultiesChange: (selected: number[]) => void;
   selectedTime: number | null;
   onTimeChange: (max: number | null) => void;
+  categories: Category[];
+  difficultyLevels: DifficultyLevel[];
 }
 
 const SidebarFilters = ({
@@ -21,6 +24,8 @@ const SidebarFilters = ({
   onDifficultiesChange,
   selectedTime,
   onTimeChange,
+  categories,
+  difficultyLevels,
 }: SidebarFiltersProps) => {
   return (
     <aside className="hidden lg:flex lg:col-span-1 lg:row-span-5 flex-col bg-white rounded-lg shadow-md p-4 z-[1]">
@@ -29,12 +34,14 @@ const SidebarFilters = ({
         <CategoryFilter
           selected={selectedCategories}
           onChange={onCategoriesChange}
+          categories={categories}
         />
       </FilterGroup>
       <FilterGroup title="Трудност">
         <DifficultyFilter
           selected={selectedDifficulties}
           onChange={onDifficultiesChange}
+          difficultyLevels={difficultyLevels}
         />
       </FilterGroup>
       <FilterGroup title="Време за приготвяне" showSeparator={false}>
