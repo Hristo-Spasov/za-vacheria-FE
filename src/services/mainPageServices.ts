@@ -1,5 +1,5 @@
 import strapiClient from "@/lib/clients/strapi";
-import { RecipeResponse } from "@/types/recipes";
+import { Category, RecipeResponse } from "@/types/recipes";
 
 export const mainPageServices = {
   getRecipes: async (
@@ -49,7 +49,10 @@ export const mainPageServices = {
       const res = await strapiClient.get(
         "/categories?filters[recipes][$notNull]=true&populate=recipes",
       );
-      return res.data.data;
+      const sortedCategories = res.data.data.sort((a: Category, b: Category) => {
+        return b.recipes.length - a.recipes.length;
+      });
+      return sortedCategories;
     } catch (error) {
       console.error("Error fetching categories:", error);
       throw error;
