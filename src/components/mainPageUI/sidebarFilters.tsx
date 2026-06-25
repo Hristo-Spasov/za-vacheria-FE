@@ -28,7 +28,7 @@ const SidebarFilters = ({
   difficultyLevels,
 }: SidebarFiltersProps) => {
   return (
-    <aside className="hidden lg:flex lg:col-span-1 lg:row-span-5 flex-col bg-white rounded-lg shadow-md p-4 z-[1]">
+    <aside className="hidden lg:flex lg:col-span-1 lg:row-span-5 flex-col bg-white rounded-lg shadow-md p-4 z-[1] h-fit">
       <h3 className="text-base font-bold text-foreground mb-1">Филтри</h3>
       <FilterGroup title="Категории">
         <CategoryFilter

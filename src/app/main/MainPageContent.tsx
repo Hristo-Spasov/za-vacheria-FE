@@ -4,7 +4,7 @@ import { usePagination } from "@/hooks/usePagination";
 import FilterSection from "@/components/mainPageUI/FilterSection";
 import PaginationComponent from "@/components/PaginationComponent";
 import { Recipe, Meta, DifficultyLevel, Category } from "@/types/recipes";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 
 export default function MainPageContent({
   initialRecipes,
@@ -27,8 +27,10 @@ export default function MainPageContent({
 }) {
   const pathname = usePathname();
   const [currentPage, setCurrentPage] = useState(initialPage);
-  const [selectedCategories, setSelectedCategories] = useState(initialCategories);
-  const [selectedDifficulties, setSelectedDifficulties] = useState(initialDifficulties);
+  const [selectedCategories, setSelectedCategories] =
+    useState(initialCategories);
+  const [selectedDifficulties, setSelectedDifficulties] =
+    useState(initialDifficulties);
   const [selectedTime, setSelectedTime] = useState<number | null>(initialTime);
 
   // Update URL with current filter state + page
@@ -43,7 +45,8 @@ export default function MainPageContent({
     },
     [pathname],
   );
-
+  const searchParams = useSearchParams();
+  const returnUrl = `/main?${searchParams.toString()}`;
   // Filter change handlers — update state + URL + reset page
   const handleCategoriesChange = useCallback(
     (newCategories: number[]) => {
@@ -103,6 +106,7 @@ export default function MainPageContent({
         onDifficultiesChange={handleDifficultiesChange}
         selectedTime={selectedTime}
         onTimeChange={handleTimeChange}
+        returnUrl={returnUrl}
       />
       <PaginationComponent
         recipesPagination={meta}

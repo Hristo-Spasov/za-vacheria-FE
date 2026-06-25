@@ -8,12 +8,6 @@ import ActiveFilters, { ActiveFilter } from "./filters/ActiveFilters";
 import MobileFilterDrawer from "./filters/MobileFilterDrawer";
 import { Category, DifficultyLevel, Recipe } from "@/types/recipes";
 
-const TIME_LABELS: Record<number, string> = {
-  15: "до 15 мин",
-  30: "до 30 мин",
-  60: "до 60 мин",
-  [Infinity]: "60+ мин",
-};
 
 type FilterSectionProps = {
   recipes: Recipe[];
@@ -25,6 +19,7 @@ type FilterSectionProps = {
   onDifficultiesChange: (selected: number[]) => void;
   selectedTime: number | null;
   onTimeChange: (max: number | null) => void;
+  returnUrl: string
 };
 
 const FilterSection = ({
@@ -37,6 +32,7 @@ const FilterSection = ({
   onDifficultiesChange,
   selectedTime,
   onTimeChange,
+  returnUrl
 }: FilterSectionProps) => {
   // Derive lookup maps from real data
   const categoryNameMap = useMemo(() => {
@@ -70,7 +66,7 @@ const FilterSection = ({
     if (selectedTime !== null) {
       filters.push({
         type: "time",
-        label: TIME_LABELS[selectedTime] ?? `${selectedTime} мин`,
+        label: `${selectedTime} мин`,
         value: selectedTime,
       });
     }
@@ -157,7 +153,7 @@ const FilterSection = ({
           <div id="card-container" className="p-4 overflow-auto">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {recipes.map((recipe, i) => (
-                <AlternativeRecipeCard key={recipe.documentId} recipe={recipe} idx={i} />
+                <AlternativeRecipeCard key={recipe.documentId} recipe={recipe} idx={i} from={returnUrl} />
               ))}
             </div>
           </div>

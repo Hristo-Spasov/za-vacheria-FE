@@ -72,11 +72,24 @@ export default async function RecipePage({
   searchParams,
 }: {
   params: Promise<{ id: string }>;
-  searchParams: Promise<{ session: string; showMore?: string }>;
+  searchParams: Promise<{ session: string; showMore?: string; from?: string }>;
 }) {
   const { id } = await params;
-  const { session, showMore } = await searchParams;
+  const { session, showMore, from } = await searchParams;
 
+  let backHref: string;
+  let backText: string;
+  if (from && from !== "result") {
+    // *from* contains a full URL path like /main?page=2&categories=1,3
+    backHref = decodeURIComponent(from);
+    backText = "Обратно към началната страница";
+  } else {
+    backHref =
+      showMore === "true"
+        ? `/recipeResult?session=${session}&showMore=true`
+        : `/recipeResult?session=${session}`;
+    backText = "Обратно към резултатите";
+  }
   try {
     const recipe = await getRecipeById(id);
 
@@ -103,11 +116,7 @@ export default async function RecipePage({
           <div className="max-w-5xl mx-auto p-3 sm:p-4 py-6 sm:py-10 relative z-10">
             {/* Back button */}
             <Link
-              href={
-                showMore === "true"
-                  ? `/recipeResult?session=${session}&showMore=true`
-                  : `/recipeResult?session=${session}`
-              }
+              href={backHref}
               className="inline-flex items-center text-orange-800 mb-4 sm:mb-6 hover:text-orange-600"
             >
               <svg
@@ -122,7 +131,7 @@ export default async function RecipePage({
                   clipRule="evenodd"
                 />
               </svg>
-              Обратно към резултатите
+              {backText}
             </Link>
 
             {/* Recipe Card */}
@@ -157,15 +166,10 @@ export default async function RecipePage({
 
             {/* Action buttons */}
             <div className="mt-8 sm:mt-12 flex flex-col sm:flex-row justify-center gap-3 sm:gap-4">
-              <ActionButton
-                route={
-                  showMore === "true"
-                    ? `/recipeResult?session=${session}&showMore=true`
-                    : `/recipeResult?session=${session}`
-                }
-                text="Обратно към резултатите"
-              />
-              <ActionButton route="/questions" text="Повторете въпросника" />
+              <ActionButton route={backHref} text={backText} />
+              {from === "result" && (
+                <ActionButton route="/questions" text="Повторете въпросника" />
+              )}
             </div>
           </div>
         </div>

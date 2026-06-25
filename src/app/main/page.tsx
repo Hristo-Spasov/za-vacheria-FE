@@ -2,6 +2,7 @@ import HeroSectionMain from "@/components/mainPageUI/HeroSectionMain";
 import { Metadata } from "next";
 import { mainPageServices } from "@/services/mainPageServices";
 import MainPageContent from "./MainPageContent";
+import MainPageSkeleton from "./MainPageSkeleton";
 import { Suspense } from "react";
 
 export const metadata: Metadata = {
@@ -30,7 +31,7 @@ const mainPage = async ({
   return (
     <>
       <HeroSectionMain />
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<MainPageSkeleton />}>
         <MainPageContent
           initialRecipes={recipeInitialResponse.data}
           initialMeta={recipeInitialResponse.meta}

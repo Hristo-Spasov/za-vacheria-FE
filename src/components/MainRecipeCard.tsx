@@ -92,7 +92,7 @@ const MainRecipeCard = ({ recipe, session, showMore }: MainRecipeCardProps) => {
             <CardButton
               route={`/recipe/${recipe.documentId}/${formatNameForUrl(
                 recipe.title
-              )}?session=${session}${showMore ? "&showMore=true" : ""}`}
+              )}?session=${session}${showMore ? "&showMore=true" : ""}&from=result`}
               text="Виж пълната рецепта"
             />
           </div>

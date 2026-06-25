@@ -45,7 +45,7 @@ const MobileFilterDrawer = ({
   return (
     <Drawer>
       <DrawerTrigger asChild>
-        <Button variant="outline" size="sm" className="lg:hidden gap-2">
+        <Button variant="outline" size="lg" className="lg:hidden gap-2 rounded-full h-12 z-[1]">
           <SlidersHorizontal className="h-4 w-4" />
           Филтри
           {activeFilterCount > 0 && (
