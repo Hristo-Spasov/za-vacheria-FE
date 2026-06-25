@@ -15,6 +15,8 @@ type FilterSectionProps = {
   difficultyLevels: DifficultyLevel[];
   selectedCategories: number[];
   onCategoriesChange: (selected: number[]) => void;
+  searchInput: string;
+  onSearchChange: (search: string) => void;
   selectedDifficulties: number[];
   onDifficultiesChange: (selected: number[]) => void;
   selectedTime: number | null;
@@ -27,6 +29,8 @@ const FilterSection = ({
   categories,
   difficultyLevels,
   selectedCategories,
+  searchInput,
+  onSearchChange,
   onCategoriesChange,
   selectedDifficulties,
   onDifficultiesChange,
@@ -94,6 +98,10 @@ const FilterSection = ({
     onCategoriesChange([]);
     onDifficultiesChange([]);
     onTimeChange(null);
+    onSearchChange("");
+  };
+  const handleClearInput = () => {
+    onSearchChange("");
   };
 
   return (
@@ -122,7 +130,7 @@ const FilterSection = ({
             className="flex items-center justify-between gap-3 p-4"
           >
             <div className="flex-1">
-              <Searchbar />
+              <Searchbar value={searchInput} onChange={onSearchChange} onClear={handleClearInput} />
             </div>
             <MobileFilterDrawer
               selectedCategories={selectedCategories}

@@ -2,11 +2,12 @@
 
 import { Input } from "@/components/ui/input";
 import { Search, X } from "lucide-react";
-import { useState } from "react";
-
-const Searchbar = () => {
-  const [value, setValue] = useState("");
-
+type SearchbarProps = {
+  value: string;
+  onChange: (value: string) => void;
+  onClear: () => void;
+};
+const Searchbar = ({ value, onChange: setValue, onClear }: SearchbarProps) => {
   return (
     <div id="searchBar" className="relative w-full">
       <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
@@ -18,7 +19,7 @@ const Searchbar = () => {
       />
       {value && (
         <button
-          onClick={() => setValue("")}
+          onClick={() => onClear()}
           className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
         >
           <X className="h-5 w-5" />

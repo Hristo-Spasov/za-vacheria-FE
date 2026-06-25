@@ -9,8 +9,9 @@ export async function GET(request: Request) {
     const categories = searchParams.get("categories") || "";
     const difficulties = searchParams.get("difficulties") || "";
     const maxTime = searchParams.get("maxTime") || "";
+    const search = searchParams.get("search") || "";
 
-    const recipes = await mainPageServices.getRecipes(page, pageSize, {
+    const recipes = await mainPageServices.getRecipes(search, page, pageSize, {
       categories: categories ? categories.split(",").map(Number) : [],
       difficulties: difficulties ? difficulties.split(",").map(Number) : [],
       maxTime: maxTime ? Number(maxTime) : null,
