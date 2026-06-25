@@ -2,7 +2,7 @@ import { RecipeResponse } from "@/types/recipes";
 import redis from "@/lib/clients/redis";
 
 
-const CACHE_EXPIRY = 15 * 60 * 1000; // 15 minutes
+const CACHE_EXPIRY = 15 * 60; // 15 minutes
 
 export const cacheRecipes = async (sessionId: string, data: RecipeResponse): Promise<void> => {
   try {

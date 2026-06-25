@@ -24,17 +24,14 @@ const Page = async ({
   const cookieStore = await cookies();
   const userAnswersCookie = cookieStore.get("userAnswers");
   const { session, showMore } = await searchParams;
+  const origin = "result"; // Used to indicate the source of the recipe cards
 
   if (!userAnswersCookie?.value) {
     redirect("/questions");
   }
-
   const sessionId = session || uuidv4();
   const userAnswers = JSON.parse(userAnswersCookie.value);
 
-  // if (!session) {
-  //   redirect(`/recipeResult?session=${sessionId}`);
-  // }
   const recipesResponse = await getRecipesFromUserAnswers(
     userAnswers,
     sessionId
@@ -87,11 +84,12 @@ const Page = async ({
                 {/* Alternative Recipe Cards (3) */}
                 {altRecipes.map((recipe, i) => (
                   <AlternativeRecipeCard
-                    key={i}
+                    key={recipe.documentId}
                     recipe={recipe}
                     idx={i}
                     session={sessionId}
                     showMore={showMore}
+                    from={origin}
                   />
                 ))}
               </div>

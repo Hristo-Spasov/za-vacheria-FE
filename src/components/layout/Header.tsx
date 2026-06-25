@@ -12,6 +12,7 @@ const Header = () => {
   const navLinks = [
     { href: "/", label: "Начало" },
     { href: "/questions", label: "Въпросник" },
+    { href: "/main", label: "Рецепти" },
   ];
 
   const isActive = (href: string) => {

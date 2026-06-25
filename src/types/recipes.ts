@@ -1,18 +1,20 @@
 export type RecipeResponse = {
   data: Recipe[];
-  meta: {
-    pagination: {
-      page: number;
-      pageSize: number;
-      pageCount: number;
-      total: number;
-    };
+  meta: Meta;
+};
+export type Meta = {
+  pagination: {
+    page: number;
+    pageSize: number;
+    pageCount: number;
+    total: number;
   };
 };
-interface Category {
+export interface Category {
   id: number;
   name: string;
   slug?: string;
+  recipes: Recipe[];
 }
 export type Recipe = {
   id: number;
@@ -44,7 +46,7 @@ interface Unit {
   name: string;
   identifier: string;
 }
-interface DifficultyLevel {
+export interface DifficultyLevel {
   id: number;
   name: string;
   identifier: string;
