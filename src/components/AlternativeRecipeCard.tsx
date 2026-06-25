@@ -9,6 +9,7 @@ interface AlternativeRecipeCardProps {
   idx: number;
   session?: string;
   showMore?: string;
+  from?: string;
 }
 
 const AlternativeRecipeCard = ({
@@ -16,6 +17,7 @@ const AlternativeRecipeCard = ({
   idx,
   session,
   showMore,
+  from,
 }: AlternativeRecipeCardProps) => {
   const { url, width, height } = getImageUrl({ recipe });
 
@@ -63,9 +65,7 @@ const AlternativeRecipeCard = ({
           </h3>
 
           <CardButton
-            route={`/recipe/${recipe.documentId}/${formatNameForUrl(
-              recipe.title,
-            )}?session=${session}${showMore ? "&showMore=true" : ""}`}
+            route={`/recipe/${recipe.documentId}/${formatNameForUrl(recipe.title)}?session=${session || ""}${showMore ? "&showMore=true" : ""}&from=${encodeURIComponent(from || "")}`}
             text="Виж рецептата"
             variant="alternative"
           />

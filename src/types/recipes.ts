@@ -10,10 +10,11 @@ export type Meta = {
     total: number;
   };
 };
-interface Category {
+export interface Category {
   id: number;
   name: string;
   slug?: string;
+  recipes: Recipe[];
 }
 export type Recipe = {
   id: number;
@@ -45,7 +46,7 @@ interface Unit {
   name: string;
   identifier: string;
 }
-interface DifficultyLevel {
+export interface DifficultyLevel {
   id: number;
   name: string;
   identifier: string;

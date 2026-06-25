@@ -1,23 +1,15 @@
 "use client";
 
 import { Checkbox } from "@/components/ui/checkbox";
-
-// Placeholder categories — will be fetched from DB later
-const PLACEHOLDER_CATEGORIES = [
-  { id: 1, name: "Салати", slug: "salads" },
-  { id: 2, name: "Супи", slug: "soups" },
-  { id: 3, name: "Основни", slug: "main-dishes" },
-  { id: 4, name: "Десерти", slug: "desserts" },
-  { id: 5, name: "Предястия", slug: "appetizers" },
-  { id: 6, name: "Напитки", slug: "drinks" },
-];
+import { Category } from "@/types/recipes";
 
 interface CategoryFilterProps {
   selected: number[];
   onChange: (selected: number[]) => void;
+  categories: Category[];
 }
 
-const CategoryFilter = ({ selected, onChange }: CategoryFilterProps) => {
+const CategoryFilter = ({ selected, onChange, categories }: CategoryFilterProps) => {
   const handleToggle = (categoryId: number) => {
     if (selected.includes(categoryId)) {
       onChange(selected.filter((id) => id !== categoryId));
@@ -28,7 +20,7 @@ const CategoryFilter = ({ selected, onChange }: CategoryFilterProps) => {
 
   return (
     <div className="flex flex-col gap-2">
-      {PLACEHOLDER_CATEGORIES.map((category) => (
+      {categories.map((category) => (
         <label
           key={category.id}
           className="flex items-center gap-2 cursor-pointer group"

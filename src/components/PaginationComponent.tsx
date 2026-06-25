@@ -103,7 +103,7 @@ const PaginationComponent = (props: PaginationComponentProps) => {
 
         {/* Dynamic page numbers */}
         {pageNumbers.map((page, index) => (
-          <PaginationItem key={page === "ellipsis" ? `e-${index}` : page}>
+          <PaginationItem key={page === "ellipsis" ? `e-${index}` : page} className="z-10">
             {page === "ellipsis" ? (
               <PaginationEllipsis />
             ) : (

@@ -10,7 +10,7 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 justify-items-center">
           {/* Brand Section */}
           <div className="space-y-4">
-            <Link href="/" className="flex items-center gap-2">
+            <Link href="/" className="flex items-center gap-2 justify-center md:justify-start">
               <Image
               src="/zavecheria_footer_logo.png"
               alt="За Вечеря"

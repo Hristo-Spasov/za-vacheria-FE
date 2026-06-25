@@ -2,6 +2,7 @@ import HeroSectionMain from "@/components/mainPageUI/HeroSectionMain";
 import { Metadata } from "next";
 import { mainPageServices } from "@/services/mainPageServices";
 import MainPageContent from "./MainPageContent";
+import MainPageSkeleton from "./MainPageSkeleton";
 import { Suspense } from "react";
 
 export const metadata: Metadata = {
@@ -13,20 +14,33 @@ export const metadata: Metadata = {
 const mainPage = async ({
   searchParams,
 }: {
-  searchParams: Promise<{ page?: string }>;
+  searchParams: Promise<{ page?: string; categories?: string; difficulties?: string; maxTime?: string }>;
 }) => {
   const params = await searchParams;
   const page = Number(params.page) || 1;
-  const recipeInitialResponse = await mainPageServices.getRecipes(page);
+  const initialCategories = params.categories ? params.categories.split(",").map(Number) : [];
+  const initialDifficulties = params.difficulties ? params.difficulties.split(",").map(Number) : [];
+  const initialTime = params.maxTime ? Number(params.maxTime) : null;
+
+  const [recipeInitialResponse, categories, difficultyLevels] = await Promise.all([
+    mainPageServices.getRecipes(page),
+    mainPageServices.getCategories(),
+    mainPageServices.getDifficultyLevels(),
+  ]);
 
   return (
     <>
       <HeroSectionMain />
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<MainPageSkeleton />}>
         <MainPageContent
           initialRecipes={recipeInitialResponse.data}
           initialMeta={recipeInitialResponse.meta}
           initialPage={page}
+          categories={categories}
+          difficultyLevels={difficultyLevels}
+          initialCategories={initialCategories}
+          initialDifficulties={initialDifficulties}
+          initialTime={initialTime}
         />
       </Suspense>
     </>
