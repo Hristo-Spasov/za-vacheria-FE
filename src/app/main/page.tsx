@@ -11,22 +11,32 @@ export const metadata: Metadata = {
   },
 };
 
-const mainPage = async ({
-  searchParams,
-}: {
-  searchParams: Promise<{ page?: string; categories?: string; difficulties?: string; maxTime?: string }>;
-}) => {
+type mainPageProps = Promise<{
+  search?: string;
+  page?: string;
+  categories?: string;
+  difficulties?: string;
+  maxTime?: string;
+}>;
+
+const mainPage = async ({ searchParams }: { searchParams: mainPageProps }) => {
   const params = await searchParams;
   const page = Number(params.page) || 1;
-  const initialCategories = params.categories ? params.categories.split(",").map(Number) : [];
-  const initialDifficulties = params.difficulties ? params.difficulties.split(",").map(Number) : [];
+  const initialCategories = params.categories
+    ? params.categories.split(",").map(Number)
+    : [];
+  const initialDifficulties = params.difficulties
+    ? params.difficulties.split(",").map(Number)
+    : [];
   const initialTime = params.maxTime ? Number(params.maxTime) : null;
+  const initialSearch = params.search ? params.search.toLowerCase() : "";
 
-  const [recipeInitialResponse, categories, difficultyLevels] = await Promise.all([
-    mainPageServices.getRecipes(page),
-    mainPageServices.getCategories(),
-    mainPageServices.getDifficultyLevels(),
-  ]);
+  const [recipeInitialResponse, categories, difficultyLevels] =
+    await Promise.all([
+      mainPageServices.getRecipes( initialSearch,page),
+      mainPageServices.getCategories(),
+      mainPageServices.getDifficultyLevels(),
+    ]);
 
   return (
     <>
@@ -41,6 +51,7 @@ const mainPage = async ({
           initialCategories={initialCategories}
           initialDifficulties={initialDifficulties}
           initialTime={initialTime}
+          initialSearch={initialSearch}
         />
       </Suspense>
     </>

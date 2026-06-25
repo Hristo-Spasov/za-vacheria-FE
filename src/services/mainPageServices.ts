@@ -3,6 +3,7 @@ import { Category, RecipeResponse } from "@/types/recipes";
 
 export const mainPageServices = {
   getRecipes: async (
+    search?: string,
     page = 1,
     pageSize = 30,
     filters?: {
@@ -13,6 +14,11 @@ export const mainPageServices = {
   ): Promise<RecipeResponse> => {
     try {
       let url = `/recipes?sort[0]=updatedAt&pagination[page]=${page}&pagination[pageSize]=${pageSize}&populate=*`;
+
+      // Searchbar filter
+      if (search) {
+        url += `&_q=${encodeURIComponent(search)}`;
+      }
 
       // Strapi category filter: recipes that have ANY of the selected categories
       if (filters?.categories?.length) {
@@ -29,7 +35,11 @@ export const mainPageServices = {
       }
 
       // Strapi time filter: totalTime <= maxTime (skip for Infinity = "60+ мин")
-      if (filters?.maxTime !== null && filters?.maxTime !== undefined && isFinite(filters.maxTime)) {
+      if (
+        filters?.maxTime !== null &&
+        filters?.maxTime !== undefined &&
+        isFinite(filters.maxTime)
+      ) {
         url += `&filters[totalTime][$lte]=${filters.maxTime}`;
       }
 
@@ -49,9 +59,11 @@ export const mainPageServices = {
       const res = await strapiClient.get(
         "/categories?filters[recipes][$notNull]=true&populate=recipes",
       );
-      const sortedCategories = res.data.data.sort((a: Category, b: Category) => {
-        return b.recipes.length - a.recipes.length;
-      });
+      const sortedCategories = res.data.data.sort(
+        (a: Category, b: Category) => {
+          return b.recipes.length - a.recipes.length;
+        },
+      );
       return sortedCategories;
     } catch (error) {
       console.error("Error fetching categories:", error);
