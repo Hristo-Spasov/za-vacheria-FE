@@ -80,15 +80,17 @@ export default async function RecipePage({
   let backHref: string;
   let backText: string;
   if (from && from !== "result") {
-    // *from* contains a full URL path like /main?page=2&categories=1,3
     backHref = decodeURIComponent(from);
     backText = "Обратно към началната страница";
-  } else {
+  } else if (session) {
     backHref =
       showMore === "true"
         ? `/recipeResult?session=${session}&showMore=true`
         : `/recipeResult?session=${session}`;
     backText = "Обратно към резултатите";
+  } else {
+    backHref = "/main";
+    backText = "Разгледай рецептите";
   }
   try {
     const recipe = await getRecipeById(id);

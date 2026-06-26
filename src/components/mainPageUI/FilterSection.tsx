@@ -159,10 +159,12 @@ const FilterSection = ({
 
           {/* Card container */}
           <div id="card-container" className="p-4 overflow-auto">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {recipes.map((recipe, i) => (
+            <div className={` ${recipes.length > 0 ? "grid" : "flex"} grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4`}>
+              {recipes.length > 0 ? recipes.map((recipe, i) => (
                 <AlternativeRecipeCard key={recipe.documentId} recipe={recipe} idx={i} from={returnUrl} />
-              ))}
+              )) : (
+                <p className="justify-center text-center text-lg text-red-500">Няма намерени рецепти!</p>
+              )}
             </div>
           </div>
         </div>
