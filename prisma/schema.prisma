@@ -1,0 +1,87 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  schemas  = ["app"]
+}
+
+// ─── OAuth Table (for future Google/GitHub login) ───
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user AppUser @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+  @@schema("app")
+}
+
+// ─── Auth Table ──────────────────────────────
+model AppUser {
+  id             String    @id @default(cuid())
+  email          String    @unique
+  emailVerified  DateTime?
+  hashedPassword String?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  accounts           Account[]
+  profile            UserProfile?
+  verificationTokens VerificationToken[]
+
+  @@map("app_users")
+  @@schema("app")
+}
+
+// ─── Email Verification Tokens ──────────────
+
+model VerificationToken {
+  id        String   @id @default(cuid())
+  userId    String
+  token     String   @unique
+  expires   DateTime
+  createdAt DateTime @default(now())
+
+  user AppUser @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("verification_tokens")
+  @@schema("app")
+}
+// ─── Profile Table (all user data) ──────────
+model UserProfile {
+  id            String   @id @default(cuid())
+  userId        String   @unique
+  name          String?
+  familyName    String?
+  nickname      String?
+  avatarUrl     String?
+  bio           String?
+  phoneNumber   String?
+  address       String?
+  city          String?
+  country       String?
+  postalCode    String?
+  role          String   @default("user")
+  preferredLang String   @default("bg")
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  user AppUser @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_profiles")
+  @@schema("app")
+}
