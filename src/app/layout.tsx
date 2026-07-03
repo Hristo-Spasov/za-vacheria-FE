@@ -8,6 +8,7 @@ import { headers } from "next/headers";
 import { HomeModal } from "@/components/HomeModal";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import NextAuthProvider from "@/providers/SessionProvider";
 
 export const dynamic = "force-dynamic";
 
@@ -38,6 +39,7 @@ export default async function RootLayout({
       </head>
       <body className="bg-gradient-to-b from-amber-50 to-orange-100">
         <HomeModal />
+        <NextAuthProvider>
         <ReactQueryProvider>
           <div className="relative z-10 flex flex-col min-h-screen">
             <Header />
@@ -47,6 +49,7 @@ export default async function RootLayout({
             <Footer />
           </div>
         </ReactQueryProvider>
+        </NextAuthProvider>
       </body>
     </html>
   );
