@@ -90,7 +90,7 @@ const Header = () => {
             {isAuthenticated ? (
               <div className="flex items-center gap-4">
                 {/* User Avatar */}
-                <Link href="/dashboard">
+                <Link href="http://localhost:5173/">
                   <Image
                     className="rounded-full"
                     src={userImage}
