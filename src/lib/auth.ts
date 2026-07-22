@@ -6,7 +6,8 @@ import { prisma } from "@/lib/clients/prisma";
 export const { handlers, signIn, signOut, auth } = NextAuth({
   adapter: PrismaAdapter(prisma),
   session: {
-    strategy: "jwt",
+    strategy: "database",
+    maxAge: 7 * 24 * 60 * 60, //7 days
   },
   providers: [
     Google({
@@ -14,7 +15,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
     }),
   ],
-    events: {
+  events: {
     async createUser({ user }) {
       await prisma.userProfile.create({
         data: {
@@ -26,15 +27,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     },
   },
   callbacks: {
-    async jwt({ token, user }) {
-      if (user) {
-        token.id = user.id;
-      }
-      return token;
-    },
-    async session({ session, token }) {
-      if (session.user && token.id) {
-        session.user.id = token.id as string;
+    async session({ session, user }) {
+      if (session.user && user) {
+        session.user.id = user.id;
       }
       return session;
     },

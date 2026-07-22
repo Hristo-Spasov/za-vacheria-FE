@@ -43,6 +43,7 @@ model User {
 
   accounts           Account[]
   profile            UserProfile?
+  sessions           Session[]
   verificationTokens VerificationToken[]
 
   @@map("app_users")
@@ -85,5 +86,15 @@ model UserProfile {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("user_profiles")
+  @@schema("app")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@map("sessions")
   @@schema("app")
 }
