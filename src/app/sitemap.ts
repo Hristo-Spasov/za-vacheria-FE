@@ -152,7 +152,7 @@ export default async function sitemap({
     }));
 
     // Static pages are included in the first sitemap
-    if (id === 0) {
+    if (Number(id) === 0) {
       return [
         {
           url: "https://zavecheria.com",
