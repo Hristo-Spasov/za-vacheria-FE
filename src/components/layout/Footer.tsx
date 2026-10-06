@@ -1,16 +1,18 @@
 import Link from "next/link";
 import Image from "next/image";
+import { getAllCategories } from "@/lib/server/utils/categoryUtils";
 
-const Footer = () => {
+const Footer = async () => {
   const currentYear = new Date().getFullYear();
+  const categories = await getAllCategories();
 
   return (
     <footer className="bg-orange-900 text-orange-100">
       <div className="max-w-6xl mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 justify-items-center">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 justify-items-start">
           {/* Brand Section */}
           <div className="space-y-4">
-            <Link href="/" className="flex items-center gap-2 justify-center md:justify-start">
+            <Link href="/" className="flex items-center gap-2 justify-start">
               <Image
               src="/zavecheria_footer_logo.png"
               alt="За Вечеря"
@@ -27,6 +29,7 @@ const Footer = () => {
 
           {/* Quick Links */}
           <div className="space-y-4">
+            <div className="flex flex-col gap-2 justify-start">
             <h3 className="text-white font-semibold text-lg">Бързи връзки</h3>
             <nav className="flex flex-col gap-2">
               <Link
@@ -42,7 +45,32 @@ const Footer = () => {
                 Въпросник
               </Link>
             </nav>
+            </div>
           </div>
+
+          {/* Category Links */}
+          {categories.length > 0 && (
+            <div className="space-y-4">
+              <h3 className="text-white font-semibold text-lg">Категории</h3>
+              <nav className="grid grid-cols-2 gap-x-4 gap-y-2 md:flex md:flex-col md:gap-2">
+                {categories.slice(0, 8).map((category) => (
+                  <Link
+                    key={category.id}
+                    href={`/recepti/${category.slug}`}
+                    className="text-orange-200 hover:text-white transition-colors text-sm"
+                  >
+                    Рецепти за {category.name.toLowerCase()}
+                  </Link>
+                ))}
+                <Link
+                  href="/main"
+                  className="text-orange-200 hover:text-white transition-colors text-sm"
+                >
+                  Всички категории
+                </Link>
+              </nav>
+            </div>
+          )}
            {false && (
           <>
           {/* Social Links */}

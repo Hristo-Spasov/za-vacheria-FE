@@ -1,6 +1,7 @@
 import strapiClient from "@/lib/clients/strapi";
 import { Recipe, RecipeResponse } from "@/types/recipes";
 import { getCachedRecipes, cacheRecipes } from "@/lib/server/utils/cachedUtils";
+import { getAllCategories } from "@/lib/server/utils/categoryUtils";
 import type { MetadataRoute } from "next";
 import { formatNameForUrl } from "@/components/ui/utils/helpers";
 
@@ -151,8 +152,17 @@ export default async function sitemap({
       priority: 0.8,
     }));
 
-    // Static pages are included in the first sitemap
+    // Static and category pages are included in the first sitemap
     if (Number(id) === 0) {
+      const categoryUrls = await getAllCategories().then((categories) =>
+        categories.map((cat) => ({
+          url: `https://zavecheria.com/recepti/${cat.slug}`,
+          lastModified: new Date(),
+          changeFrequency: "weekly" as const,
+          priority: 0.7,
+        }))
+      );
+
       return [
         {
           url: "https://zavecheria.com",
@@ -166,6 +176,7 @@ export default async function sitemap({
           changeFrequency: "daily" as const,
           priority: 0.9,
         },
+        ...categoryUrls,
         ...recipeUrls,
       ];
     }

@@ -81,7 +81,7 @@ export default async function RecipePage({
   let backText: string;
   if (from && from !== "result") {
     backHref = decodeURIComponent(from);
-    backText = "Обратно към началната страница";
+    backText = "Назад към предишната страница";
   } else if (session) {
     backHref =
       showMore === "true"

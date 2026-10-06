@@ -1,4 +1,6 @@
 import { Recipe } from "@/types/recipes";
+import Link from "next/link";
+import { formatNameForUrl } from "@/components/ui/utils/helpers";
 
 const RecipeMobileHeader = ({recipe} : {recipe: Recipe}) => {
   return (
@@ -8,11 +10,12 @@ const RecipeMobileHeader = ({recipe} : {recipe: Recipe}) => {
       </h1>
       <div className="flex flex-wrap gap-1 mb-3">
         {recipe.categories.map((category) => (
-          <span
+          <Link
             key={category.id}
-            className="bg-orange-100 text-orange-800 px-2 py-0.5 rounded-full text-xs">
+            href={`/recepti/${formatNameForUrl(category.name)}`}
+            className="bg-orange-100 hover:bg-orange-200 text-orange-800 px-2 py-0.5 rounded-full text-xs transition-colors">
             {category.name}
-          </span>
+          </Link>
         ))}
       </div>
     </div>

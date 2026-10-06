@@ -4,11 +4,10 @@ import { mainPageServices } from "@/services/mainPageServices";
 import MainPageContent from "./MainPageContent";
 import MainPageSkeleton from "./MainPageSkeleton";
 import { Suspense } from "react";
-
 export const metadata: Metadata = {
-  title: "Всички рецепти - разгледайте по категория и трудност",
+  title: "Всички рецепти – разгледайте по категория и трудност",
   description:
-    "Разгледайте над 1400 рецепти по категории, трудност и време за приготвяне. Намерете идеята за вашата следваща вечеря със За Вечеря.",
+    "Разгледайте над 1400 рецепти по категории, трудност и време за приготвяне. Намерете идеята за вашата следваща вечеря с За Вечеря.",
   alternates: {
     canonical: "/main",
   },
