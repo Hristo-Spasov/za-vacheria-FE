@@ -4,8 +4,8 @@ export function middleware(request: NextRequest) {
   const nonce = Buffer.from(crypto.randomUUID()).toString("base64");
   const isDev = process.env.NODE_ENV !== "production";
   const strapi = process.env.NEXT_PUBLIC_STRAPI_URL;
-  const url = request.nextUrl;
-  const isSitemap = url.pathname.startsWith("/sitemap/");
+  // const url = request.nextUrl;
+  // const isSitemap = url.pathname.startsWith("/sitemap/");
   // console.log(process.env.NODE_ENV, isDev);
   const cspHeader = `
     default-src 'self';
@@ -46,10 +46,10 @@ export function middleware(request: NextRequest) {
     },
   });
 
-  if (isSitemap) {
-    response.headers.delete("Content-Encoding");
-    response.headers.set("Content-Encoding", "gzip");
-  }
+  // if (isSitemap) {
+  //   response.headers.delete("Content-Encoding");
+  //   response.headers.set("Content-Encoding", "gzip");
+  // }
 
   response.headers.set(
     "Content-Security-Policy",
@@ -70,7 +70,7 @@ export const config = {
      */
     {
       source:
-        "/((?!api|_next/static|_next/image|favicon.ico|robots.txt|sitemaps).*)",
+        "/((?!api|_next/static|_next/image|favicon.ico|robots.txt|sitemap).*)",
       missing: [
         { type: "header", key: "next-router-prefetch" },
         { type: "header", key: "purpose", value: "prefetch" },

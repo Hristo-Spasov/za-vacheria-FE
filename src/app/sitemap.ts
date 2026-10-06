@@ -142,7 +142,7 @@ export default async function sitemap({
       `Generated ${recipesForThisSitemap.length} URLs for sitemap ${id}`
     );
 
-    return recipesForThisSitemap.map((recipe: Recipe) => ({
+    const recipeUrls = recipesForThisSitemap.map((recipe: Recipe) => ({
       url: `https://zavecheria.com/recipe/${
         recipe.documentId
       }/${formatNameForUrl(recipe.title)}`,
@@ -150,6 +150,27 @@ export default async function sitemap({
       changeFrequency: "weekly" as const,
       priority: 0.8,
     }));
+
+    // Static pages are included in the first sitemap
+    if (id === 0) {
+      return [
+        {
+          url: "https://zavecheria.com",
+          lastModified: new Date(),
+          changeFrequency: "weekly" as const,
+          priority: 1,
+        },
+        {
+          url: "https://zavecheria.com/main",
+          lastModified: new Date(),
+          changeFrequency: "daily" as const,
+          priority: 0.9,
+        },
+        ...recipeUrls,
+      ];
+    }
+
+    return recipeUrls;
   } catch (error) {
     console.error(`Error generating sitemap ${id}:`, error);
     return [];

@@ -12,11 +12,52 @@ import Footer from "@/components/layout/Footer";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Не знаеш какво ти се хапва? Тук си на правилното място!",
-  description: `Пак не знаеш какво да сготвиш? Спокойно.
-Отговори на няколко въпроса и "За Вечеря" ще ти предложи точната рецепта.`,
-  applicationName: "Za Vecheria",
   metadataBase: new URL("https://zavecheria.com"),
+  title: {
+    default: "Какво да сготвя днес? Намерете рецепти по ваш вкус | За Вечеря",
+    template: "%s | За Вечеря",
+  },
+  description:
+    "Отговорете на няколко въпроса и „За Вечеря“ ще ви предложи точната рецепта. Над 1400 рецепти – от българска до интернационална кухня. Безплатно и бързо.",
+  keywords: [
+    "рецепти",
+    "какво да сготвя",
+    "какво да готвя",
+    "рецепти за вечеря",
+    "лесни рецепти",
+    "български рецепти",
+    "идеи за вечеря",
+    "кулинарни рецепти",
+  ],
+  applicationName: "За Вечеря",
+  authors: [{ name: "За Вечеря" }],
+  openGraph: {
+    type: "website",
+    locale: "bg_BG",
+    siteName: "За Вечеря",
+    title: "Какво да сготвя днес? Намерете рецепти по ваш вкус | За Вечеря",
+    description:
+      "Отговорете на няколко въпроса и „За Вечеря“ ще ви предложи точната рецепта. Над 1400 рецепти. Безплатно и бързо.",
+    url: "https://zavecheria.com",
+    images: [
+      {
+        url: "/default_fallback_pic.png",
+        width: 1200,
+        height: 630,
+        alt: "За Вечеря - рецепти по ваш вкус",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Какво да сготвя днес? | За Вечеря",
+    description:
+      "Отговорете на няколко въпроса и получете персонализирани рецепти. Безплатно и бързо.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
   other: { "apple-mobile-web-app-title": "Za Vecheria" },
 };
 

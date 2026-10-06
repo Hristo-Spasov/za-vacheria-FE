@@ -33,7 +33,7 @@ export async function generateMetadata({
   const { url: imageUrl } = getImageUrl({ recipe });
 
   return {
-    title: `${recipe.title} - Рецепта`,
+    title: recipe.title,
     description:
       recipe.instructions.slice(0, 160) ||
       `Открийте как да приготвите ${recipe.title}.`,
@@ -41,7 +41,7 @@ export async function generateMetadata({
       canonical: `/recipe/${id}/${name}`,
     },
     openGraph: {
-      title: `${recipe.title} - Рецепта`,
+      title: recipe.title,
       description:
         recipe.instructions.slice(0, 160) ||
         `Открийте как да приготвите ${recipe.title}.`,
@@ -58,7 +58,7 @@ export async function generateMetadata({
     },
     twitter: {
       card: "summary_large_image",
-      title: `${recipe.title} - За Вачерия`,
+      title: recipe.title,
       description:
         recipe.instructions.slice(0, 160) ||
         `Открийте как да приготвите ${recipe.title}.`,
