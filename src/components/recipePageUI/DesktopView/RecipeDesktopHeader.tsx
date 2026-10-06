@@ -1,5 +1,7 @@
 import { Recipe } from "@/types/recipes";
+import Link from "next/link";
 import DifficultyDisclaimer from "../DifficultyDisclaimer";
+import { formatNameForUrl } from "@/components/ui/utils/helpers";
 
 const RecipeDesktopHeader = ({ recipe }: { recipe: Recipe }) => {
   return (
@@ -9,11 +11,12 @@ const RecipeDesktopHeader = ({ recipe }: { recipe: Recipe }) => {
       </h1>
       <div className="flex flex-wrap gap-2 mb-4">
         {recipe.categories.map((category) => (
-          <span
+          <Link
             key={category.id}
-            className="bg-orange-100 text-orange-800 px-3 py-1 rounded-full text-sm">
+            href={`/recepti/${formatNameForUrl(category.name)}`}
+            className="bg-orange-100 hover:bg-orange-200 text-orange-800 px-3 py-1 rounded-full text-sm transition-colors">
             {category.name}
-          </span>
+          </Link>
         ))}
       </div>
 
