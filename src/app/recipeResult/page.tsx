@@ -15,6 +15,10 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/recipeResult",
   },
+  robots: {
+    index: false,
+    follow: false,
+  },
 };
 const Page = async ({
   searchParams,
