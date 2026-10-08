@@ -12,10 +12,20 @@ export interface CategoryWithSlug extends Category {
  */
 export async function getAllCategories(): Promise<CategoryWithSlug[]> {
   try {
-    const res = await strapiClient.get(
-      "/categories?filters[recipes][$notNull]=true&fields[0]=name&fields[1]=documentId&populate[recipes][fields][0]=id"
-    );
-    const categories: Category[] = res.data.data;
+    const PAGE_SIZE = 100;
+    const categories: Category[] = [];
+    let page = 1;
+    let pageCount = 1;
+
+    // Fetch all pages so categories beyond Strapi's default page size are included
+    do {
+      const res = await strapiClient.get(
+        `/categories?filters[recipes][$notNull]=true&fields[0]=name&fields[1]=documentId&populate[recipes][fields][0]=id&pagination[page]=${page}&pagination[pageSize]=${PAGE_SIZE}`
+      );
+      categories.push(...res.data.data);
+      pageCount = res.data.meta?.pagination?.pageCount ?? 1;
+      page += 1;
+    } while (page <= pageCount);
 
     return categories
       .map((cat) => ({

@@ -26,7 +26,7 @@ const HowItWorks = () => {
   ];
 
   return (
-    <section className="py-20 bg-white relative overflow-hidden">
+    <section id="how-it-works" className="py-20 bg-white relative overflow-hidden scroll-mt-20">
       {/* Background Decoration */}
       <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-orange-400 via-amber-400 to-orange-400"></div>
 
