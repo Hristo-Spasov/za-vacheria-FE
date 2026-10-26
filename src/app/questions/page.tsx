@@ -136,8 +136,8 @@ const Questions = () => {
   };
 
   return (
-    <div className="bg-gradient-to-b from-amber-50 to-orange-100 min-h-[100dvh] ">
-      <div className="absolute inset-0 bg-[url('/subtle-food-pattern.webp')] opacity-10"></div>
+    <div className="relative bg-gradient-to-b from-amber-50 to-orange-100 min-h-[100dvh] ">
+      <div className="absolute inset-0 bg-[url('/subtle-food-pattern.webp')] opacity-10 z-0 pointer-events-none"></div>
       <form
         onSubmit={handleSubmit(submitForm)}
         className="flex flex-col items-center justify-center min-h-[100dvh] py-2 px-4 text-center"

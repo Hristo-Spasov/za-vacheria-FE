@@ -12,10 +12,21 @@ export interface CategoryWithSlug extends Category {
 // and deduplicate category lookups within a server render as well.
 const getCachedCategories = cache(unstable_cache(
   async (): Promise<CategoryWithSlug[]> => {
-    const res = await strapiClient.get(
-      "/categories?filters[recipes][$notNull]=true&fields[0]=name&fields[1]=documentId&populate[recipes][fields][0]=id"
-    );
-    const categories: Category[] = res.data.data;
+    const PAGE_SIZE = 100;
+    const categories: Category[] = [];
+    let page = 1;
+    let pageCount = 1;
+
+    // Cache the complete list, including categories beyond Strapi's first page.
+    do {
+      const res = await strapiClient.get(
+        `/categories?filters[recipes][$notNull]=true&fields[0]=name&fields[1]=documentId&populate[recipes][fields][0]=id&pagination[page]=${page}&pagination[pageSize]=${PAGE_SIZE}`
+      );
+      categories.push(...res.data.data);
+      pageCount = res.data.meta?.pagination?.pageCount ?? 1;
+      page += 1;
+    } while (page <= pageCount);
+
     return categories
       .map((cat) => ({ ...cat, slug: formatNameForUrl(cat.name) }))
       .filter((cat) => cat.slug.length > 0);

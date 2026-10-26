@@ -5,7 +5,7 @@ const HeroSection = () => {
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background Pattern */}
       <div className="absolute inset-0 bg-[url('/subtle-food-pattern.webp')] opacity-10"></div>
-      
+
       {/* Decorative Elements */}
       <div className="absolute top-20 left-10 w-20 h-20 bg-orange-200 rounded-full blur-3xl opacity-50"></div>
       <div className="absolute bottom-20 right-10 w-32 h-32 bg-amber-200 rounded-full blur-3xl opacity-50"></div>
@@ -13,17 +13,19 @@ const HeroSection = () => {
       <div className="relative z-10 max-w-4xl mx-auto px-4 py-16 text-center">
         {/* Main Content */}
         <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-8 md:p-12 shadow-xl">
-
           {/* Headline */}
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-orange-800 mb-4 leading-tight">
             Какво ще вечеряме{" "}
-            <span className="bg-gradient-to-r  from-amber-400 to-orange-500 bg-clip-text text-transparent">днес?</span>
+            <span className="bg-gradient-to-r  from-amber-400 to-orange-500 bg-clip-text text-transparent">
+              днес?
+            </span>
           </h1>
 
           {/* Subheadline */}
           <p className="text-lg md:text-xl text-gray-600 mb-8 max-w-2xl mx-auto leading-relaxed">
             Не знаеш какво да сготвиш? Отговори на няколко въпроса и ще получиш
-            персонализирани рецепти, съобразени с твоите вкусове и предпочитания.
+            персонализирани рецепти, съобразени с твоите вкусове и
+            предпочитания.
           </p>
 
           {/* CTA Button */}
@@ -70,6 +72,30 @@ const HeroSection = () => {
           </div>
         </div>
       </div>
+
+      {/* Scroll Indicator */}
+      <a
+        href="#how-it-works"
+        aria-label="Скролни надолу"
+        className="absolute bottom-32 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-1 text-gray-500 hover:text-orange-700 transition-colors"
+      >
+        <span className="text-sm">Скролни надолу</span>
+        <span className="flex mt-5 h-10 w-10 items-center justify-center rounded-full bg-white/80 backdrop-blur-sm shadow-md animate-bounce border-2 border-orange-300">
+          <svg
+            className="w-5 h-5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M19 9l-7 7-7-7"
+            />
+          </svg>
+        </span>
+      </a>
     </section>
   );
 };

@@ -68,7 +68,7 @@ export default async function RootLayout({
 }>) {
   const nonce = (await headers()).get("x-nonce") ?? "";
   return (
-    <html lang="bg">
+    <html lang="bg" className="scroll-smooth">
       <head>
         <Script
           strategy="afterInteractive"
