@@ -30,6 +30,9 @@ export async function POST(request: Request) {
     if (axios.isAxiosError(error) && error.status === 400) {
       return NextResponse.json({ message: "Report received" });
     }
+    // The Strapi client strips credentials and response bodies from errors.
+    console.error("Report submission failed:",
+      error instanceof Error ? error.message : "Unknown error");
     return NextResponse.json({ error: "Failed to create report" }, { status: 500 });
   }
 }
