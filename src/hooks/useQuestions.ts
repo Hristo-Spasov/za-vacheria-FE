@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { QuestionResponse } from "@/services/questionServices";
+import type { QuestionResponse } from "@/services/questionServices";
 
 export const useQuestions = () => {
   return useQuery<QuestionResponse, Error>({

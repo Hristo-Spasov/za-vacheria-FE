@@ -7,7 +7,7 @@ export async function GET() {
     try {
         const data = await questionService.getQuestions();
         return NextResponse.json(data)
-    } catch (error) {
-        return NextResponse.json({error: error}, {status: 500}) 
+    } catch {
+        return NextResponse.json({error: "Failed to fetch questions"}, {status: 500})
     }
 }

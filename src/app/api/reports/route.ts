@@ -27,9 +27,9 @@ export async function POST(request: Request) {
     await createReport(id, "anonymous");
     return NextResponse.json({ message: "Report created successfully" });
   } catch (error) {
-    if (axios.isAxiosError(error) && error.response?.status === 400) {
+    if (axios.isAxiosError(error) && error.status === 400) {
       return NextResponse.json({ message: "Report received" });
     }
-    return NextResponse.json({ error: error }, { status: 500 });
+    return NextResponse.json({ error: "Failed to create report" }, { status: 500 });
   }
 }

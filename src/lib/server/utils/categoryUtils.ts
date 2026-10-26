@@ -1,10 +1,50 @@
 import strapiClient from "@/lib/clients/strapi";
 import { Category, Recipe, RecipeResponse } from "@/types/recipes";
 import { formatNameForUrl } from "@/components/ui/utils/helpers";
+import { unstable_cache } from "next/cache";
+import { cache } from "react";
 
 export interface CategoryWithSlug extends Category {
   slug: string;
 }
+
+// Axios does not use Next's fetch cache. Share these results across requests,
+// and deduplicate category lookups within a server render as well.
+const getCachedCategories = cache(unstable_cache(
+  async (): Promise<CategoryWithSlug[]> => {
+    const res = await strapiClient.get(
+      "/categories?filters[recipes][$notNull]=true&fields[0]=name&fields[1]=documentId&populate[recipes][fields][0]=id"
+    );
+    const categories: Category[] = res.data.data;
+    return categories
+      .map((cat) => ({ ...cat, slug: formatNameForUrl(cat.name) }))
+      .filter((cat) => cat.slug.length > 0);
+  },
+  ["strapi-categories"],
+  { revalidate: 3600, tags: ["categories"] }
+));
+
+const getCachedCategoryRecipes = unstable_cache(
+  async (categoryId: number, page: number, pageSize: number): Promise<RecipeResponse> => {
+    const res = await strapiClient.get(
+      `/recipes?filters[categories][id][$eq]=${categoryId}&sort[0]=updatedAt&pagination[page]=${page}&pagination[pageSize]=${pageSize}&populate=*`
+    );
+    return res.data;
+  },
+  ["strapi-category-recipes"],
+  { revalidate: 3600, tags: ["categories", "recipes"] }
+);
+
+const getCachedQuickestRecipes = unstable_cache(
+  async (categoryId: number, count: number): Promise<Recipe[]> => {
+    const res = await strapiClient.get(
+      `/recipes?filters[categories][id][$eq]=${categoryId}&sort[0]=totalTime:asc&pagination[page]=1&pagination[pageSize]=${count}&populate=*`
+    );
+    return res.data.data;
+  },
+  ["strapi-category-quickest-recipes"],
+  { revalidate: 3600, tags: ["categories", "recipes"] }
+);
 
 /**
  * Fetches all categories that have recipes, with slugs generated from names.
@@ -12,17 +52,7 @@ export interface CategoryWithSlug extends Category {
  */
 export async function getAllCategories(): Promise<CategoryWithSlug[]> {
   try {
-    const res = await strapiClient.get(
-      "/categories?filters[recipes][$notNull]=true&fields[0]=name&fields[1]=documentId&populate[recipes][fields][0]=id"
-    );
-    const categories: Category[] = res.data.data;
-
-    return categories
-      .map((cat) => ({
-        ...cat,
-        slug: formatNameForUrl(cat.name),
-      }))
-      .filter((cat) => cat.slug.length > 0);
+    return await getCachedCategories();
   } catch (error) {
     console.error("Error fetching categories:", error);
     return [];
@@ -48,10 +78,7 @@ export async function fetchCategoryRecipes(
   pageSize = 30
 ): Promise<RecipeResponse> {
   try {
-    const res = await strapiClient.get(
-      `/recipes?filters[categories][id][$eq]=${categoryId}&sort[0]=updatedAt&pagination[page]=${page}&pagination[pageSize]=${pageSize}&populate=*`
-    );
-    return res.data;
+    return await getCachedCategoryRecipes(categoryId, page, pageSize);
   } catch (error) {
     console.error("Error fetching recipes for category:", error);
     return { data: [], meta: { pagination: { page: 1, pageSize, pageCount: 1, total: 0 } } };
@@ -66,10 +93,7 @@ export async function fetchQuickestCategoryRecipes(
   count = 3
 ): Promise<Recipe[]> {
   try {
-    const res = await strapiClient.get(
-      `/recipes?filters[categories][id][$eq]=${categoryId}&sort[0]=totalTime:asc&pagination[page]=1&pagination[pageSize]=${count}&populate=*`
-    );
-    return res.data.data;
+    return await getCachedQuickestRecipes(categoryId, count);
   } catch (error) {
     console.error("Error fetching quickest recipes for category:", error);
     return [];

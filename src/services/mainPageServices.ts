@@ -1,5 +1,6 @@
 import strapiClient from "@/lib/clients/strapi";
 import { Category, RecipeResponse } from "@/types/recipes";
+import { getAllCategories } from "@/lib/server/utils/categoryUtils";
 
 export const mainPageServices = {
   getRecipes: async (
@@ -56,10 +57,8 @@ export const mainPageServices = {
   },
   getCategories: async () => {
     try {
-      const res = await strapiClient.get(
-        "/categories?filters[recipes][$notNull]=true&populate=recipes",
-      );
-      const sortedCategories = res.data.data.sort(
+      const categories = await getAllCategories();
+      const sortedCategories = [...categories].sort(
         (a: Category, b: Category) => {
           return b.recipes.length - a.recipes.length;
         },
