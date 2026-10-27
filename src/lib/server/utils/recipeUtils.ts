@@ -3,6 +3,9 @@ import strapiClient from "@/lib/clients/strapi";
 import { Question } from "@/types/questions";
 import { Recipe, RecipeResponse } from "@/types/recipes";
 import { getCachedRecipes, cacheRecipes } from "./cachedUtils";
+import { unstable_cache } from "next/cache";
+import { cache } from "react";
+import axios from "axios";
 
 export const buildFilterQuery = (
   userAnswers: Record<string, string | string[]>,
@@ -131,15 +134,25 @@ export const getRecipesFromUserAnswers = async (
   return results;
 };
 
-export const getRecipeById = async (id: string): Promise<Recipe | null> => {
-  try {
+const getCachedRecipeById = unstable_cache(
+  async (id: string): Promise<Recipe> => {
     const response = await strapiClient.get(
-      `/recipes/${id}?populate[0]=image&populate[1]=categories&populate[2]=difficultyLevel&populate[3]=ingredients&populate[4]=ingredients.unit`
+      `/recipes/${id}?status=published&populate[0]=image&populate[1]=categories&populate[2]=difficultyLevel&populate[3]=ingredients&populate[4]=ingredients.unit`
     );
-
+    if (!response.data.data) throw new Error("Invalid recipe response from Strapi");
     return response.data.data;
+  },
+  ["strapi-recipe-details"],
+  { revalidate: 300, tags: ["recipes"] },
+);
+
+export const getRecipeById = cache(async (id: string): Promise<Recipe | null> => {
+  if (!/^[a-zA-Z0-9_-]{1,64}$/.test(id)) return null;
+  try {
+    return await getCachedRecipeById(id);
   } catch (error) {
-    console.error("Error fetching recipe by id:", error);
-    return null;
+    // Missing recipes are not persisted. Outages must not become cached 404s.
+    if (axios.isAxiosError(error) && error.status === 404) return null;
+    throw error;
   }
-};
+});

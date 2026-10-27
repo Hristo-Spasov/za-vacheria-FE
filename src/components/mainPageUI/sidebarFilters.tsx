@@ -5,6 +5,7 @@ import CategoryFilter from "./filters/CategoryFilter";
 import DifficultyFilter from "./filters/DifficultyFilter";
 import TimeFilter from "./filters/TimeFilter";
 import { Category, DifficultyLevel } from "@/types/recipes";
+import { memo } from "react";
 
 interface SidebarFiltersProps {
   selectedCategories: number[];
@@ -28,7 +29,7 @@ const SidebarFilters = ({
   difficultyLevels,
 }: SidebarFiltersProps) => {
   return (
-    <aside className="hidden lg:flex lg:col-span-1 lg:row-span-5 flex-col bg-white rounded-lg shadow-md p-4 z-[1] h-fit">
+    <aside className="hidden lg:flex lg:col-span-1 flex-col bg-white rounded-lg shadow-md p-4 z-[1] h-fit">
       <h3 className="text-base font-bold text-foreground mb-1">Филтри</h3>
       <FilterGroup title="Категории">
         <CategoryFilter
@@ -51,4 +52,4 @@ const SidebarFilters = ({
   );
 };
 
-export default SidebarFilters;
+export default memo(SidebarFilters);

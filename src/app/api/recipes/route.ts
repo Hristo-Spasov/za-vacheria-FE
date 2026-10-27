@@ -1,24 +1,26 @@
 import { NextResponse } from "next/server";
 import { mainPageServices } from "@/services/mainPageServices";
+import { InvalidListingParamsError, RecipePageNotFoundError, parseListingParams, ListingSearchParams } from "@/lib/recipeListingParams";
 
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
-    const page = Number(searchParams.get("page")) || 1;
-    const pageSize = Number(searchParams.get("pageSize")) || 30;
-    const categories = searchParams.get("categories") || "";
-    const difficulties = searchParams.get("difficulties") || "";
-    const maxTime = searchParams.get("maxTime") || "";
-    const search = searchParams.get("search") || "";
-
-    const recipes = await mainPageServices.getRecipes(search, page, pageSize, {
-      categories: categories ? categories.split(",").map(Number) : [],
-      difficulties: difficulties ? difficulties.split(",").map(Number) : [],
-      maxTime: maxTime ? Number(maxTime) : null,
-    });
+    const params: ListingSearchParams = {};
+    for (const key of ["page", "pageSize", "categories", "difficulties", "maxTime", "search"]) {
+      const values = searchParams.getAll(key);
+      params[key] = values.length > 1 ? values : values[0];
+    }
+    const { search, page, pageSize, filters } = parseListingParams(params);
+    const recipes = await mainPageServices.getRecipes(search, page, pageSize, filters);
 
     return NextResponse.json(recipes);
-  } catch {
+  } catch (error) {
+    if (error instanceof InvalidListingParamsError) {
+      return NextResponse.json({ error: error.message }, { status: 400 });
+    }
+    if (error instanceof RecipePageNotFoundError) {
+      return NextResponse.json({ error: "Recipe page does not exist" }, { status: 404 });
+    }
     return NextResponse.json({ error: "Failed to fetch recipes" }, { status: 500 });
   }
 }

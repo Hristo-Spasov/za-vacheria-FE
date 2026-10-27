@@ -1,7 +1,7 @@
 import { getRecipeById } from "@/lib/server/utils/recipeUtils";
 import { getImageUrl } from "@/components/ui/utils/helpers";
 import Image from "next/image";
-import Link from "next/link";
+import Link from "@/components/NavigationLink";
 import { notFound } from "next/navigation";
 import ActionButton from "@/components/ui/buttons/ActionButton";
 import { Metadata } from "next";
@@ -179,6 +179,6 @@ export default async function RecipePage({
     );
   } catch (error) {
     console.error("Error fetching recipe:", error);
-    return notFound();
+    throw error;
   }
 }

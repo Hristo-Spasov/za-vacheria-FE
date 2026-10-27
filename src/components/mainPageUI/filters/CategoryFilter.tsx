@@ -2,6 +2,9 @@
 
 import { Checkbox } from "@/components/ui/checkbox";
 import { Category } from "@/types/recipes";
+import { useMemo } from "react";
+
+const TOP_CATEGORY_COUNT = 25;
 
 interface CategoryFilterProps {
   selected: number[];
@@ -10,6 +13,14 @@ interface CategoryFilterProps {
 }
 
 const CategoryFilter = ({ selected, onChange, categories }: CategoryFilterProps) => {
+  const visibleCategories = useMemo(() => {
+    const ranked = [...categories].sort((a, b) => b.recipes.length - a.recipes.length);
+    return [
+      ...ranked.slice(0, TOP_CATEGORY_COUNT),
+      ...ranked.slice(TOP_CATEGORY_COUNT).filter((category) => selected.includes(category.id)),
+    ];
+  }, [categories, selected]);
+
   const handleToggle = (categoryId: number) => {
     if (selected.includes(categoryId)) {
       onChange(selected.filter((id) => id !== categoryId));
@@ -20,7 +31,7 @@ const CategoryFilter = ({ selected, onChange, categories }: CategoryFilterProps)
 
   return (
     <div className="flex flex-col gap-2">
-      {categories.map((category) => (
+      {visibleCategories.map((category) => (
         <label
           key={category.id}
           className="flex items-center gap-2 cursor-pointer group"

@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import Link from "@/components/NavigationLink";
 import Image from "next/image";
 import { useState } from "react";
 import { usePathname } from "next/navigation";
@@ -85,8 +85,7 @@ const Header = () => {
         </div>
 
         {/* Mobile Navigation */}
-        {isMenuOpen && (
-          <nav className="md:hidden py-4 border-t border-orange-100">
+          <nav className={`md:hidden py-4 border-t border-orange-100 ${isMenuOpen ? "" : "hidden"}`}>
             <div className="flex flex-col gap-2">
               {navLinks.map((link) => (
                 <Link
@@ -104,7 +103,6 @@ const Header = () => {
               ))}
             </div>
           </nav>
-        )}
       </div>
     </header>
   );

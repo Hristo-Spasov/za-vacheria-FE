@@ -2,7 +2,7 @@ import Link from "next/link";
 
 const HeroSection = () => {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <section className="relative min-h-[calc(100svh-5rem)] flex items-center justify-center overflow-hidden">
       {/* Background Pattern */}
       <div className="absolute inset-0 bg-[url('/subtle-food-pattern.webp')] opacity-10"></div>
 
@@ -10,9 +10,9 @@ const HeroSection = () => {
       <div className="absolute top-20 left-10 w-20 h-20 bg-orange-200 rounded-full blur-3xl opacity-50"></div>
       <div className="absolute bottom-20 right-10 w-32 h-32 bg-amber-200 rounded-full blur-3xl opacity-50"></div>
 
-      <div className="relative z-10 max-w-4xl mx-auto px-4 py-16 text-center">
+      <div className="relative z-10 w-full max-w-4xl mx-auto px-4 py-8 sm:py-12 lg:py-16 text-center">
         {/* Main Content */}
-        <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-8 md:p-12 shadow-xl">
+        <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-6 sm:p-8 md:p-12 shadow-xl">
           {/* Headline */}
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-orange-800 mb-4 leading-tight">
             Какво ще вечеряме{" "}
@@ -33,7 +33,7 @@ const HeroSection = () => {
             {/* Primary CTA - Quiz */}
             <Link
               href="/questions"
-              className="group relative inline-flex items-center gap-2 bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-bold py-4 px-8 rounded-full text-lg transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+              className="group relative inline-flex items-center gap-2 bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-bold py-4 px-5 sm:px-8 rounded-full text-base sm:text-lg transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
             >
               <span>🎯</span>
               <span>Намери рецепта</span>
@@ -71,16 +71,14 @@ const HeroSection = () => {
             </div>
           </div>
         </div>
-      </div>
-
       {/* Scroll Indicator */}
       <a
         href="#how-it-works"
         aria-label="Скролни надолу"
-        className="absolute bottom-32 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-1 text-gray-500 hover:text-orange-700 transition-colors"
+        className="mx-auto mt-6 sm:mt-8 flex w-fit flex-col items-center gap-3 text-gray-500 hover:text-orange-700 transition-colors"
       >
         <span className="text-sm">Скролни надолу</span>
-        <span className="flex mt-5 h-10 w-10 items-center justify-center rounded-full bg-white/80 backdrop-blur-sm shadow-md animate-bounce border-2 border-orange-300">
+        <span className="flex h-10 w-10 items-center justify-center rounded-full bg-white/80 backdrop-blur-sm shadow-md motion-safe:animate-bounce border-2 border-orange-300">
           <svg
             className="w-5 h-5"
             fill="none"
@@ -96,6 +94,7 @@ const HeroSection = () => {
           </svg>
         </span>
       </a>
+      </div>
     </section>
   );
 };

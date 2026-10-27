@@ -22,6 +22,20 @@ Whether you're looking for inspiration for tonight's dinner or want to explore n
 
 
 
+## Recipe caching
+
+Published recipe totals and unfiltered main listings revalidate after 60
+seconds, recipe details after 5 minutes, and category listings, category data,
+and difficulty levels after one hour. Free-text searches and other filter combinations are not persisted in
+the server cache. Normal cache revalidation can briefly serve the previous data
+while refreshing, including page bounds after publishing or deleting recipes.
+
+Keep listing validation outside global `loading.tsx` or Suspense fallbacks:
+flushing a fallback before validation would turn an out-of-range page into a
+streamed HTTP 200 instead of a 404. The questionnaire keeps its scoped loader.
+Primary navigation links show the existing loader in the browser while a route
+is pending, without starting a server loading fallback before validation.
+
 ## Tech Stack
 
 **Client:** React, NextJS, TailwindCSS, TypeScript, React Query

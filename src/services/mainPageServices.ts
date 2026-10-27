@@ -1,59 +1,35 @@
 import strapiClient from "@/lib/clients/strapi";
-import { Category, RecipeResponse } from "@/types/recipes";
+import { Category, DifficultyLevel } from "@/types/recipes";
 import { getAllCategories } from "@/lib/server/utils/categoryUtils";
+import { getRecipeListing } from "@/lib/server/utils/recipeListingUtils";
+import { InvalidListingParamsError, RecipeFilters } from "@/lib/recipeListingParams";
+import { unstable_cache } from "next/cache";
+
+const getDifficultyLevels = unstable_cache(async (): Promise<DifficultyLevel[]> => {
+  const response = await strapiClient.get("/difficulty-levels");
+  return response.data.data;
+}, ["strapi-difficulty-levels"], { revalidate: 3600, tags: ["difficulty-levels"] });
 
 export const mainPageServices = {
   getRecipes: async (
-    search?: string,
+    search = "",
     page = 1,
     pageSize = 30,
-    filters?: {
-      categories?: number[];
-      difficulties?: number[];
-      maxTime?: number | null;
-    },
-  ): Promise<RecipeResponse> => {
-    try {
-      let url = `/recipes?sort[0]=updatedAt&pagination[page]=${page}&pagination[pageSize]=${pageSize}&populate=*`;
-
-      // Searchbar filter
-      if (search) {
-        url += `&_q=${encodeURIComponent(search)}`;
+    filters?: RecipeFilters,
+  ) => {
+    if (filters?.categories?.length) {
+      const categories = await getAllCategories();
+      if (filters.categories.some((id) => !categories.some((category) => category.id === id))) {
+        throw new InvalidListingParamsError("Unknown category");
       }
-
-      // Strapi category filter: recipes that have ANY of the selected categories
-      if (filters?.categories?.length) {
-        filters.categories.forEach((catId, i) => {
-          url += `&filters[categories][id][$in][${i}]=${catId}`;
-        });
-      }
-
-      // Strapi difficulty filter
-      if (filters?.difficulties?.length) {
-        filters.difficulties.forEach((diffId, i) => {
-          url += `&filters[difficultyLevel][id][$in][${i}]=${diffId}`;
-        });
-      }
-
-      // Strapi time filter: totalTime <= maxTime (skip for Infinity = "60+ мин")
-      if (
-        filters?.maxTime !== null &&
-        filters?.maxTime !== undefined &&
-        isFinite(filters.maxTime)
-      ) {
-        url += `&filters[totalTime][$lte]=${filters.maxTime}`;
-      }
-
-      const response = await strapiClient.get(url);
-
-      return {
-        data: response.data.data,
-        meta: response.data.meta,
-      };
-    } catch (error) {
-      console.error("Error fetching recipes for the main page:", error);
-      throw error;
     }
+    if (filters?.difficulties?.length) {
+      const difficulties = await getDifficultyLevels();
+      if (filters.difficulties.some((id) => !difficulties.some((difficulty) => difficulty.id === id))) {
+        throw new InvalidListingParamsError("Unknown difficulty");
+      }
+    }
+    return getRecipeListing(search, page, pageSize, filters);
   },
   getCategories: async () => {
     try {
@@ -69,13 +45,5 @@ export const mainPageServices = {
       throw error;
     }
   },
-  getDifficultyLevels: async () => {
-    try {
-      const res = await strapiClient.get("/difficulty-levels");
-      return res.data.data;
-    } catch (error) {
-      console.error("Error fetching difficulty levels:", error);
-      throw error;
-    }
-  },
+  getDifficultyLevels,
 };

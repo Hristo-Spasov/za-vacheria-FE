@@ -1,36 +1,13 @@
-const SkeletonBlock = ({ className = "" }: { className?: string }) => (
-  <div className={`relative overflow-hidden rounded-lg bg-orange-200/50 ${className}`}>
-    <div className="skeleton-shimmer" />
-  </div>
-);
-
-const CardSkeleton = () => (
-  <div className="rounded-xl overflow-hidden shadow-lg bg-white/80">
-    {/* Image placeholder */}
-    <SkeletonBlock className="h-48 w-full rounded-none" />
-    {/* Content */}
-    <div className="p-4 space-y-3">
-      <SkeletonBlock className="h-5 w-3/4" />
-      <div className="flex gap-2">
-        <SkeletonBlock className="h-6 w-16 rounded-full" />
-        <SkeletonBlock className="h-6 w-20 rounded-full" />
-      </div>
-      <SkeletonBlock className="h-3 w-full" />
-      <SkeletonBlock className="h-3 w-5/6" />
-      <SkeletonBlock className="h-3 w-2/3" />
-      <SkeletonBlock className="h-9 w-full rounded-md mt-2" />
-    </div>
-  </div>
-);
+import CardSkeleton, { SkeletonBlock } from "@/components/RecipeCardSkeleton";
 
 const MainPageSkeleton = () => {
   return (
-    <section className="flex h-full w-full items-center justify-center p-4 md:p-8">
+    <section className="relative w-full p-4 md:p-8">
       <div className="absolute inset-0 bg-[url('/subtle-food-pattern.webp')] opacity-10 isolate pointer-events-none" />
 
-      <div className="grid h-full w-full gap-4 grid-cols-1 lg:grid-cols-4 lg:grid-rows-5 z-10 relative">
+      <div className="relative z-10 grid w-full items-start gap-4 grid-cols-1 lg:grid-cols-4">
         {/* Sidebar skeleton — hidden on mobile */}
-        <div className="hidden lg:flex lg:flex-col lg:gap-4 lg:col-span-1 lg:row-span-5 p-2">
+        <div className="hidden lg:flex lg:flex-col lg:gap-4 lg:col-span-1 p-2">
           <SkeletonBlock className="h-6 w-2/3 mb-2" />
           <SkeletonBlock className="h-8 w-full" />
           <SkeletonBlock className="h-8 w-full" />
@@ -45,7 +22,7 @@ const MainPageSkeleton = () => {
         </div>
 
         {/* Main content area */}
-        <div className="col-span-1 lg:col-span-3 flex flex-col gap-4 lg:row-span-5">
+        <div className="min-w-0 col-span-1 lg:col-span-3 flex flex-col gap-4">
           {/* Search bar skeleton */}
           <div className="flex items-center justify-between gap-3 p-4">
             <div className="flex-1">

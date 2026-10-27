@@ -3,6 +3,7 @@ import { Category, Recipe, RecipeResponse } from "@/types/recipes";
 import { formatNameForUrl } from "@/components/ui/utils/helpers";
 import { unstable_cache } from "next/cache";
 import { cache } from "react";
+import { getRecipeListing } from "./recipeListingUtils";
 
 export interface CategoryWithSlug extends Category {
   slug: string;
@@ -35,17 +36,6 @@ const getCachedCategories = cache(unstable_cache(
   { revalidate: 3600, tags: ["categories"] }
 ));
 
-const getCachedCategoryRecipes = unstable_cache(
-  async (categoryId: number, page: number, pageSize: number): Promise<RecipeResponse> => {
-    const res = await strapiClient.get(
-      `/recipes?filters[categories][id][$eq]=${categoryId}&sort[0]=updatedAt&pagination[page]=${page}&pagination[pageSize]=${pageSize}&populate=*`
-    );
-    return res.data;
-  },
-  ["strapi-category-recipes"],
-  { revalidate: 3600, tags: ["categories", "recipes"] }
-);
-
 const getCachedQuickestRecipes = unstable_cache(
   async (categoryId: number, count: number): Promise<Recipe[]> => {
     const res = await strapiClient.get(
@@ -62,12 +52,7 @@ const getCachedQuickestRecipes = unstable_cache(
  * Only populates recipe ids so the response stays small.
  */
 export async function getAllCategories(): Promise<CategoryWithSlug[]> {
-  try {
-    return await getCachedCategories();
-  } catch (error) {
-    console.error("Error fetching categories:", error);
-    return [];
-  }
+  return getCachedCategories();
 }
 
 /**
@@ -88,12 +73,7 @@ export async function fetchCategoryRecipes(
   page = 1,
   pageSize = 30
 ): Promise<RecipeResponse> {
-  try {
-    return await getCachedCategoryRecipes(categoryId, page, pageSize);
-  } catch (error) {
-    console.error("Error fetching recipes for category:", error);
-    return { data: [], meta: { pagination: { page: 1, pageSize, pageCount: 1, total: 0 } } };
-  }
+  return getRecipeListing("", page, pageSize, { categories: [categoryId] });
 }
 
 /**

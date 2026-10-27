@@ -35,6 +35,7 @@ export function useRecipeFilters({
   const [selectedDifficulties, setSelectedDifficulties] = useState(initialDifficulties);
   const [selectedTime, setSelectedTime] = useState<number | null>(initialTime);
   const [searchInput, setSearchInput] = useState(initialSearch ?? "");
+  const [activeSearch, setActiveSearch] = useState(initialSearch);
 
   const debouncedSearch = useDebounce(searchInput, 300);
 
@@ -82,15 +83,17 @@ export function useRecipeFilters({
 
   // --- Search ---
   const handleSearchChange = useCallback((value: string) => {
-    setSearchInput(value.trimStart());
+    setSearchInput(value.trimStart().slice(0, 100));
   }, []);
 
   // Sync URL when debounced search value changes
   useEffect(() => {
+    const search = debouncedSearch.trim().toLowerCase();
+    if (search === activeSearch) return;
+    setActiveSearch(search);
     setCurrentPage(1);
-    syncUrl(debouncedSearch, 1, selectedCategories, selectedDifficulties, selectedTime);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [debouncedSearch]);
+    syncUrl(search, 1, selectedCategories, selectedDifficulties, selectedTime);
+  }, [debouncedSearch, activeSearch, selectedCategories, selectedDifficulties, selectedTime, syncUrl]);
 
   // --- Pagination ---
   const handlePageChange = useCallback(
@@ -108,8 +111,12 @@ export function useRecipeFilters({
     maxTime: selectedTime,
   };
 
-  const trimmedSearch = debouncedSearch.trim();
-  const { data } = usePagination(currentPage, 30, trimmedSearch || undefined, filters);
+  const { data, isFetching, isPlaceholderData } = usePagination(currentPage, 30, activeSearch || undefined, filters, {
+    page: initialPage,
+    search: initialSearch,
+    filters: { categories: initialCategories, difficulties: initialDifficulties, maxTime: initialTime },
+    data: { data: initialRecipes, meta: initialMeta },
+  });
 
   const recipes = data?.data ?? initialRecipes;
   const meta = data?.meta ?? initialMeta;
@@ -118,6 +125,7 @@ export function useRecipeFilters({
     recipes,
     meta,
     currentPage,
+    isPageLoading: isFetching && isPlaceholderData,
     searchInput,
     selectedCategories,
     selectedDifficulties,

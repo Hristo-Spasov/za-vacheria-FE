@@ -30,6 +30,7 @@ export default function MainPageContent({
     recipes,
     meta,
     currentPage,
+    isPageLoading,
     searchInput,
     selectedCategories,
     selectedDifficulties,
@@ -65,11 +66,14 @@ export default function MainPageContent({
         onTimeChange={handleTimeChange}
         returnUrl={returnUrl}
         searchInput={searchInput}
-      />
-      <PaginationComponent
-        recipesPagination={meta}
-        currentPage={currentPage}
-        onPageChange={handlePageChange}
+        isLoading={isPageLoading}
+        pagination={
+          <PaginationComponent
+            recipesPagination={meta}
+            currentPage={currentPage}
+            onPageChange={handlePageChange}
+          />
+        }
       />
     </>
   );

@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/components/NavigationLink";
 import Image from "next/image";
 import { getAllCategories } from "@/lib/server/utils/categoryUtils";
 

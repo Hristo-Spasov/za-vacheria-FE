@@ -44,7 +44,7 @@ import questionsVariants, {
 import { useRouter } from "next/navigation";
 import { setCookie } from "cookies-next";
 import { v4 as uuidv4 } from "uuid";
-import Loading from "../loading";
+import Loading from "@/components/Loading";
 import QuestionsErrorMessage from "@/components/questionsUI/QuestionsErrorMessage";
 import QuestionsNotFound from "@/components/questionsUI/QuestionsNotFound";
 import FormButton from "@/components/ui/buttons/FormButton";

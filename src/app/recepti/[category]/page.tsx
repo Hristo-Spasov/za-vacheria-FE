@@ -1,6 +1,7 @@
 import { Metadata } from "next";
-import Link from "next/link";
+import Link from "@/components/NavigationLink";
 import { notFound } from "next/navigation";
+import { cache } from "react";
 import AlternativeRecipeCard from "@/components/AlternativeRecipeCard";
 import { formatNameForUrl } from "@/components/ui/utils/helpers";
 import {
@@ -12,15 +13,37 @@ import {
   getAllCategories,
   getCategoryBySlug,
 } from "@/lib/server/utils/categoryUtils";
+import { InvalidListingParamsError, RecipePageNotFoundError, parsePositiveInteger, listingCanonical } from "@/lib/recipeListingParams";
 
 export const revalidate = 3600;
 
 type PageProps = {
   params: Promise<{ category: string }>;
-  searchParams: Promise<{ page?: string }>;
+  searchParams: Promise<{ page?: string | string[] }>;
 };
 
 const PAGE_SIZE = 30;
+
+function readPage(value: string | string[] | undefined) {
+  try {
+    return parsePositiveInteger(value);
+  } catch (error) {
+    if (error instanceof InvalidListingParamsError) notFound();
+    throw error;
+  }
+}
+
+const getCategoryListing = cache(async (slug: string, page: number) => {
+  const category = await getCategoryBySlug(slug);
+  if (!category) notFound();
+  try {
+    const recipeResponse = await fetchCategoryRecipes(category.id, page, PAGE_SIZE);
+    return { category, recipeResponse };
+  } catch (error) {
+    if (error instanceof RecipePageNotFoundError) notFound();
+    throw error;
+  }
+});
 
 export async function generateStaticParams() {
   const categories = await getAllCategories();
@@ -29,18 +52,11 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({
   params,
-}: {
-  params: Promise<{ category: string }>;
-}): Promise<Metadata> {
+  searchParams,
+}: PageProps): Promise<Metadata> {
+  const page = readPage((await searchParams).page);
   const { category: slug } = await params;
-  const category = await getCategoryBySlug(slug);
-
-  if (!category) {
-    return {
-      title: "Категорията не е намерена",
-      description: "Поисканата категория не е намерена.",
-    };
-  }
+  const { category } = await getCategoryListing(slug, page);
 
   const count = category.recipes?.length ?? 0;
   const title = `${category.name} – рецепти`;
@@ -50,7 +66,7 @@ export async function generateMetadata({
     title,
     description,
     alternates: {
-      canonical: `/recepti/${category.slug}`,
+      canonical: listingCanonical(`/recepti/${category.slug}`, page),
     },
     openGraph: {
       title,
@@ -72,15 +88,11 @@ export default async function CategoryPage({
 }: PageProps) {
   const { category: slug } = await params;
   const { page: pageParam } = await searchParams;
-  const page = Math.max(1, Number(pageParam) || 1);
+  const page = readPage(pageParam);
 
-  const category = await getCategoryBySlug(slug);
-  if (!category) {
-    notFound();
-  }
+  const { category, recipeResponse } = await getCategoryListing(slug, page);
 
-  const [recipeResponse, quickest, allCategories] = await Promise.all([
-    fetchCategoryRecipes(category.id, page, PAGE_SIZE),
+  const [quickest, allCategories] = await Promise.all([
     fetchQuickestCategoryRecipes(category.id, 3),
     getAllCategories(),
   ]);

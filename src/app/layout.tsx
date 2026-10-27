@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import ReactQueryProvider from "../providers/ReactQueryProvider";
-import { Suspense } from "react";
-import Loading from "./loading";
 import Script from "next/script";
 import { headers } from "next/headers";
 import { HomeModal } from "@/components/HomeModal";
@@ -82,9 +80,8 @@ export default async function RootLayout({
         <ReactQueryProvider>
           <div className="relative z-10 flex flex-col min-h-screen">
             <Header />
-            <main className="flex-1">
-              <Suspense fallback={<Loading />}>{children}</Suspense>
-            </main>
+            {/* A global loading boundary would commit HTTP 200 before listing 404s. */}
+            <main className="flex-1">{children}</main>
             <Footer />
           </div>
         </ReactQueryProvider>

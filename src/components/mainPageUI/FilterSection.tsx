@@ -1,8 +1,9 @@
 "use client";
 
-import { useMemo } from "react";
+import { ReactNode, useMemo } from "react";
 import Searchbar from "../Searchbar";
 import AlternativeRecipeCard from "../AlternativeRecipeCard";
+import RecipeCardSkeleton from "../RecipeCardSkeleton";
 import SidebarFilters from "./sidebarFilters";
 import ActiveFilters, { ActiveFilter } from "./filters/ActiveFilters";
 import MobileFilterDrawer from "./filters/MobileFilterDrawer";
@@ -21,7 +22,9 @@ type FilterSectionProps = {
   onDifficultiesChange: (selected: number[]) => void;
   selectedTime: number | null;
   onTimeChange: (max: number | null) => void;
-  returnUrl: string
+  returnUrl: string;
+  pagination: ReactNode;
+  isLoading?: boolean;
 };
 
 const FilterSection = ({
@@ -36,7 +39,9 @@ const FilterSection = ({
   onDifficultiesChange,
   selectedTime,
   onTimeChange,
-  returnUrl
+  returnUrl,
+  pagination,
+  isLoading = false,
 }: FilterSectionProps) => {
   // Derive lookup maps from real data
   const categoryNameMap = useMemo(() => {
@@ -105,11 +110,11 @@ const FilterSection = ({
   };
 
   return (
-    <section className="flex h-full w-full items-center justify-center p-4 md:p-8">
+    <section className="relative w-full p-4 md:p-8">
       {/* Food pattern overlay */}
       <div className="absolute inset-0 bg-[url('/subtle-food-pattern.webp')] opacity-10 isolate pointer-events-none"></div>
 
-      <div className="grid h-full w-full gap-4 grid-cols-1 lg:grid-cols-4 lg:grid-rows-5">
+      <div className="relative grid w-full items-start gap-4 grid-cols-1 lg:grid-cols-4">
         {/* Sidebar - hidden on mobile, visible on large screens */}
         <SidebarFilters
           selectedCategories={selectedCategories}
@@ -123,7 +128,7 @@ const FilterSection = ({
         />
 
         {/* Main content area */}
-        <div className="col-span-1 lg:col-span-3 flex flex-col gap-4 lg:row-span-5">
+        <div className="min-w-0 col-span-1 lg:col-span-3 flex flex-col gap-4">
           {/* Search container + Mobile filter trigger */}
           <div
             id="card-search-container"
@@ -158,15 +163,19 @@ const FilterSection = ({
           )}
 
           {/* Card container */}
-          <div id="card-container" className="p-4 overflow-auto">
-            <div className={` ${recipes.length > 0 ? "grid" : "flex"} grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4`}>
-              {recipes.length > 0 ? recipes.map((recipe, i) => (
+          <div id="card-container" aria-busy={isLoading} className="p-4 overflow-auto">
+            {isLoading && <span role="status" className="sr-only">Зареждане на рецепти…</span>}
+            <div className={`${isLoading || recipes.length > 0 ? "grid" : "flex"} grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4`}>
+              {isLoading ? Array.from({ length: recipes.length || 6 }, (_, index) => (
+                <RecipeCardSkeleton key={index} />
+              )) : recipes.length > 0 ? recipes.map((recipe, i) => (
                 <AlternativeRecipeCard key={recipe.documentId} recipe={recipe} idx={i} from={returnUrl} />
               )) : (
                 <p className="justify-center text-center text-lg text-red-500">Няма намерени рецепти!</p>
               )}
             </div>
           </div>
+          {pagination}
         </div>
       </div>
     </section>

@@ -81,24 +81,25 @@ const PaginationComponent = (props: PaginationComponentProps) => {
     }
   };
 
-  if (totalPages <= 1) return null;
+  if (totalPages <= 1 || currentPage < 1 || currentPage > totalPages) return null;
 
   return (
     <Pagination className="my-6">
       <PaginationContent>
         {/* Previous */}
         <PaginationItem>
-          <PaginationPrevious
-            href={createPageUrl(currentPage - 1)}
-            onClick={previousPage}
-            className={`rounded-lg transition-colors duration-200 ${
-              currentPage <= 1
-                ? "opacity-50 pointer-events-none"
-                : "hover:bg-orange-100 hover:text-orange-700"
-            }`}
-            aria-disabled={currentPage <= 1}
-            aria-label="Назад"
-          />
+          {currentPage > 1 ? (
+            <PaginationPrevious
+              href={createPageUrl(currentPage - 1)}
+              onClick={previousPage}
+              className="rounded-lg transition-colors duration-200 hover:bg-orange-100 hover:text-orange-700"
+              aria-label="Назад"
+            />
+          ) : (
+            <span aria-disabled="true" aria-label="Назад" className="inline-flex items-center rounded-lg px-4 py-2 text-sm opacity-50">
+              ← Назад
+            </span>
+          )}
         </PaginationItem>
 
         {/* Dynamic page numbers */}
@@ -111,7 +112,7 @@ const PaginationComponent = (props: PaginationComponentProps) => {
                 href={createPageUrl(page)}
                 isActive={page === currentPage}
                 onClick={goToPage(page)}
-                className={`rounded-lg transition-all duration-200 ${
+                className={`rounded-lg transition-none ${
                   page === currentPage
                     ? "bg-orange-500 text-white hover:bg-orange-600 shadow-md border-orange-500"
                     : "hover:bg-orange-100 hover:text-orange-700"
@@ -125,17 +126,18 @@ const PaginationComponent = (props: PaginationComponentProps) => {
 
         {/* Next */}
         <PaginationItem>
-          <PaginationNext
-            href={createPageUrl(currentPage + 1)}
-            onClick={nextPage}
-            className={`rounded-lg transition-colors duration-200 ${
-              currentPage >= totalPages
-                ? "opacity-50 pointer-events-none"
-                : "hover:bg-orange-100 hover:text-orange-700"
-            }`}
-            aria-disabled={currentPage >= totalPages}
-            aria-label="Напред"
-          />
+          {currentPage < totalPages ? (
+            <PaginationNext
+              href={createPageUrl(currentPage + 1)}
+              onClick={nextPage}
+              className="rounded-lg transition-colors duration-200 hover:bg-orange-100 hover:text-orange-700"
+              aria-label="Напред"
+            />
+          ) : (
+            <span aria-disabled="true" aria-label="Напред" className="inline-flex items-center rounded-lg px-4 py-2 text-sm opacity-50">
+              Напред →
+            </span>
+          )}
         </PaginationItem>
       </PaginationContent>
     </Pagination>
