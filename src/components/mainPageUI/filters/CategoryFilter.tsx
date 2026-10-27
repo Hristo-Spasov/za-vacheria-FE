@@ -14,7 +14,13 @@ interface CategoryFilterProps {
 
 const CategoryFilter = ({ selected, onChange, categories }: CategoryFilterProps) => {
   const visibleCategories = useMemo(() => {
-    const ranked = [...categories].sort((a, b) => b.recipes.length - a.recipes.length);
+    const uniqueCategories = new Map<number, Category>();
+    for (const category of categories) {
+      if (!uniqueCategories.has(category.id)) {
+        uniqueCategories.set(category.id, category);
+      }
+    }
+    const ranked = [...uniqueCategories.values()].sort((a, b) => b.recipes.length - a.recipes.length);
     return [
       ...ranked.slice(0, TOP_CATEGORY_COUNT),
       ...ranked.slice(TOP_CATEGORY_COUNT).filter((category) => selected.includes(category.id)),

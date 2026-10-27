@@ -21,18 +21,25 @@ const getCachedCategories = cache(unstable_cache(
     // Cache the complete list, including categories beyond Strapi's first page.
     do {
       const res = await strapiClient.get(
-        `/categories?filters[recipes][$notNull]=true&fields[0]=name&fields[1]=documentId&populate[recipes][fields][0]=id&pagination[page]=${page}&pagination[pageSize]=${PAGE_SIZE}`
+        `/categories?filters[recipes][$notNull]=true&sort[0]=id:asc&fields[0]=name&fields[1]=documentId&populate[recipes][fields][0]=id&pagination[page]=${page}&pagination[pageSize]=${PAGE_SIZE}`
       );
       categories.push(...res.data.data);
       pageCount = res.data.meta?.pagination?.pageCount ?? 1;
       page += 1;
     } while (page <= pageCount);
 
-    return categories
+    const uniqueCategories = new Map<number, Category>();
+    for (const category of categories) {
+      if (!uniqueCategories.has(category.id)) {
+        uniqueCategories.set(category.id, category);
+      }
+    }
+
+    return [...uniqueCategories.values()]
       .map((cat) => ({ ...cat, slug: formatNameForUrl(cat.name) }))
       .filter((cat) => cat.slug.length > 0);
   },
-  ["strapi-categories"],
+  ["strapi-categories-v2"],
   { revalidate: 3600, tags: ["categories"] }
 ));
 
